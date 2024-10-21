@@ -1,8 +1,11 @@
 #include "../header/FileHandler.h"
+#include "../header/NodeData.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-int GetFileData(char* filename) {
+int GetFileData(char* filename,LinePtr* head) {
+    char * data;
     FILE* file = OpenFile(filename);
     int status = 1;
     if (!IfFileEndCottract(filename) || !file)
@@ -12,19 +15,39 @@ int GetFileData(char* filename) {
     }
     else
     {
-        print_file(file);
+        *head= InitData(file);
+        printf("%x\n",*head);
         fclose(file);
     }
     return status;
 }
 
 
-int print_file(FILE* datafile) {
-    char buffer[1024];
-    while (fgets(buffer, sizeof(buffer), datafile)) {
-        printf("%s", buffer);
-    } 
-    return 0;
+LinePtr InitData(FILE* datafile) {
+    int i = 1;
+    char* line = NULL;
+    size_t len = 0;
+    short read;
+    LinePtr head = NULL;
+    while ((read = getline(&line, &len, datafile)) != -1) {
+       if (!head)
+       {
+       head = InitLine(line);
+       
+       if(!head)
+        return NULL;
+       }
+       else
+       {
+       if(AddLine(head, line) == 0)
+       {
+        return NULL;
+       }
+       }
+       free(&line);
+       i++;
+    }
+    return head;
 }
 
 FILE* OpenFile(char* filename) {

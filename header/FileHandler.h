@@ -1,13 +1,13 @@
 #ifndef FILEHANDLER
 #define FILEHANDLER
 
-#include "../header/FileHandler.h"
 #include <stdio.h>
 #include <string.h>
+#include "../header/NodeData.h"
 
-int GetFileData(char* filename);
-int print_file(FILE* datafile);
+int GetFileData(char* filename, LinePtr* head);
 FILE* OpenFile(char* filename);
-int IfFileEndCottract(char* filename);
+int IfFileEndContract(char* filename);
+LinePtr InitData(FILE* datafile);
 
 #endif  
