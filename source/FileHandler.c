@@ -17,14 +17,13 @@ int GetFileData(char* filename,LinePtr* head) {
     {
         *head= InitData(file);
         printf("%x\n",*head);
-        fclose(file);
     }
+    fclose(file);
     return status;
 }
 
 
 LinePtr InitData(FILE* datafile) {
-    int i = 1;
     char* line = NULL;
     size_t len = 0;
     short read;
@@ -33,9 +32,7 @@ LinePtr InitData(FILE* datafile) {
        if (!head)
        {
        head = InitLine(line);
-       
-       if(!head)
-        return NULL;
+       if(!head)return NULL;
        }
        else
        {
@@ -45,7 +42,6 @@ LinePtr InitData(FILE* datafile) {
        }
        }
        free(&line);
-       i++;
     }
     return head;
 }
