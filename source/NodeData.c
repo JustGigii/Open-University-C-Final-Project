@@ -13,10 +13,17 @@ LinePtr InitLine( char* line){
     newLine->next = NULL;
     return newLine;
 }
+/**
+ * Adds a line to the linked list.
+ *
+ * @param head the head of the list
+ * @param line the line to add
+ * @return the line number of the added line, or -1 if memory could not be allocated
+ */
 int AddLine(LinePtr head, char* line)
 { 
     LinePtr newLine = InitLine(line);
-    
+    if(!newLine)return -1;
     if (!head)
     {
         head = newLine;

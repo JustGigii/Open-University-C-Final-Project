@@ -8,7 +8,7 @@
  * @param c the character to count
  * @return the number of occurrences of the character
  */
-int CountChar(const char* str, char c);
+int CountChar(const char* str, const char* substr );
 
 /**
  * Splits a string into substrings separated by a character.
@@ -18,6 +18,8 @@ int CountChar(const char* str, char c);
  * @param count a pointer to an integer to store the number of substrings
  * @return an array of pointers to the substrings, or NULL on error
  */
-char** Split(const char* str, char c, int* count);
+char** Split(char* str,const char* substr, int* count);
 
-#endif  // STRING_UTILS_H
+void freeIneersplit(char** strarray, int count);
+
+#endif  // STRING_UTILSH

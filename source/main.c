@@ -6,7 +6,7 @@
 int main(int argc, char* argv[]) {
      char string[50] = "Hello! We are learning about strtok";
      int count =0;
-    char** words = Split(string, ' ',&count);
+    char** words = Split(string," ",&count);
     printf("%d\n", count);
     for (int i = 0; count>i; i++) {
         printf("%s\n", words[i]);
