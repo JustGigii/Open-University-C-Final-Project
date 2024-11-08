@@ -16,7 +16,6 @@ int GetFileData(char* filename,LinePtr* head) {
     else
     {
         *head= InitData(file);
-        printf("%x\n",*head);
     }
     fclose(file);
     return status;
@@ -31,7 +30,7 @@ LinePtr InitData(FILE* datafile) {
     while ((read = getline(&line, &len, datafile)) != -1) {
        if (!head)
        {
-       head = InitLine(line);
+       head = InitLine(line,100);
        if(!head)return NULL;
        }
        else

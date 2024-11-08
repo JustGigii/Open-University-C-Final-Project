@@ -3,13 +3,13 @@
 #include <string.h>
 #include "../header/NodeData.h"
 
-int lineNum = 1;
-LinePtr InitLine( char* line){
+
+LinePtr InitLine( char* line,short lineNum){
     LinePtr newLine;
     newLine= (LinePtr)malloc(sizeof(Line));
     newLine->line = (char*)malloc(strlen(line) + 1);
     strcpy(newLine->line, line);
-    newLine->lineNum = lineNum++;
+    newLine->lineNum = lineNum;
     newLine->next = NULL;
     return newLine;
 }
@@ -22,11 +22,12 @@ LinePtr InitLine( char* line){
  */
 int AddLine(LinePtr head, char* line)
 { 
-    LinePtr newLine = InitLine(line);
+    LinePtr newLine = InitLine(line,-1);
     if(!newLine)return -1;
     if (!head)
     {
         head = newLine;
+        newLine->lineNum=1;
         return newLine->lineNum;
     }
         LinePtr temp = head;
@@ -36,9 +37,20 @@ int AddLine(LinePtr head, char* line)
             temp = temp->next;
         }
         temp->next = newLine;
+        newLine->lineNum = temp->lineNum + 1;
     return newLine->lineNum;
 }
-
+int addBetweenline(LinePtr head, char* line)
+{
+    LinePtr temp;
+    LinePtr newLine = InitLine(line,0);
+    if(!newLine)return -1;
+    temp = head->next;
+    head->next = newLine;
+    newLine->next = temp;
+    return newLine->lineNum;
+   
+}
 LinePtr RemoveLine(LinePtr head, int number){
 
     LinePtr temp = head;
@@ -62,7 +74,13 @@ LinePtr RemoveLine(LinePtr head, int number){
         free(temp->line);
         free(temp);
     }
-        return head;
+    if(!temp)
+    return NULL;
+
+    if(prev != NULL)
+        return prev->next;
+    return head;
+
 }
 
 int PrintLines(const LinePtr head)
@@ -70,8 +88,17 @@ int PrintLines(const LinePtr head)
     LinePtr temp = head;
     while (temp)
     {
+        if(temp->next == NULL)
+         printf("%d: %s\n", temp->lineNum, temp->line);
+        else
         printf("%d: %s", temp->lineNum, temp->line);
         temp = temp->next;
     }
+    return 0;
+}
+int freeLine(LinePtr Line)
+{
+    free(Line->line);
+    free(Line);
     return 0;
 }

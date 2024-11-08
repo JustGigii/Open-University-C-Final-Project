@@ -10,9 +10,11 @@ typedef struct linestruct
     struct linestruct* next;
 } Line, * LinePtr; 
 
-LinePtr InitLine( char* line);
+LinePtr InitLine( char* line,short lineNum);
+int addBetweenline(LinePtr head, char* line);
 int AddLine(LinePtr head, char* line);
 LinePtr RemoveLine(LinePtr head, int number);
 int PrintLines(LinePtr head);
+int freeLine(LinePtr Line);
 
 #endif

@@ -9,13 +9,14 @@ int CountChar(const char* str, const char* substr )
         count++;
         str += strlen(substr);
     }
+
     return count;
 }
 
 char** Split(char* str,const char* substr, int* count)
 {
     *count = CountChar(str, substr);
-    char** strarray = (char**)malloc(*count * sizeof(char*));
+    char** strarray = (char**)malloc(((*count)+1) * sizeof(char*));
     int i = 0;
     char * word = strtok(str, substr);
     while( word) {
@@ -24,7 +25,7 @@ char** Split(char* str,const char* substr, int* count)
         i++;
         word = strtok(NULL, substr);
     }
-    *count++;
+    (*count)++;
     return strarray;
 }
 

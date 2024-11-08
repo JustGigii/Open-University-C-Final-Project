@@ -22,4 +22,4 @@ char** Split(char* str,const char* substr, int* count);
 
 void freeIneersplit(char** strarray, int count);
 
-#endif  // STRING_UTILSH
+#endif  /*STRING_UTILSH*/ 

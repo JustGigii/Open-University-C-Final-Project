@@ -1,7 +1,7 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -Wno-error
+CFLAGS= -ansi -Wall -pedantic -g -w
 
-OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o
+OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o MacroSystem.o
 
 program: $(OBJECTS)
 	$(CC) $(CFLAGS) -o program $(OBJECTS)
@@ -17,6 +17,10 @@ NodeData.o: source/NodeData.c
 
 StringUtils.o: source/StringUtils.c
 	$(CC) $(CFLAGS) -c source/StringUtils.c
+
+MacroSystem.o: source/MacroSystem.c
+	$(CC) $(CFLAGS) -c source/MacroSystem.c
+
 
 clean:
 	rm -rf *.o program
