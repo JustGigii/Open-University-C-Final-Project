@@ -30,7 +30,7 @@ LinePtr InitData(FILE* datafile) {
     while ((read = getline(&line, &len, datafile)) != -1) {
        if (!head)
        {
-       head = InitLine(line,100);
+       head = InitLine(line,START_LINE);
        if(!head)return NULL;
        }
        else

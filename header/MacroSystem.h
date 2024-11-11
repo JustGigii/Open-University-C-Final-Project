@@ -7,6 +7,7 @@
 #include "../header/StringUtils.h"
 #include "../header/NodeData.h"
 #include "../header/StringUtils.h"
+#include "../header/PublicDef.h"
 
 typedef struct
 {

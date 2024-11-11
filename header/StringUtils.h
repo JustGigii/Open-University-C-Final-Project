@@ -1,6 +1,9 @@
 #ifndef STRING_UTILS
 #define STRINGUTILS
-
+#include "../header/PublicDef.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 /**
  * Counts the number of occurrences of a character in a string.
  *
@@ -18,7 +21,7 @@ int CountChar(const char* str, const char* substr );
  * @param count a pointer to an integer to store the number of substrings
  * @return an array of pointers to the substrings, or NULL on error
  */
-char** Split(char* str,const char* substr, int* count);
+char** Split(const char* str,const char* substr, int* count);
 
 void freeIneersplit(char** strarray, int count);
 

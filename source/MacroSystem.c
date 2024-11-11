@@ -10,26 +10,16 @@ LinePtr InitMacro(LinePtr head)
     macroPtr *macroarray = NULL; /* (macroPtr*)malloc((sizeofmacroarray+1) * sizeof(macroPtr));*/
     int macroindex = 0;
     int succsec;
+    int indextofree;
     while (temp)
     {
-        add = ExistMacro(macroarray, macroindex, temp->line);
-        if (add)
+       if (strstr(temp->line, "mcro"))
         {
-            succsec = AddMacroToProgram(temp, add);
-            if (succsec == -1)
-                return NULL;
-            temp = temp->next;
-        }
-        else if (strstr(temp->line, "mcro"))
-        {
+      
             macroarray = addMacroToList(macroarray, macroindex, temp);
             if (!macroarray)
                 return NULL;
-            while (temp != head && strcmp(temp->line, "mcroend") != 0)
-            {
-                temp = RemoveLine(temp, temp->next->lineNum);
-            }
-            temp = RemoveLine(temp, temp->next->lineNum);
+            while (temp = RemoveLine(head, -1))
             if (temp == head)
                 temp = NULL;
             macroindex++;
@@ -37,7 +27,23 @@ LinePtr InitMacro(LinePtr head)
         else
             temp = temp->next;
     }
-    PrintLines(head);
+    temp = head;
+    while (temp)
+    {
+        add = ExistMacro(macroarray, macroindex, temp->line);
+        if (add)
+        {
+            indextofree = temp->lineNum;
+            temp = AddMacroToProgram(temp, add);
+            if (!temp && RemoveLine(head, indextofree))
+                return NULL;
+            RecountLine(head, START_LINE);
+        }
+        else
+             temp = temp->next;
+    }
+    
+   PrintLines(head); 
     return head;
 }
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)
@@ -47,8 +53,8 @@ macroPtr ExistMacro(macroPtr macros[], int size, char *name)
     for (index = 0; index < size; index++)
     {
         if (strcmp(name, macros[index]->name) == 0)
-            macrosstart = macros[index];
-        index = size;
+            macrosstart = macros[index]->start;
+        index++;
     }
     return macrosstart;
 }
@@ -58,6 +64,7 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
     int indexname;
     char **split;
     int sizeofsplit = 0;
+    
     if (size == 0)
     {
         macroarraynew = malloc(sizeof(macroPtr));
@@ -66,7 +73,7 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
     {
         macroarraynew = realloc(*macroarray, (size + 1) * sizeof(macroPtr));
     }
-    
+
     if (!macroarraynew)
         return NULL;
     macroarraynew[size] = malloc(sizeof(macrostruct));
@@ -74,7 +81,13 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
     indexname = getmacroname(split, sizeofsplit);
     if(indexname == -1)
         return NULL;
-    printf("%s\n", split[indexname]);
+    macroarraynew[size]->name = malloc((strlen(split[indexname]) + 1) * sizeof(char));
+    if( macroarraynew[size]->name  == NULL)
+    {
+        free(macroarraynew[size]);
+        free(macroarraynew);
+        return NULL;
+    }
     macroarraynew[size]->name = strcpy(macroarraynew[size]->name, split[indexname]);
     macroarraynew[size]->start = InitSingelMacro(temp);
     if (macroarraynew[size]->start == NULL)
@@ -84,13 +97,20 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
 LinePtr InitSingelMacro(LinePtr copy)
 {
     LinePtr macroline;
-    while (strcmp(copy->line, "mcroend") != 0)
+    copy->lineNum =-1;
+    copy = copy->next;
+    macroline = InitLine(copy->line, 1);
+    copy = copy->next;
+    while (strcmp(copy->line, "mcroend\n") != 0)
     {
-        macroline = AddLine(copy->line, copy->lineNum);
+        copy->lineNum =-1;
+        if(AddLine(macroline, copy->line)== 0)
+        return NULL;
         if (!macroline)
             return NULL;
         copy = copy->next;
     }
+    copy->lineNum =-1;
     return macroline;
 }
 
@@ -112,9 +132,11 @@ LinePtr AddMacroToProgram(LinePtr temp, LinePtr list)
 {
     while (list)
     {
-
-        addBetweenline(temp, list->line);
+        
+        if (addBetweenline(temp, list->line) == -1)
+        return NULL;
         list = list->next;
         temp = temp->next;
     }
+    return temp;
 }

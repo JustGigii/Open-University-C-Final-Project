@@ -83,6 +83,16 @@ LinePtr RemoveLine(LinePtr head, int number){
 
 }
 
+void RecountLine(const LinePtr head, short number)
+{
+    LinePtr temp = head;
+    while (temp)
+    {
+        temp->lineNum = number++;
+        temp = temp->next;
+    }
+}
+
 int PrintLines(const LinePtr head)
 {
     LinePtr temp = head;
