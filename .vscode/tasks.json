@@ -1,0 +1,22 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "build",
+            "command": "",
+            "args": [
+                "mingw32-make.exe",
+                "--directory=${workspaceFolder}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "build",
+            "detail": "compiler buikd"
+        }
+    ],
+    "version": "2.0.0"
+}

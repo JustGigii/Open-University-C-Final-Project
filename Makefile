@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS= -ansi -Wall -pedantic -g -w
+CFLAGS= -ansi -Wall -pedantic -g3 -w
 
 OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o MacroSystem.o
 
