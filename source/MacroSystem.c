@@ -31,7 +31,7 @@ LinePtr InitMacro(LinePtr head)
     }
     temp = head;
     RecountLine(head, START_LINE);
-    PrintLines(head);
+
     return head;
 }
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)
@@ -73,6 +73,7 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
     macroarraynew[size]->start = InitSingelMacro(temp);
     if (macroarraynew[size]->start == NULL)
         return NULL;
+    freeIneersplit(split, sizeofsplit);
     return macroarraynew;
 }
 LinePtr InitSingelMacro(LinePtr copy)
@@ -85,7 +86,7 @@ LinePtr InitSingelMacro(LinePtr copy)
     freeLine(tofree);
     macro= copy->next;
    
-    while (strcmp(copy->next->line, "mcroend\n") != 0)
+    while (strcmp(copy->next->line, "mcroend") != 0)
     {
         copy = copy->next;
     }

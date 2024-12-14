@@ -1,13 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../header/NodeData.h"
 
 
 LinePtr InitLine( char* line,short lineNum){
     LinePtr newLine;
     newLine= (LinePtr)malloc(sizeof(Line));
+    if (!newLine) return NULL;
+
     newLine->line = (char*)malloc(strlen(line) + 1);
+    if (!newLine) return NULL;
+    
     strcpy(newLine->line, line);
     newLine->lineNum = lineNum;
     newLine->next = NULL;
@@ -23,6 +24,11 @@ LinePtr InitLine( char* line,short lineNum){
 int AddLine(LinePtr head, char* line)
 { 
     LinePtr newLine = InitLine(line,-1);
+    if (newLine == NULL)
+    {
+       return NULL;
+    }
+    
     if(!newLine)return -1;
     if (!head)
     {
@@ -98,10 +104,7 @@ int PrintLines(const LinePtr head)
     LinePtr temp = head;
     while (temp)
     {
-        if(temp->next == NULL)
-         printf("%d: %s\n", temp->lineNum, temp->line);
-        else
-        printf("%d: %s", temp->lineNum, temp->line);
+        printf("%d: %s\n", temp->lineNum, temp->line);
         temp = temp->next;
     }
     return 0;

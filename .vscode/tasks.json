@@ -15,8 +15,9 @@
                 "$msCompile"
             ],
             "group": "build",
-            "detail": "compiler buikd"
+            "detail": "compiler build"
         }
+        
     ],
     "version": "2.0.0"
 }

@@ -1,8 +1,4 @@
 #include "../header/FileHandler.h"
-#include "../header/NodeData.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
 int GetFileData(char* filename,LinePtr* head) {
     char * data;
@@ -16,6 +12,8 @@ int GetFileData(char* filename,LinePtr* head) {
     else
     {
         *head= InitData(file);
+        if (!*head)
+            status = 0;
     }
     fclose(file);
     return status;
@@ -28,19 +26,17 @@ LinePtr InitData(FILE* datafile) {
     short read;
     LinePtr head = NULL;
     while ((read = getline(&line, &len, datafile)) != -1) {
-       if (!head)
-       {
-       head = InitLine(line,START_LINE);
-       if(!head)return NULL;
-       }
-       else
-       {
-       if(AddLine(head, line) == 0)
-       {
-        return NULL;
-       }
-       }
-       free(&line);
+        if (line[strlen(line) - 1] == '\n')
+            line[strlen(line) - 1] = '\0';
+        if (!head)
+        {
+            head = InitLine(line, START_LINE);
+            if (!head)
+                return NULL;
+        }
+        else if (AddLine(head, line) == 0)
+            return NULL;
+        free(&line);
     }
     return head;
 }

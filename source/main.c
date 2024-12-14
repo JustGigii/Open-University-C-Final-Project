@@ -4,6 +4,9 @@
 #include "../header/NodeData.h"
 #include "../header/StringUtils.h" 
 #include "../header/MacroSystem.h"
+#include "../header/LineDetction.h"
+
+
 int main(int argc, char* argv[]) {
 
     char* filename;
@@ -16,7 +19,9 @@ int main(int argc, char* argv[]) {
     if (GetFileData(filename,&head)) {
         printf ("File exists and has the correct extension.\n");
        /*PrintLines(head);*/
-        InitMacro(head);
+       InitMacro(head);
+       /*PrintLines(head);*/
+       print_operand(head);
     } 
     else 
     {

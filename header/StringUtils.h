@@ -23,6 +23,8 @@ int CountChar(const char* str, const char* substr );
  */
 char** Split(const char* str,const char* substr, int* count);
 
+char* cleanWitheTabs(char * str);
+
 void freeIneersplit(char** strarray, int count);
 
 #endif  /*STRING_UTILSH*/ 
