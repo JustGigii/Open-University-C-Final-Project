@@ -14,17 +14,21 @@ int CountChar(const char* str, const char* substr )
 }
 char* cleanWitheTabs(char * str)
 {
-    int i,j= 0;
+    int i=0,j= 0;
     int len = strlen(str);
     char * clean_str =(char*) malloc(len+1);
     if (clean_str == NULL)
     { 
     return NULL;
     }    
-    if (str[0]==' ') j=1;
-    for (i = 0; i < len; i++)
+   while (str[i] == ' ')
+   {
+    i++;
+   }
+   
+    for (i; i < len; i++)
     {   
-        clean_str[i] = str[j];
+        clean_str[j] = str[i];
         if(str[i] != ' ' || str[i+1] != ' ') 
             j++;
     }

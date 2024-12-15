@@ -19,25 +19,57 @@ int GetFileData(char* filename,LinePtr* head) {
     return status;
 }
 
+int ProcessLine(LinePtr* head, const char* line) {
 
+    /* Ignore empty lines */
+    if (line == NULL|| line[0] == '\0'|| line[0] == '\n'||line[0] == ';'|| strcmp(line, "    \n") == 0) 
+    {
+        printf ("%s\n",line);
+       return 1;
+    }
+    
+    /* clean the line to remove tabs */
+    char* processedLine = cleanWitheTabs(line);  
+    if (!processedLine) {
+         /* Memory allocation failed */
+        return 0; 
+    }
+
+    /* Remove the newline character, if present */
+    int len = strlen(processedLine);
+    if (len > 0 && processedLine[len - 1] == '\n') {
+        processedLine[len - 1] = '\0';
+    }
+
+    /* Initialize the head or add to the list */
+    if (!*head) {
+        *head = InitLine(processedLine, START_LINE);
+        if (!*head) {
+            free(processedLine);
+            return 0;
+        }
+    } else if (AddLine(*head, processedLine) == 0) {
+        free(processedLine);
+        return 0;
+    }
+
+     /* Free the duplicated line after processing */
+    free(processedLine);
+    return 1;
+}
 LinePtr InitData(FILE* datafile) {
     char* line = NULL;
     size_t len = 0;
     short read;
     LinePtr head = NULL;
     while ((read = getline(&line, &len, datafile)) != -1) {
-        if (line[strlen(line) - 1] == '\n')
-            line[strlen(line) - 1] = '\0';
-        if (!head)
-        {
-            head = InitLine(line, START_LINE);
-            if (!head)
-                return NULL;
-        }
-        else if (AddLine(head, line) == 0)
+       if (!ProcessLine(&head, line)) {
+            free(line);
             return NULL;
-        free(&line);
+        }
     }
+     /* Free the buffer allocated by getline */ 
+      free(line); 
     return head;
 }
 

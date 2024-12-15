@@ -20,8 +20,8 @@ int main(int argc, char* argv[]) {
         printf ("File exists and has the correct extension.\n");
        /*PrintLines(head);*/
        InitMacro(head);
-       /*PrintLines(head);*/
-       print_operand(head);
+       PrintLines(head);
+      /* print_operand(head);*/
     } 
     else 
     {
