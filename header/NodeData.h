@@ -3,13 +3,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "../header/PublicDef.h"
 #include "../header/StringUtils.h"
+#include "../header/PublicDef.h"
 #include "../header/NodeData.h"
 typedef struct linestruct
 {
     short lineNum;
     char* line;
+    long* assemblyCode;
+    int assemblyCodeCount;
     struct linestruct* next;
 } Line, * LinePtr; 
 

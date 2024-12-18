@@ -11,6 +11,8 @@ LinePtr InitLine( char* line,short lineNum){
     
     strcpy(newLine->line, line);
     newLine->lineNum = lineNum;
+    newLine->assemblyCode = NULL;
+    newLine->assemblyCodeCount = 0;
     newLine->next = NULL;
     return newLine;
 }

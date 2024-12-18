@@ -9,14 +9,14 @@ program: $(OBJECTS)
 main.o: source/main.c
 	$(CC) $(CFLAGS) -c source/main.c
 
+StringUtils.o: source/StringUtils.c
+	$(CC) $(CFLAGS) -c source/StringUtils.c
 FileHandler.o: source/FileHandler.c
 	$(CC) $(CFLAGS) -c source/FileHandler.c
 
 NodeData.o: source/NodeData.c
 	$(CC) $(CFLAGS) -c source/NodeData.c
 
-StringUtils.o: source/StringUtils.c
-	$(CC) $(CFLAGS) -c source/StringUtils.c
 
 MacroSystem.o: source/MacroSystem.c
 	$(CC) $(CFLAGS) -c source/MacroSystem.c

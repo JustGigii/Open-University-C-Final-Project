@@ -2,7 +2,7 @@
 
 int GetFileData(char* filename,LinePtr* head) {
     char * data;
-    FILE* file = OpenFile(filename);
+    FILE* file = OpenFile(filename, "r");
     int status = 1;
     if (!IfFileEndCottract(filename) || !file)
     {
@@ -73,8 +73,8 @@ LinePtr InitData(FILE* datafile) {
     return head;
 }
 
-FILE* OpenFile(char* filename) {
-        FILE* file = fopen(filename, "r");
+FILE* OpenFile(char* filename,char* mode) {
+        FILE* file = fopen(filename, mode);
     if (file == NULL) {
         printf("File does not exist.\n");
         return NULL;

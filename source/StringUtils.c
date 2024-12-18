@@ -67,3 +67,20 @@ void freeIneersplit(char** strarray, int count)
         free(strarray);
 
 }
+char *strndup(char *str, int chars)
+{
+    char *newStr;
+    int n=0;
+
+    newStr = (char *)malloc(chars + 1);
+    if (!newStr)
+        return NULL;
+        while ((n < chars) && (str[n] != 0) )
+        {
+            newStr[n] = str[n];
+        n++;
+        }
+        newStr[n] = 0;
+
+    return newStr;
+}
