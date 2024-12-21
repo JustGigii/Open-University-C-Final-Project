@@ -67,7 +67,7 @@ void freeIneersplit(char** strarray, int count)
         free(strarray);
 
 }
-char *strndup(char *str, int chars)
+char *strnduplower(char *str, int chars)
 {
     char *newStr;
     int n=0;
@@ -77,7 +77,7 @@ char *strndup(char *str, int chars)
         return NULL;
         while ((n < chars) && (str[n] != 0) )
         {
-            newStr[n] = str[n];
+            newStr[n] = tolower(str[n]);
         n++;
         }
         newStr[n] = 0;

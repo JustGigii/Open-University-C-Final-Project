@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 /**
  * Counts the number of occurrences of a character in a string.
  *
@@ -26,5 +27,7 @@ char** Split(const char* str,const char* substr, int* count);
 char* cleanWitheTabs(char * str);
 
 void freeIneersplit(char** strarray, int count);
+
+char *strnduplower(char *str, int chars);
 
 #endif  /*STRING_UTILSH*/ 

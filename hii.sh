@@ -1,3 +1,4 @@
+STR2: .string "ab\tcd\n"
 MAIN: add r3, LIST
 LOOP: prn #48
 mcro a_mc

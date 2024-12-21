@@ -20,12 +20,14 @@ typedef struct
 } labelstruct, *labelPtr;
 
 
- const char* reservedWords[RESERVED_WORDS_COUNT];
+extern const char *reservedWords[];
+int processEscapeSequence(char nextChar);
+BOOLEAN processString(char *tav, LinePtr line);
+BOOLEAN print_operand(LinePtr heads);
+BOOLEAN check_operand(LinePtr line, labelPtr *Tables, int tablesize, int *instructionCount);
+BOOLEAN check_no_save_word(const char *label);
+int enterdatatoline(int sizewords,int* instractioncount,char ** operand,LinePtr line);
+labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int size);
+BOOLEAN processData(char **word, int wordcount, LinePtr line, int size);
 
-
-int print_operand(LinePtr heads);
-int check_operand(char* line, labelPtr Tables, int tablesize, int* instructionCount);
-int check_no_save_word(const char* label);
-labelPtr ininitlabel(char** words, int lineNum);
-labelPtr AddtoLabelTable(labelPtr* table, labelPtr label, int size);
 #endif
