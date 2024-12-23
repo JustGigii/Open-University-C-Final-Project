@@ -28,6 +28,7 @@ char* cleanWitheTabs(char * str);
 
 void freeIneersplit(char** strarray, int count);
 
+char *strndup(char *str, int chars);
 char *strnduplower(char *str, int chars);
 
 #endif  /*STRING_UTILSH*/ 

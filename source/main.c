@@ -17,8 +17,8 @@ int main(int argc, char* argv[]) {
     filename = argv[1];
     if (GetFileData(filename,&head)) {
         printf ("File exists and has the correct extension.\n");
-       /*PrintLines(head);*/
        InitMacro(head);
+       /*PrintLines(head);*/
        print_operand(head);
     } 
     else 

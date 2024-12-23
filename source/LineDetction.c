@@ -40,20 +40,26 @@ int processEscapeSequence(char nextChar)
 }
 BOOLEAN print_operand(LinePtr heads)
 {
-    labelPtr tables = NULL;
-    int tablesize = 0, instructionCount = 0;
+    int i;
+    labelPtr *tables = NULL;
+    int tablesize = 0, instructionCount = START_LINE;
     LinePtr temp = heads;
     while (temp)
     {
-        if (check_operand(temp, tables, tablesize, &instructionCount) == FALSE)
+        if (check_operand(temp, &tables, &tablesize, &instructionCount) == FALSE)
             return FALSE;
         temp = temp->next;
     }
+    for ( i = 0; i < tablesize; i++)
+    {
+        printf("%s %d\n", tables[i]->name, tables[i]->lineNum);
+    }
+    
 }
-BOOLEAN check_operand(LinePtr line, labelPtr *Tables, int tablesize, int *instructionCount)
+BOOLEAN check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount)
 {
     int i;
-    int size, deltacount = 0;
+    int size=0, deltacount = 0;
     char **word;
     char **operand = Split(line->line, " ", &size);
     labelPtr label;
@@ -61,24 +67,32 @@ BOOLEAN check_operand(LinePtr line, labelPtr *Tables, int tablesize, int *instru
     {
         if (check_no_save_word(operand[0]) == 0)
         {
-            printf("in line %d: \"%s\": found label %s as a save word\n", line->lineNum, line->line, operand[0]);
+            char * newlabel = strnduplower(operand[0],strlen(operand[0]) - 1);
+            if (!newlabel)
+            {
+                return FALSE;
+            }
+            printf("in line %d: \"%s\": found label %s as a save word\n", line->lineNum, line->line,newlabel);
+            free(newlabel);
             return FALSE;
         }
         label = malloc(sizeof(labelstruct));
         if (label == NULL)
             return FALSE;
-        label->name = strdup(operand[0]);
+        label->name = strndup(operand[0],strlen(operand[0]) - 1);
         label->lineNum = *instructionCount;
-        label->type = (strcmp(operand[1], ".string") == 0) ? STRING : (strcmp(operand[1], ".data") == 0) ? DATA
-                                                                                                         : CODE;
-        if (label->type == CODE)
-            return TRUE;
+        label->type = (strcmp(operand[1], ".string") == 0) ? STRING : (strcmp(operand[1], ".data") == 0) ? DATA : CODE;
+        *tables = AddtoLabelTable(*tables, label, *tablesize);
+        if(*tables == NULL)
+        return FALSE;
+        *tablesize += 1;
         deltacount = enterdatatoline(size, line->lineNum, operand, line);
         if (deltacount == -1)
             return FALSE;
-        *instructionCount += deltacount;
-        return TRUE;
+        label->lineNum = *instructionCount;
+        *tables = AddtoLabelTable(*tables, label, *tablesize);
     }
+    *instructionCount += deltacount;
     freeIneersplit(operand, size);
     return TRUE;
 }
@@ -88,9 +102,14 @@ BOOLEAN check_no_save_word(const char *label)
     int i;
     BOOLEAN ok = TRUE;
     char *fix_label = strnduplower(label, strlen(label) - 1);
-
     if (!fix_label)
         return FALSE;
+    if (strlen(fix_label)> MAX_SIZE_OF_LABLE)
+    {
+        printf("label %s is too long\n", fix_label);
+        ok = FALSE;
+    }
+    
     for (i = 0; i < RESERVED_WORDS_COUNT && ok; i++)
     {
         if (strcmp(reservedWords[i], fix_label) == 0)
@@ -134,20 +153,26 @@ BOOLEAN processData(char **word, int wordcount, LinePtr line, int size)
     for (i = 2; i < wordcount; i++)
     {
         char *data = word[i];
-        if (data[strlen(data) - 1] != ',' && i != wordcount - 1)
+        if (data[strlen(data) - 1] != ',' && i < wordcount - 1 && word[i + 1][0] != ',')
         {
             printf("in line %d: \"%s\": missing , bteen values: %s ~ &s\n", line->lineNum, line->line, word[i], word[i + 1]);
             return FALSE;
         }
         if (data[strlen(data) - 1] == ',')
             data[strlen(data) - 1] = '\0';
+        else if (i< wordcount - 1 && word[i + 1][0] == ',')
+            i++;
+        
 
         if (data[0] == '+' || data[0] == '-')
         {
             converted = atoi(data + 1);
             if (converted == 0)
+            {
                 printf("in line %d: \"%s\": value %s is not a number\n", line->lineNum, line->line,data);
                 return FALSE;
+                
+            }
             if(converted > MAX_NUMBER || -converted < MIN_NUMBER)
             {
               printf("in line %d: \"%s\": value %d is out of range\n", line->lineNum, line->line, converted);
@@ -197,15 +222,23 @@ int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePt
     }
     else if (strcmp(operand[1], ".data") == 0)
     {
-        return 0;
+        if(!processData(operand, sizewords, line, sizeofdata))
+            return -1;
+        return line->assemblyCodeCount;
     }
+    else if (strcmp(operand[1], ".code"))
+    {
+        return 1;
+    }
+    
     return 0;
 }
 labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int size)
 {
-    table = (table == NULL || size == 0) ? malloc(sizeof(labelPtr)) : realloc(*table, (size + 1) * sizeof(labelPtr));
-    if (!table)
+    
+    LinePtr * newtable = (size == 0) ? malloc(sizeof(labelPtr)) : realloc(table, (size + 1) * sizeof(labelPtr));
+    if (!newtable)
         return NULL;
-    table[size] = label;
-    return table;
+    newtable[size] = label;
+    return newtable;
 }

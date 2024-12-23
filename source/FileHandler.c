@@ -43,7 +43,7 @@ int ProcessLine(LinePtr* head, const char* line) {
 
     /* Initialize the head or add to the list */
     if (!*head) {
-        *head = InitLine(processedLine, START_LINE);
+        *head = InitLine(processedLine, 1);
         if (!*head) {
             free(processedLine);
             return 0;
@@ -63,6 +63,11 @@ LinePtr InitData(FILE* datafile) {
     short read;
     LinePtr head = NULL;
     while ((read = getline(&line, &len, datafile)) != -1) {
+        if(strlen(line)> MAX_SIZE_OF_LINE)
+        {
+            printf("line %d is too long\n",head->lineNum);
+            return NULL;
+        }
        if (!ProcessLine(&head, line)) {
             free(line);
             return NULL;

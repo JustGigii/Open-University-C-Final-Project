@@ -30,7 +30,7 @@ LinePtr InitMacro(LinePtr head)
             temp = temp->next;
     }
     temp = head;
-    RecountLine(head, START_LINE);
+    RecountLine(head, 1);
 
     return head;
 }

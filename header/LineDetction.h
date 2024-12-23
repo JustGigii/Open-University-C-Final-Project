@@ -24,7 +24,7 @@ extern const char *reservedWords[];
 int processEscapeSequence(char nextChar);
 BOOLEAN processString(char *tav, LinePtr line);
 BOOLEAN print_operand(LinePtr heads);
-BOOLEAN check_operand(LinePtr line, labelPtr *Tables, int tablesize, int *instructionCount);
+BOOLEAN check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount);
 BOOLEAN check_no_save_word(const char *label);
 int enterdatatoline(int sizewords,int* instractioncount,char ** operand,LinePtr line);
 labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int size);
