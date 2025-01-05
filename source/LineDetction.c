@@ -50,10 +50,7 @@ BOOLEAN print_operand(LinePtr heads)
             return FALSE;
         temp = temp->next;
     }
-    for ( i = 0; i < tablesize; i++)
-    {
-        printf("%s %d\n", tables[i]->name, tables[i]->lineNum);
-    }
+
     
 }
 BOOLEAN check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount)
@@ -91,6 +88,10 @@ BOOLEAN check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
             return FALSE;
         label->lineNum = *instructionCount;
         *tables = AddtoLabelTable(*tables, label, *tablesize);
+    }
+    else
+    {
+        
     }
     *instructionCount += deltacount;
     freeIneersplit(operand, size);
