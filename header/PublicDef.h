@@ -10,4 +10,12 @@ typedef enum{
     TRUE = 1, 
     FALSE = 0
 } BOOLEAN;
+typedef enum 
+{
+ SUCCESS = 0,
+ FAILURE = 1,
+ FAILURE_OPRAND_NOT_MUCH = 2,
+ FAILURE_TO_MUCH_LANE_TO_OPERAND = 3
+
+} SATATUS;
 #endif
