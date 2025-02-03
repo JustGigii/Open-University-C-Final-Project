@@ -30,5 +30,5 @@ void freeIneersplit(char** strarray, int count);
 
 char *strndup(char *str, int chars);
 char *strnduplower(char *str, int chars);
-
+char* combineStrings(char** strings, int count, const char* separator);
 #endif  /*STRING_UTILSH*/ 

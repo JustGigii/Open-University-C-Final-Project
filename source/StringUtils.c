@@ -103,3 +103,38 @@ char *strnduplower(char *str, int chars)
 
     return newStr;
 }
+char* combineStrings(char** strings, int count, const char* separator) {
+    int i;
+    if (count <= 0) {
+        return NULL; /* Return NULL for an empty input array */
+    }
+
+    /* Calculate total length for the combined string */
+    int totalLength = 0;
+    int separatorLength = separator ? strlen(separator) : 0;
+    
+    for ( i = 0; i < count; i++) {
+        totalLength += strlen(strings[i]);
+        if (i < count - 1) {
+            totalLength += separatorLength; /* Add space for separators */
+        }
+    }
+
+    /* Allocate memory for the combined string */
+    char* combined = (char*)malloc(totalLength + 1); /* +1 for null terminator */
+    if (!combined) {
+        printf("Failed to allocate memory");
+        return NULL;
+    }
+
+    /* Combine the strings */
+    combined[0] = '\0'; /* Start with an empty string */
+    for (i = 0; i < count; i++) {
+        strcat(combined, strings[i]); /* Append string */
+        if (i < count - 1 && separator) {
+            strcat(combined, separator); /* Append separator */
+        }
+    }
+
+    return combined;
+}
