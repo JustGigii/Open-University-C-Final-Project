@@ -1,33 +1,28 @@
 #ifndef LINEDETECTION
 #define LINEDETECTION
 #include <string.h>
+#include "../header/PublicDef.h"
 #include "../header/StringUtils.h"
 #include "../header/NodeData.h"
-#define RESERVED_WORDS_COUNT 16
-typedef enum
-{
-    DATA = 1,
-    STRING = 2,
-    EXRERN = 3,
-    CODE = 4
-} DATA_TYPE;
-typedef struct
-{
-    char *name;
-    int lineNum;
-    short type;
-    short isentry;
-} labelstruct, *labelPtr;
+#include "../header/prosseLabel.h"
+
+#define MY_RESERVED_TWO_OPRAND_WORDS_COUNT 5 /*size of my_reserved_Two_oprand_words add my beacuse defined in stdio */
+#define MY_RESERVED_ONE_OPRAND_WORDS_COUNT 9 /* size of my_reserved_one_oprand_words add my beacuse defined in stdio*/
+#define MY_RESERVED_NO_OPRAND_WORDS_COUNT 2 /* size of my_reserved_no_oprand_words add my beacuse defined in stdio*/
 
 
-extern const char *reservedWords[];
-int processEscapeSequence(char nextChar);
-BOOLEAN processString(char *tav, LinePtr line);
+
+extern const char *my_reserved_Two_oprand_words[]; /* array of the reserved two oprand words*/
+
+extern const char *my_reserved_one_oprand_words[]; /* array of the reserved one oprand words*/
+
+extern const char *my_reserved_no_oprand_words[]; /* array of the reserved no oprand words*/
+
 BOOLEAN print_operand(LinePtr heads);
-BOOLEAN check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount);
+SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount);
+
 BOOLEAN check_no_save_word(const char *label);
-int enterdatatoline(int sizewords,int* instractioncount,char ** operand,LinePtr line);
-labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int size);
-BOOLEAN processData(char **word, int wordcount, LinePtr line, int size);
+
+labelPtr cheack_Label_Exist(const labelPtr labels[],int size_of_labels,const char * labelname);
 
 #endif

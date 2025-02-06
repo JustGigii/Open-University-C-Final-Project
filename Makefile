@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS= -ansi -Wall -pedantic -g3 -w
 
-OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o MacroSystem.o LineDetction.o
+OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o MacroSystem.o LineDetction.o prosseLabel.o
 
 program: $(OBJECTS)
 	$(CC) $(CFLAGS) -o program $(OBJECTS)
@@ -20,6 +20,10 @@ NodeData.o: source/NodeData.c
 
 MacroSystem.o: source/MacroSystem.c
 	$(CC) $(CFLAGS) -c source/MacroSystem.c
+
+
+prosseLabel.o: source/prosseLabel.c
+	$(CC) $(CFLAGS) -c source/prosseLabel.c
 
 LineDetction.o: source/LineDetction.c
 	$(CC) $(CFLAGS) -c source/LineDetction.c
