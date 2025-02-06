@@ -11,7 +11,6 @@ typedef enum
 {
     DATA = 1,
     STRING = 2,
-    EXRERN = 3,
     CODE = 4
 } DATA_TYPE;
 

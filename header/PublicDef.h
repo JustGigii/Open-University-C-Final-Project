@@ -73,7 +73,7 @@ typedef struct
 {
     char *name;
     int lineNum;
-    short type;
+    DATA_TYPE type;
     BOOLEAN isentry;
 } labelstruct, *labelPtr;
 #endif
