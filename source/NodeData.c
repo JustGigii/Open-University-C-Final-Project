@@ -48,6 +48,13 @@ int AddLine(LinePtr head, char* line)
         newLine->lineNum = temp->lineNum + 1;
     return newLine->lineNum;
 }
+/**
+ * Adds a line between the node and the next node line in the linked list
+ *
+ * @param head the head of the list
+ * @param line the line to add
+ * @return the line number of the added line, or -1 if memory could not be allocated
+ */
 int addBetweenline(LinePtr head, char* line)
 {
     LinePtr temp;

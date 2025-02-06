@@ -46,7 +46,6 @@ macroPtr ExistMacro(macroPtr macros[], int size, char *name)
             index = size;
         }
     }
-
     return macrosstart;
 }
 macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
@@ -66,14 +65,28 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
    
     macroarraynew[size] = malloc(sizeof(macrostruct));
     split = Split(temp->next->line, " ", &sizeofsplit);
+    if (split == NULL)
+    {
+        free(macroarraynew);
+        return NULL;
+    }
+    
     indexname = getmacroname(split, sizeofsplit);
     if(indexname == -1)
+    {
+        free(macroarraynew);
+        freeIneersplit(split, sizeofsplit);
         return NULL;
+    }
+
     macroarraynew[size]->name = strdup(split[indexname]);
     macroarraynew[size]->start = InitSingelMacro(temp);
-    if (macroarraynew[size]->start == NULL)
-        return NULL;
     freeIneersplit(split, sizeofsplit);
+    if (macroarraynew[size]->start == NULL)
+    {
+        free(macroarraynew);
+        return NULL;
+    }
     return macroarraynew;
 }
 LinePtr InitSingelMacro(LinePtr copy)

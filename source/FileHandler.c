@@ -57,6 +57,7 @@ int ProcessLine(LinePtr* head, const char* line) {
     free(processedLine);
     return 1;
 }
+
 LinePtr InitData(FILE* datafile) {
     char* line = NULL;
     size_t len = 0;
