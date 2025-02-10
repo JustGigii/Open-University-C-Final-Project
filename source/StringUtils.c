@@ -139,17 +139,3 @@ char* combineStrings(char** strings, int count, const char* separator) {
     return combined;
 }
 
-void CreateFileFromList(char* filename,LinePtr* head)
-{
-    FILE* file;
-    fopen(filename,"w");
-    if(file == NULL)
-        printf(" Eror! File %s  not create\n",filename);
-    else{
-        while (head!=NULL){
-            fprintf(file,"%s",head->line);
-            head = head->next;
-        }
-        fclose(file);
-    }
-}

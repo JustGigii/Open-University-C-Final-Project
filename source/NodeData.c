@@ -107,7 +107,7 @@ void RecountLine(const LinePtr head, short number)
         temp = temp->next;
     }
 }
-
+/*only for checking*/
 int PrintLines(const LinePtr head)
 {
     LinePtr temp = head;

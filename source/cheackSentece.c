@@ -12,7 +12,7 @@ unsigned int extract_bits(int value, BIT_START start_bit, BIT_LENGHT length,SATA
 
     return ((((unsigned int)1 << length) - 1)&value)<<start_bit-1;
 }
-
+/*only for checking*/
 void print_binary(unsigned int value, int num_bits) {
     int i;
     for (i = num_bits - 1; i >= 0; i--) {

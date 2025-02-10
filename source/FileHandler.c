@@ -95,3 +95,15 @@ int IfFileEndCottract(char* filename) {
     }
     return 1;
 }
+
+void CreateFileFromList(char* filename,LinePtr* head)
+{
+  FILE* file = OpenFile(filename,"W");
+    if (file)!= NULL ) {
+        while (head!=NULL){
+            fprintf(file,"%s\n",head->line);
+            head = head->next;
+        }
+        fclose(file);
+    }
+}
