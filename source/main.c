@@ -20,11 +20,7 @@ int main(int argc, char* argv[]) {
         if (GetFileData(filename,&head)) {
           printf ("File exists and has the correct extension.\n");
           InitMacro(head);
-<<<<<<< HEAD
-          CreateFileFromList(AddExtensionToFileName(filename,.am),head);/*create copy of the original file without macro*/
-=======
-         /*CreateFileFromList((AddExtensionToFileName(filename,".am")),head);*/
->>>>>>> 7323825d87fce2d2dae171dae62be405c552a6f0
+         /* CreateFileFromList(AddExtensionToFileName(filename,.am),head);*/ /*create copy of the original file without macro*/
            /*PrintLines(head);*/
            print_operand(head);
         }
