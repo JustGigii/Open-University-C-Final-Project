@@ -35,6 +35,7 @@ LinePtr InitMacro(LinePtr head)
 
     return head;
 }
+
 /*start new version*/
 LinePtr InitMacro2(LinePtr head)
 {
@@ -45,7 +46,7 @@ LinePtr InitMacro2(LinePtr head)
     int macroindex = 0;
     int succsec;
     int indextofree;
-    /*first stage */
+    /*first stage:collect definition of macro */
     while (temp->next)
     {
       if (strstr(temp->next->line, "mcro"))
@@ -57,7 +58,7 @@ LinePtr InitMacro2(LinePtr head)
         else
             temp = temp->next;
     }
-    /*second stage*/
+    /*second stage: look after macro and replace them */
         temp = head;
     while (temp->next){
        add = ExistMacro(macroarray, macroindex, temp->next->line);
@@ -68,6 +69,7 @@ LinePtr InitMacro2(LinePtr head)
     }
 
 } /*end new version*/
+
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)
 {
         LinePtr macrosstart = NULL;
@@ -147,16 +149,15 @@ LinePtr InitSingelMacro(LinePtr copy)
 int getmacroname(char **linearray, int size)
 {
     
-    if (size < 2 && size > 3)
+    if (size!=2)
     {
         printf("error: Macro's definition is invalid\n");
         return NULL;
     }
-    if (size == 2 && strcmp(linearray[1], "mcro"))
+    else if ( strcmp(linearray[1], "mcro"))
         return 1;
-    if (size == 3 && strcmp(linearray[2], "mcro"))
-        return 2;
-    return -1;
+    else
+      return -1;
 }
 LinePtr AddMacroToProgram(LinePtr temp, LinePtr list)
 {
