@@ -28,7 +28,8 @@ typedef enum
  MULTIPLECOMMAS = 12,
  MISSING_PARAMETER = 13,
  MISSING_COMMNAD = 14,
- ILLEGAL_ADDRESSING=15
+ ILLEGAL_ADDRESSING=15,
+ WAIT_TO_ALL_LIBEL=16
 } SATATUS;
 
 typedef enum {
@@ -69,6 +70,13 @@ typedef enum {
     STOP = 3932160    /* opcode: 15, func: 0 */
   
 } OPCODE_AND_FUNC;
+typedef enum
+{
+    DATA = 1,
+    STRING = 2,
+    CODE = 4
+} DATA_TYPE;
+
 typedef struct
 {
     char *name;

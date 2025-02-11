@@ -9,17 +9,22 @@
 
 int main(int argc, char* argv[]) {
     char* filename;
+    int i;
     LinePtr head = NULL;
      if (argc < 2) {
          printf("Usage: %s <filename>\n", argv[0]);
         return 1;
      }
-     for (int i = 1; i < argc; i++) {
+     for (i = 1; i < argc; i++) {
         filename = argv[i];
         if (GetFileData(filename,&head)) {
           printf ("File exists and has the correct extension.\n");
           InitMacro(head);
+<<<<<<< HEAD
           CreateFileFromList(AddExtensionToFileName(filename,.am),head);/*create copy of the original file without macro*/
+=======
+         /*CreateFileFromList((AddExtensionToFileName(filename,".am")),head);*/
+>>>>>>> 7323825d87fce2d2dae171dae62be405c552a6f0
            /*PrintLines(head);*/
            print_operand(head);
         }
