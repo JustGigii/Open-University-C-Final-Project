@@ -152,8 +152,10 @@ int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATU
 {
     *status = SUCCESS;
     int *x;
-    int number = 0;
-    int type = -1;
+    int numberdest = 0;
+    int numbersource = 0;
+    int typedest = -1;
+    int typesource = -1;
     unsigned opcode = -1;
     labelPtr label = NULL;
     if (sizeofoprands == 0)
@@ -183,17 +185,17 @@ int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATU
             free(x);
             return NULL;
         }
-        number = cheackoprandtype(oprands[0], &type);
-        x = (type != 3) ? (int *)malloc(sizeof(int) * 2) : (int *)malloc(sizeof(int));
+        numberdest = cheackoprandtype(oprands[0], &typedest);
+        *sizeofSentece = (typedest != 3) ? 2 : 1;
+        x = (int *)malloc(sizeof(int) * (*sizeofSentece));
         if (x == NULL)
         {
             *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
             return NULL;
         }
-        sizeofSentece = (type != 3) ? 2 : 1;
         x[0] = 4;
-        x[0] |= extract_bits(type, DS, LEN_DS, status);
-        if (type == 3 || type == 1)
+        x[0] |= extract_bits(typedest, DS, LEN_DS, status);
+        if (typedest == 3 || typedest == 1)
         {
             opcode = (strcmp(commandname, "clr") == 0) ? CLR : -1;
             opcode = (strcmp(commandname, "not") == 0) ? NOT : -1;
@@ -201,7 +203,7 @@ int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATU
             opcode = (strcmp(commandname, "dec") == 0) ? DEC : -1;
             opcode = (strcmp(commandname, "red") == 0) ? RED : -1;
             opcode = (strcmp(commandname, "prn") == 0) ? PRN : -1;
-            if (type == 3)
+            if (typedest == 3)
             {
                 if (opcode == -1)
                 {
@@ -209,17 +211,17 @@ int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATU
                     free(x);
                     return NULL;
                 }
-                x[0] |= extract_bits(number, RD, LEN_RD, status);
+                x[0] |= extract_bits(numberdest, RD, LEN_RD, status);
                 return x;
             }
         }
-        if ((type == 1 || type == 2) && opcode == -1)
+        if ((typedest == 1 || typedest == 2) && opcode == -1)
         {
             opcode = (strcmp(commandname, "jmp") == 0) ? JMP : -1;
             opcode = (strcmp(commandname, "bne") == 0) ? BNE : -1;
             opcode = (strcmp(commandname, "jsr") == 0) ? JSR : -1;
         }
-        if (strcmp(commandname, "prn") == 0 && type == 2)
+        if (strcmp(commandname, "prn") == 0 && typedest == 2)
         {
             *status = ILLEGAL_ADDRESSING;
             free(x);
@@ -233,18 +235,69 @@ int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATU
             free(x);
             return NULL;
         }
-        label = findlabel(oprands[0], globtables, size_of_gloabal_table);
-        if (label != NULL)
+
+        x[1] = process_type(label,typedest,numberdest,line_number,status);
+        return x;
+    
+    if (sizeofoprands == 2)
+    {
+        if (is_two_oprand(commandname) == FALSE)
         {
-            x[1] = (label->isentry) ? 2 : 1; /* 2 mean R 1 and E,A 0. 1 MEAN E 1 AND R,A 0*/
-            x[1] |= label->lineNum << 3;
+            *status = TO_MANY_PARAMETERS;
+            free(x);
+            return NULL;
         }
-        else
+        numberdest = cheackoprandtype(oprands[0], &typedest);
+        numbersource = cheackoprandtype(oprands[1], &typesource);
+        if( typedest==2 || typesource==2)
         {
-            *status = WAIT_TO_ALL_LIBEL;
+            *status = ILLEGAL_ADDRESSING;
+            return NULL;
         }
-        
+        *sizeofSentece =(typedest==3 || typesource==3)?((typedest==3 && typesource==3)?1:2):3;
+        x= (int *) malloc(sizeof(int)*(*sizeofSentece));
+        if (x == NULL)
+        {
+            *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
+            return NULL;
+        }
+        x[0]=4;
+        x[0] |= extract_bits(typedest, DS, LEN_DS, status);
+        x[0] |= extract_bits(typesource, SS, LEN_SS, status);
+        if(typesource== 0 || typesource==1 || typesource ==3)
+        {
+            if(typedest == 1 || typedest == 3 )
+            {
+                opcode = strcmp(commandname, "mov") == 0 ? MOV : -1;
+                opcode = strcmp(commandname, "add") == 0 ? ADD : -1;
+                opcode = strcmp(commandname, "sub") == 0 ? SUB : -1;
+            }
+            if(opcode == -1 &&(typedest == 0 || typedest==1 ||typedest == 3))
+            {
+                opcode = strcmp(commandname, "cmp") == 0 ? CMP : -1;
+            }
+        }
+        if(opcode == -1 && typesource == 1 &&(typedest == 1 || typedest ==3)) 
+        {
+            opcode = strcmp(commandname, "lea") == 0 ? LEA : -1;
+        }
+        if( typedest == 3 || typesource == 3)
+       {
+         if(typedest == 3) x[0] |=  extract_bits(numberdest, RD, LEN_RD, status);
+         if(typesource == 3) x[0] |= extract_bits(numbersource, RS, LEN_RS, status);
+       }
+       if(typesource!= 0) 
+       {
+            label = findlabel(oprands[0], globtables, size_of_gloabal_table);
+            x[1] = process_type(label,typedest,numberdest,line_number,status);
+       } 
+
+
+      
+
+
     }
+}
 }
 
 int cheackoprandtype(char const *oprand, int *type)
@@ -282,4 +335,20 @@ int cheackoprandtype(char const *oprand, int *type)
         break;
     }
     return number;
+}
+int process_type(labelPtr label, int typedest, int numberdest, int line_number, int *status) {
+    int num;
+    if(typedest)
+    if (label != NULL) {
+        num = (label->isentry) ? 2 : 1; /* 2 means R 1 and E,A 0. 1 means E 1 and R,A 0 */
+        num |= (typedest == 1) ? (label->lineNum << 3) : ((label->lineNum - line_number) << 3);
+    } else {
+        *status = WAIT_TO_ALL_LIBEL;
+    }
+    
+    if (typedest == 0) {
+        num = 4;
+        num |= numberdest << 3;
+    }
+    return num;
 }
