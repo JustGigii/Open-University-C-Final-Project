@@ -2,6 +2,7 @@
 #include "../header/MacroSystem.h"
 
 int getmacroname(char **linearray, int size);
+
 LinePtr InitMacro(LinePtr head)
 {
     LinePtr temp = head;
@@ -34,6 +35,39 @@ LinePtr InitMacro(LinePtr head)
 
     return head;
 }
+/*start new version*/
+LinePtr InitMacro2(LinePtr head)
+{
+    LinePtr temp = head;
+    LinePtr tofree;
+    LinePtr add = NULL;
+    macroPtr *macroarray = NULL; /* (macroPtr*)malloc((sizeofmacroarray+1) * sizeof(macroPtr));*/
+    int macroindex = 0;
+    int succsec;
+    int indextofree;
+    /*first stage */
+    while (temp->next)
+    {
+      if (strstr(temp->next->line, "mcro"))
+        {
+
+            macroarray = addMacroToList(macroarray, macroindex, temp);
+            macroindex++;
+        }
+        else
+            temp = temp->next;
+    }
+    /*second stage*/
+        temp = head;
+    while (temp->next){
+       add = ExistMacro(macroarray, macroindex, temp->next->line);
+       if (add)
+           temp = AddMacroToProgram(temp, add);
+        else
+          temp = temp->next;
+    }
+
+} /*end new version*/
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)
 {
         LinePtr macrosstart = NULL;

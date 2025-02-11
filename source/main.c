@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
         if (GetFileData(filename,&head)) {
           printf ("File exists and has the correct extension.\n");
           InitMacro(head);
-          CreateFileFromList(AddExtensionToFileName(filename,.am),head);
+          CreateFileFromList(AddExtensionToFileName(filename,.am),head);/*create copy of the original file without macro*/
            /*PrintLines(head);*/
            print_operand(head);
         }
