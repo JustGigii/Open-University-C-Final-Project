@@ -30,6 +30,7 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
     int size=0, deltacount = 0;
     char ** strarray=NULL;
     labelPtr label;
+    unsigned int *x;
      /* check for have comma in the end */
     if(line->line[strlen(line->line)-1]==',')  
     {
@@ -52,10 +53,14 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
     }
     else
     {
-        
+        x=cheackSentece(strarray + 1,size-1,tables ,tablesize, &status, &deltacount, line->lineNum);
+        if (status != SUCCESS )
+            print_error(status,line->lineNum,line->line);
+        line->assemblyCode = x;
+        line ->assemblyCodeCount = deltacount;
     }
     *instructionCount += deltacount;
-    freeIneersplit(strarray, size);
+    freeIneersplit(strarray, size); 
     return status;
 }
 

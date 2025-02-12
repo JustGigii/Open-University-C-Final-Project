@@ -59,5 +59,6 @@
   "files.associations": {
     "cheacksentece.h": "c",
     "linedetction.h": "c"
-  }
+  },
+  "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

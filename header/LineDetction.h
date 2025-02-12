@@ -5,7 +5,8 @@
 #include "../header/StringUtils.h"
 #include "../header/NodeData.h"
 #include "../header/prosseLabel.h"
-
+#include "../header/print_error.h"
+#include "../header/cheackSentece.h"
 #define MY_RESERVED_TWO_OPRAND_WORDS_COUNT 5 /*size of my_reserved_Two_oprand_words add my beacuse defined in stdio */
 #define MY_RESERVED_ONE_OPRAND_WORDS_COUNT 9 /* size of my_reserved_one_oprand_words add my beacuse defined in stdio*/
 #define MY_RESERVED_NO_OPRAND_WORDS_COUNT 2 /* size of my_reserved_no_oprand_words add my beacuse defined in stdio*/

@@ -10,7 +10,7 @@ typedef struct linestruct
 {
     short lineNum;
     char* line;
-    long* assemblyCode;
+    unsigned int* assemblyCode;
     int assemblyCodeCount;
     struct linestruct* next;
 } Line, * LinePtr; 

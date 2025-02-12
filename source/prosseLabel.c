@@ -55,7 +55,7 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
                   (strcmp(operand[1], ".data") == 0) ? DATA : CODE;
 
 
-    *deltacount = enterdatatoline(size, line->lineNum, operand, line, &status);
+    *deltacount = enterdatatoline(size, line->lineNum, operand, line, &status,tables,tablesize);
     if (*deltacount == -1) {
         free(label);
         return status;
@@ -144,7 +144,7 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size)
     }
     return SUCCESS;
 }
-int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePtr line,SATATUS *status)
+int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePtr line,SATATUS *status,labelPtr ** table,int *tablesize)
 {
     SATATUS data;
     int sizeofdata;
@@ -184,13 +184,17 @@ int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePt
         }
         return line->assemblyCodeCount;
     }
-    else if (strcmp(operand[1], ".code"))
+    else
     {
-        free(line->assemblyCode);
-        return 1;
+        line->assemblyCode=cheackSentece(operand+1,sizewords-1,table,tablesize,&status,line->lineNum,&sizeofdata);
+        if (status != SUCCESS )
+        {
+            print_error(status, line->lineNum, line->line);
+
+        }
+       line->assemblyCodeCount += sizeofdata; 
     }
-    
-    return 0;
+    return line->assemblyCodeCount;
 }
 labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int size)
 {
