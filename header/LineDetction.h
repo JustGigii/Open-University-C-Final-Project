@@ -24,6 +24,6 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
 
 BOOLEAN check_no_save_word(const char *label);
 
-labelPtr cheack_Label_Exist(const labelPtr labels[],int size_of_labels,const char * labelname);
+labelPtr cheack_Label_Exist(const labelPtr *labels[],int size_of_labels,const char * labelname);
 
 #endif

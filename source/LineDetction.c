@@ -53,9 +53,12 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
     }
     else
     {
-        x=cheackSentece(strarray + 1,size-1,tables ,tablesize, &status, &deltacount, line->lineNum);
+        x=cheackSentece(strarray,size,tables ,tablesize, &status,line->lineNum, &deltacount);
         if (status != SUCCESS )
+        {
             print_error(status,line->lineNum,line->line);
+            status = SUCCESS;
+        }
         line->assemblyCode = x;
         line ->assemblyCodeCount = deltacount;
     }
@@ -91,14 +94,14 @@ BOOLEAN check_no_save_word(const char *label)
     return ok;
 }
 
-labelPtr cheack_Label_Exist(const labelPtr labels[],int size_of_labels,const char * labelname){
+labelPtr cheack_Label_Exist(const labelPtr *labels[],int size_of_labels,const char * labelname){
     int i;
-    if(labels == NULL)
+    if(*labels == NULL)
         return FALSE;
     for (i=0; i<size_of_labels; i++)
     {
-        if (strcmp(labels[i]->name, labelname) == 0)
-            return labels[i];
+        if (strcmp((*labels)[i]->name, labelname) == 0)
+            return (*labels)[i];
     }
     return NULL;
 }

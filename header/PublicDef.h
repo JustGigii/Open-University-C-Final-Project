@@ -38,7 +38,7 @@ typedef enum {
    RD= 8, /*Destination register*/
    DS = 11, /*Destination sorting*/
    RS = 13, /*Source register*/
-   SS = 11, /*Source sorting*/
+   SS = 16, /*Source sorting*/
    OPCODE = 18,
 }BIT_START;
  typedef enum {

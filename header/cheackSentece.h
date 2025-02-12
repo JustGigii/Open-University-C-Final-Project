@@ -10,7 +10,7 @@
 extern labelPtr **globtables;
 extern int size_of_gloabal_table;
 
-unsigned int extract_bits(int value, BIT_START start_bit, BIT_START length, SATATUS *peola);
+unsigned int extract_bits(int value, int start_bit, int length, SATATUS *peola);
 void print_binary(unsigned int value, int num_bits);
 unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int *tablesize, SATATUS *status, int linenumber, int *sizeofSentece);
 SATATUS check_name_erorr(char **strarray, int sizeofarray);
