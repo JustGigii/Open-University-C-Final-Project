@@ -108,3 +108,11 @@ void CreateFileFromList(char* filename,LinePtr  head)
         fclose(file);
     }
 }
+/*cut extention of file name to enable creating new extention*/
+char * cutoriginextentionfile(char* filename) {
+  int i=0
+  while (filename[i] != '.')
+      ++i
+  filename[i] = '\0';
+  return filename;
+}
