@@ -12,41 +12,11 @@ LinePtr InitMacro(LinePtr head)
     int macroindex = 0;
     int succsec;
     int indextofree;
-    while (temp->next)
-    { 
-
-         
-        add = ExistMacro(macroarray, macroindex, temp->next->line);
-        if (add)
-        {
-           temp = AddMacroToProgram(temp, add);
-        }
-       else if (strstr(temp->next->line, "mcro"))
-        {
-      
-            macroarray = addMacroToList(macroarray, macroindex, temp);
-            macroindex++;
-        }
-        else
-            temp = temp->next;
-    }
-    temp = head;
-    RecountLine(head, 1);
-
-    return head;
-}
-
-/*start new version*/
-LinePtr InitMacro2(LinePtr head)
-{
-    LinePtr temp = head;
-    LinePtr tofree;
-    LinePtr add = NULL;
-    macroPtr *macroarray = NULL; /* (macroPtr*)malloc((sizeofmacroarray+1) * sizeof(macroPtr));*/
-    int macroindex = 0;
-    int succsec;
-    int indextofree;
     /*first stage:collect definition of macro */
+    {
+        /* code */
+    }
+    
     while (temp->next)
     {
       if (strstr(temp->next->line, "mcro"))
@@ -67,8 +37,11 @@ LinePtr InitMacro2(LinePtr head)
         else
           temp = temp->next;
     }
+    temp = head;
+    RecountLine(head, 1);
 
-} /*end new version*/
+    return head;
+} 
 
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)
 {

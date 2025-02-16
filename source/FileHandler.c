@@ -82,7 +82,7 @@ LinePtr InitData(FILE* datafile) {
 FILE* OpenFile(char* filename,char* mode) {
         FILE* file = fopen(filename, mode);
     if (file == NULL) {
-        printf("File does not exist.\n");
+        printf("File %s does not exist.\n",filename);
         return NULL;
     }
     return file;
@@ -99,7 +99,7 @@ int IfFileEndCottract(char* filename) {
 void CreateFileFromList(char* filename,LinePtr  head)
 {
 
-  FILE* file = OpenFile(filename,"W");
+  FILE* file = OpenFile(filename,"w");
     if (file!= NULL ) {
         while (head!=NULL){
             fprintf(file,"%s\n",head->line);
