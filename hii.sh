@@ -24,3 +24,6 @@ mcro later
 add r1, r4
 sub r1, r4
 mcroend
+mcro add
+add r1, r4
+mcroend

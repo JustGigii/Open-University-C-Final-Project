@@ -123,36 +123,25 @@ LinePtr InitSingelMacro(LinePtr copy)
 int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
 {
     int i;
-    if (size!=2)
+    printf("%s size is%d\n",linearray[1],size);
+    if (size!=0)
     {
         *ptrmacroflag=FALSE;
         printf("%s\n",linearray[1]);/*check*/
         printf("error: Macro's definition has too many words\n");
         return -1;
     }
+
     /*check if macro's name is reserved word*/
-    for (i = 0; i < MY_RESERVED_TWO_OPRAND_WORDS_COUNT; i++)
-        if (strcmp(linearray[1], my_reserved_Two_oprand_words[i]) == 0){
+    for (i = 0; i < my_reserved_count; i++)
+        if (strcmp(linearray[1], my_reserved[i]) == 0){
            printf("error: Macro's name %s is reserved word\n",linearray[1]);
            *ptrmacroflag=FALSE;
             return -1;
         }
-        
-    for (i = 0; i < MY_RESERVED_ONE_OPRAND_WORDS_COUNT; i++)
-        if (strcmp(linearray[1], my_reserved_one_oprand_words[i]) == 0){
-           printf("error: Macro's name %s is reserved word\n",linearray[1]);
-           *ptrmacroflag=FALSE;
-            return -1;
-        }
-        
-    for (i = 0; i < MY_RESERVED_NO_OPRAND_WORDS_COUNT; i++)
-        if (strcmp(linearray[1], my_reserved_no_oprand_words[i]) == 0){
-           printf("error: Macro's name %s is reserved word\n",linearray[1]);
-           *ptrmacroflag=FALSE;
-            return -1;
-        }
-     if ( strcmp(linearray[0], "mcro")==0)
+     if ( strcmp(linearray[0], "mcro")==0){
         return 1;
+     }
     else
     {
     *ptrmacroflag=FALSE;
