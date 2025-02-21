@@ -9,6 +9,7 @@
 
 int main(int argc, char* argv[]) {
     char* filename;
+    BOOLEAN macroflag=TRUE;
     int i;
     char* am=".am";
     LinePtr head = NULL;
@@ -20,10 +21,13 @@ int main(int argc, char* argv[]) {
         filename = argv[i];
         if (GetFileData(filename,&head)) {
           printf ("File %s exists and has the correct extension.\n",filename);
-          if(InitMacro(head)!=NULL) /*if head==null there are no macros in the program*/
+          if(InitMacro(head,&macroflag)!=NULL&&macroflag==TRUE) /*if head==null there are no macros in the program*/
           CreateFileFromList(RenameExtensionfile(filename,am),head); /*create copy of the original file after opening macro macro*/
           else
-              printf(" No macros in the program.\n");
+             if (macroflag==TRUE) 
+             printf(" No macros in the program.\n");
+             else
+               printf("Error: Macro's definition is invalid\n");
            /*PrintLines(head);*/
            print_operand(head);
         }

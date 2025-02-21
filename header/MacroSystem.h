@@ -8,6 +8,7 @@
 #include "../header/NodeData.h"
 #include "../header/StringUtils.h"
 #include "../header/PublicDef.h"
+#include "../header/LineDetction.h"
 
 typedef struct
 {
@@ -16,9 +17,9 @@ typedef struct
 } macrostruct, *macroPtr;
 
 macroPtr ExistMacro(macroPtr macros[],int size, char *name);
-macroPtr * addMacroToList(macroPtr *macroarray,int size, LinePtr temp);
+macroPtr * addMacroToList(macroPtr *macroarray,int size, LinePtr temp,BOOLEAN *ptrmacroflag);
 LinePtr InitSingelMacro(LinePtr copy);
 LinePtr AddMacroToProgram(LinePtr temp, LinePtr list);
-LinePtr InitMacro(LinePtr head);
+LinePtr InitMacro(LinePtr head, BOOLEAN *ptrmacroflag);
 
 #endif 
