@@ -1,43 +1,10 @@
 
 #include "../header/MacroSystem.h"
 
-int getmacroname(char **linearray, int size);
 
-LinePtr InitMacro(LinePtr head)
-{
-    LinePtr temp = head;
-    LinePtr tofree;
-    LinePtr add = NULL;
-    macroPtr *macroarray = NULL; /* (macroPtr*)malloc((sizeofmacroarray+1) * sizeof(macroPtr));*/
-    int macroindex = 0;
-    int succsec;
-    int indextofree;
-    while (temp->next)
-    { 
+int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag);
 
-         
-        add = ExistMacro(macroarray, macroindex, temp->next->line);
-        if (add)
-        {
-           temp = AddMacroToProgram(temp, add);
-        }
-       else if (strstr(temp->next->line, "mcro"))
-        {
-      
-            macroarray = addMacroToList(macroarray, macroindex, temp);
-            macroindex++;
-        }
-        else
-            temp = temp->next;
-    }
-    temp = head;
-    RecountLine(head, 1);
-
-    return head;
-}
-
-/*start new version*/
-LinePtr InitMacro2(LinePtr head)
+LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 {
     LinePtr temp = head;
     LinePtr tofree;
@@ -47,12 +14,16 @@ LinePtr InitMacro2(LinePtr head)
     int succsec;
     int indextofree;
     /*first stage:collect definition of macro */
+    {
+        /* code */
+    }
+    
     while (temp->next)
     {
       if (strstr(temp->next->line, "mcro"))
         {
 
-            macroarray = addMacroToList(macroarray, macroindex, temp);
+            macroarray = addMacroToList(macroarray, macroindex, temp,ptrmacroflag);
             macroindex++;
         }
         else
@@ -67,8 +38,11 @@ LinePtr InitMacro2(LinePtr head)
         else
           temp = temp->next;
     }
+    temp = head;
+    RecountLine(head, 1);
 
-} /*end new version*/
+    return head;
+} 
 
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)
 {
@@ -84,7 +58,7 @@ macroPtr ExistMacro(macroPtr macros[], int size, char *name)
     }
     return macrosstart;
 }
-macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
+macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *ptrmacroflag)
 {
     macroPtr *macroarraynew = NULL;
     int indexname;
@@ -107,7 +81,7 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp)
         return NULL;
     }
     
-    indexname = getmacroname(split, sizeofsplit);
+    indexname = getmacroname(split, sizeofsplit,ptrmacroflag);
     if(indexname == -1)
     {
         free(macroarraynew);
@@ -146,18 +120,33 @@ LinePtr InitSingelMacro(LinePtr copy)
     return macro;
 }
 
-int getmacroname(char **linearray, int size)
+int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
 {
-    
-    if (size!=2)
+    int i;
+    printf("%s size is%d\n",linearray[1],size);
+    if (size!=0)
     {
-        printf("error: Macro's definition is invalid\n");
-        return NULL;
+        *ptrmacroflag=FALSE;
+        printf("%s\n",linearray[1]);/*check*/
+        printf("error: Macro's definition has too many words\n");
+        return -1;
     }
-    else if ( strcmp(linearray[1], "mcro"))
+
+    /*check if macro's name is reserved word*/
+    for (i = 0; i < my_reserved_count; i++)
+        if (strcmp(linearray[1], my_reserved[i]) == 0){
+           printf("error: Macro's name %s is reserved word\n",linearray[1]);
+           *ptrmacroflag=FALSE;
+            return -1;
+        }
+     if ( strcmp(linearray[0], "mcro")==0){
         return 1;
+     }
     else
+    {
+    *ptrmacroflag=FALSE;
       return -1;
+    }
 }
 LinePtr AddMacroToProgram(LinePtr temp, LinePtr list)
 {

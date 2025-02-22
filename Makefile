@@ -1,3 +1,4 @@
+
 CC=gcc
 CFLAGS= -ansi -Wall -pedantic -g3 -w
 
