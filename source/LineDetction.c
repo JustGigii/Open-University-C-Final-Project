@@ -49,18 +49,26 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
     if (strarray[0][strlen(strarray[0]) - 1] == ':')
     {
         status =  ProcessLabel(strarray, line, instructionCount, tables, tablesize,size,&deltacount);
-    
+        print_error(status,line->lineNum,line->line);
     }
     else
     {
         x=cheackSentece(strarray,size,tables ,tablesize, &status,line->lineNum, &deltacount);
-        if (status != SUCCESS )
+        if (status != SUCCESS && status != DATA_HANDLER)
         {
             print_error(status,line->lineNum,line->line);
             status = SUCCESS;
         }
+        if(status== DATA_HANDLER)
+        {
+        deltacount=processDirectives(size,strarray,line,&status);
+        print_error(status,line->lineNum,line->line);
+        }
+        else
+        {
         line->assemblyCode = x;
         line ->assemblyCodeCount = deltacount;
+        }
     }
     *instructionCount += deltacount;
     freeIneersplit(strarray, size); 

@@ -12,6 +12,7 @@ main.o: source/main.c
 
 StringUtils.o: source/StringUtils.c
 	$(CC) $(CFLAGS) -c source/StringUtils.c
+	
 FileHandler.o: source/FileHandler.c
 	$(CC) $(CFLAGS) -c source/FileHandler.c
 

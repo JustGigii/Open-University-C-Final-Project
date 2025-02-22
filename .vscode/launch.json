@@ -5,11 +5,11 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": [],
+      "args": ["hii.sh"],
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "c:/Open-University-C-Final-Project",
-      "program": "c:/Open-University-C-Final-Project/build/Debug/outDebug",
+      "program": "c:/Open-University-C-Final-Project/program.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

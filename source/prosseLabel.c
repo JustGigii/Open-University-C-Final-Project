@@ -61,7 +61,7 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
         return status;
     }
 
-    label->lineNum = *instructionCount;
+    /* label->lineNum = *instructionCount;*/
     *tables = AddtoLabelTable(*tables, label, *tablesize);
      (*tablesize)++;
     return SUCCESS;
@@ -95,7 +95,7 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size)
     line->assemblyCode = malloc(wordcount - 2);
     if (line->assemblyCode == NULL)
         return FAILURE_CANNOT_ALLOCATE_MEMORY;
-    for (i = 2; i < wordcount; i++)
+    for (i = 1; i < wordcount; i++)
     {
         char *data = word[i];
         if (data[strlen(data) - 1] != ',' && i < wordcount - 1 && word[i + 1][0] != ',')
@@ -140,7 +140,7 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size)
             }
         }
         line->assemblyCode[line->assemblyCodeCount] = converted;
-        line->assemblyCodeCount++;
+        ++line->assemblyCodeCount;
     }
     return SUCCESS;
 }
@@ -151,7 +151,7 @@ int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePt
 
         /* Use the new processDirectives function for .string and .data */
         if (strcmp(operand[1], ".string") == 0 || strcmp(operand[1], ".data") == 0) {
-            result = processDirectives(sizewords, operand, line, status);
+            result = processDirectives(sizewords-1, operand+1, line, status);
             if (result == -1) {
                 return -1;
             }
@@ -182,17 +182,17 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
     int sizeofdata;
     char *tav;
 
-    if (strcmp(operand[1], ".string") == 0) {
+    if (strcmp(operand[0], ".string") == 0) {
         /* Check if there are exactly three words and the operand string is properly quoted */
-        if (sizewords != 3 || operand[2][0] != '\"' || operand[2][strlen(operand[2]) - 1] != '\"') {
+        if (sizewords != 2 || operand[1][0] != '\"' || operand[1][strlen(operand[1]) - 1] != '\"') {
             *status = TO_MANY_PARAMETERS;
             return -1;
         }
         /* Skip the first quote */
-        tav = operand[2] + 1;
+        tav = operand[1] + 1;
         
         /* Allocate memory for the string without the quotes */
-        line->assemblyCode = malloc(strlen(operand[2]) - 1);
+        line->assemblyCode = malloc(strlen(operand[1]) - 1);
         if (line->assemblyCode == NULL) {
             *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
             return -1;
@@ -205,11 +205,12 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
         }
         /* Null-terminate the processed string */
         line->assemblyCode[line->assemblyCodeCount] = '\0';
-        return line->assemblyCodeCount++;
+        return ++line->assemblyCodeCount;
     }
-    else if (strcmp(operand[1], ".data") == 0) {
+    else if (strcmp(operand[0], ".data") == 0) {
         *status = processData(operand, sizewords, line, sizeofdata);
         if (*status != SUCCESS) {
+            
             free(line->assemblyCode);
             return -1;
         }

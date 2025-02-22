@@ -1,9 +1,9 @@
 
 #include "../header/MacroSystem.h"
 
-
 int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag);
-
+const char *my_reserved[]={"mov","cmp","add","sub","lea","clr","not","inc","dec","jmp","bne","jsr","red","prn","rts","stop",};
+const int my_reserved_count=16;
 LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 {
     LinePtr temp = head;

@@ -32,6 +32,15 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
     char **oprands, *combineorands;
     globtables = tables;
     size_of_gloabal_table = *tablesize;
+    if(strcmp(*words,".string")==0|| strcmp(*words,".data")==0)
+    {
+        *status =DATA_HANDLER;
+        return ;
+    }
+    if(strcmp(*words,".extern")==0)
+    {
+        AddtoLabelTable(tables, NULL, *tablesize);
+    }
     *status = check_name_erorr(words, sizewords);
     if (*status != SUCCESS)
         return NULL;
@@ -39,7 +48,7 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
     if(sizewords == 1)
     {
         *status = SUCCESS;
-        return (words[0], NULL, 0, status,sizeofSentece ,linenumber);
+        return oprandshandler(words[0], NULL, 0, status,sizeofSentece ,linenumber);
     }
     if (sizewords > 2)
     {

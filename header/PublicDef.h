@@ -30,7 +30,9 @@ typedef enum
  MISSING_COMMNAD = 14,
  ILLEGAL_ADDRESSING=15,
  WAIT_TO_ALL_LIBEL=16,
- CODE_HANDLER=17
+ CODE_HANDLER=17,
+ DATA_HANDLER=18,
+ 
 } SATATUS;
 
 typedef enum {
@@ -86,6 +88,5 @@ typedef struct
     BOOLEAN isentry;
 } labelstruct, *labelPtr;
 
-const char *my_reserved[]={"mov","cmp","add","sub","lea","clr","not","inc","dec","jmp","bne","jsr","red","prn","rts","stop",};
-const int my_reserved_count=16;
+
 #endif
