@@ -17,4 +17,5 @@ BOOLEAN processString(char *tav, LinePtr line);
 SATATUS processData(char **word, int wordcount, LinePtr line, int size);
 int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePtr line,SATATUS *status,labelPtr ** table,int *tablesize);
 labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int size);
+
 #endif // PROSSSELABEL_H

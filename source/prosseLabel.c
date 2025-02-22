@@ -146,55 +146,27 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size)
 }
 int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePtr line,SATATUS *status,labelPtr ** table,int *tablesize)
 {
-    SATATUS data;
-    int sizeofdata;
-    char *tav;
-    if (strcmp(operand[1], ".string") == 0)
-    {
-        int i = 0;
-        if (sizewords != 3 && operand[2][strlen(operand[2]) - 1] != '\"' || operand[2][0] != '\"')
-        {
-            *status = TO_MANY_PARAMETERS;
-            return -1;
+        int sizeofdata;
+        int result;
+
+        /* Use the new processDirectives function for .string and .data */
+        if (strcmp(operand[1], ".string") == 0 || strcmp(operand[1], ".data") == 0) {
+            result = processDirectives(sizewords, operand, line, status);
+            if (result == -1) {
+                return -1;
+            }
+            return result;
         }
-        tav = operand[2] + 1;
-        line->assemblyCode = malloc(operand[2] - 1);
-        if (line->assemblyCode == NULL)
-        {
-            *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
-            return -1;
-        }
-        if (!processString(tav, line))
-        {
-            *status = FAILURE;
-             printf("in line %d: \"%s\": Undefined string\n", line->lineNum, line->line);
-            free(line->assemblyCode);
-            return -1;
-        }
-        line->assemblyCode[line->assemblyCodeCount] = '\0';
-        return line->assemblyCodeCount++;
-    }
-    else if (strcmp(operand[1], ".data") == 0)
-    {
-        *status = processData(operand, sizewords, line, sizeofdata);
-        if( *status != SUCCESS)
-        {
-            free(line->assemblyCode);
-            return -1;
+        else {
+            /* Process non-directive instructions */
+            line->assemblyCode = cheackSentece(operand + 1, sizewords - 1, table, tablesize, status, line->lineNum, &sizeofdata);
+            if (*status != SUCCESS && *status != WAIT_TO_ALL_LIBEL) {
+                print_error(*status, line->lineNum, line->line);
+                return -1;
+            }
+            line->assemblyCodeCount += sizeofdata;
         }
         return line->assemblyCodeCount;
-    }
-    else
-    {
-        line->assemblyCode=cheackSentece(operand+1,sizewords-1,table,tablesize,&status,line->lineNum,&sizeofdata);
-        if (status != SUCCESS )
-        {
-            print_error(status, line->lineNum, line->line);
-
-        }
-       line->assemblyCodeCount += sizeofdata; 
-    }
-    return line->assemblyCodeCount;
 }
 labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int size)
 {
@@ -204,4 +176,47 @@ labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int size)
         return NULL;
     newtable[size] = label;
     return newtable;
+}
+
+int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *status) {
+    int sizeofdata;
+    char *tav;
+
+    if (strcmp(operand[1], ".string") == 0) {
+        /* Check if there are exactly three words and the operand string is properly quoted */
+        if (sizewords != 3 || operand[2][0] != '\"' || operand[2][strlen(operand[2]) - 1] != '\"') {
+            *status = TO_MANY_PARAMETERS;
+            return -1;
+        }
+        /* Skip the first quote */
+        tav = operand[2] + 1;
+        
+        /* Allocate memory for the string without the quotes */
+        line->assemblyCode = malloc(strlen(operand[2]) - 1);
+        if (line->assemblyCode == NULL) {
+            *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
+            return -1;
+        }
+        if (!processString(tav, line)) {
+            *status = FAILURE;
+            printf("in line %d: \"%s\": Undefined string\n", line->lineNum, line->line);
+            free(line->assemblyCode);
+            return -1;
+        }
+        /* Null-terminate the processed string */
+        line->assemblyCode[line->assemblyCodeCount] = '\0';
+        return line->assemblyCodeCount++;
+    }
+    else if (strcmp(operand[1], ".data") == 0) {
+        *status = processData(operand, sizewords, line, sizeofdata);
+        if (*status != SUCCESS) {
+            free(line->assemblyCode);
+            return -1;
+        }
+        return line->assemblyCodeCount;
+    }
+    
+    /* If the directive is neither .string nor .data, return an error */
+    *status = FAILURE;
+    return -1;
 }
