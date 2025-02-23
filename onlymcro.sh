@@ -1,6 +1,15 @@
+move
 mcro move
-sub r1, r4
+need to append
 mcroend
 move
-add r4, #4
+mcro work
+need to work
+mcroend
+work
+mcro sub
+error
+mcroend
+sub
+
 

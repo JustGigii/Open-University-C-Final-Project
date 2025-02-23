@@ -2,8 +2,8 @@
 #include "../header/MacroSystem.h"
 
 int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag);
-const char *my_reserved[]={"mov","cmp","add","sub","lea","clr","not","inc","dec","jmp","bne","jsr","red","prn","rts","stop",};
-const int my_reserved_count=16;
+const char *my_reserved[]={"mov","cmp","add","sub","lea","clr","not","inc","dec","jmp","bne","jsr","red","prn","rts","stop",".data",".string",".entry",".extern",};
+const int my_reserved_count=20;
 LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 {
     LinePtr temp = head;
@@ -28,10 +28,11 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
         }
         else
             temp = temp->next;
+        if (*ptrmacroflag==FALSE)
+             return NULL;
     }
     printf("==%d==%d\n",*ptrmacroflag,FALSE);
-    if (*ptrmacroflag==FALSE)
-    return NULL;  
+      
     /*second stage: look after macro and replace them */
         temp = globalline;
     while (temp->next){
@@ -45,7 +46,6 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     globalline = globalline->next;
     freeLine(temp);
     RecountLine(globalline, 1);
-printf("init macro end\n");
     return globalline;
 } 
 
@@ -102,7 +102,6 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *p
         free(macroarraynew);
         return NULL;
     }
-    printf("add macro to list end\n");
     return macroarraynew;
 }
 LinePtr InitSingelMacro(LinePtr copy)
