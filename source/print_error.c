@@ -49,5 +49,8 @@ void print_error(SATATUS status,int linenum,char *line)
         case LABEL_NOT_FOUND:
                 printf("in line %d: \"%s\": Label not found\n", linenum, line);
                 break;
+        case ILIGAL_VALUE:
+                printf("in line %d: \"%s\": Illegal value\n", linenum, line);
+                break;
     } 
 }

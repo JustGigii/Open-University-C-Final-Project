@@ -230,6 +230,12 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
             return NULL;
         }
         numberdest = cheackoprandtype(oprands[0], &typedest);
+        if (typedest == -1)
+        {
+            *status = MISSING_PARAMETER;
+            free(x);
+            return NULL;
+        }
         *sizeofSentece = (typedest != 3) ? 2 : 1;
         x = (unsigned int *)malloc(sizeof(unsigned int) * (*sizeofSentece));
         if (x == NULL)
@@ -296,6 +302,12 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         }
         numbersource = cheackoprandtype(oprands[0], &typesource);
         numberdest = cheackoprandtype(oprands[1], &typedest);
+        if (typesource == -1 || typedest == -1)
+        {
+            *status = ILIGAL_VALUE;
+            free(x);
+            return NULL;
+        }
         if (typedest == 2 || typesource == 2)
         {
             *status = ILLEGAL_ADDRESSING;
@@ -402,6 +414,7 @@ int cheackoprandtype(char const *oprand, int *type)
 int process_type(labelPtr label, const char *labelname, int type, int number, int line_number, SATATUS *status)
 {
     int num;
+    int i = 0;
     if(type == 3)
         return 0; /*not need to add is a register*/
     if (assembly_run == 1)
@@ -411,7 +424,8 @@ int process_type(labelPtr label, const char *labelname, int type, int number, in
     }
     if (type)
     {
-        label = cheack_Label_Exist(globtables, size_of_gloabal_table, labelname);
+        i = (type == 2) ? 1 : 0;
+        label = cheack_Label_Exist(globtables, size_of_gloabal_table, labelname+i);
         if (label != NULL)
         {
             num = (label->is_extern) ? 1 : 2; /* 2 means R 1 and E,A 0. 1 means E 1 and R,A 0 */

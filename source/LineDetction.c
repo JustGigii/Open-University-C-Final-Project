@@ -8,7 +8,8 @@ const char *my_reserved_no_oprand_words[] = { "rts","stop"};
 int assembly_run =0;
 void print_Table(labelPtr *tables, int tablesize)
  {
-    int i;
+    int i,j;
+    labelPtr addr;
     for (i = 0; i < tablesize; i++)
     {
         printf("%s: %d ", tables[i]->name, tables[i]->lineNum);
@@ -31,10 +32,23 @@ void print_Table(labelPtr *tables, int tablesize)
         if(tables[i]->is_extern ==TRUE)
         {
             printf(" extern");
+
         }
         printf("\n");
-
     }
+    printf("\n");
+    for ( i = 0; i < tablesize; i++)
+    {
+        addr = tables[i];
+        if(tables[i]->is_extern ==TRUE)
+        {
+            for ( j = 0; j < tables[i]->size_of_where_mentioned; j++)
+            {
+                printf("%s: %d\n", tables[i]->name, addr->where_mentioned[j]);
+            }
+        }
+    }
+    
 }
 BOOLEAN print_operand(LinePtr heads)
 {
