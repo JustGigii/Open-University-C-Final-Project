@@ -25,10 +25,14 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 
             macroarray = addMacroToList(macroarray, macroindex, temp,ptrmacroflag);
             macroindex++;
+            temp = temp->next;
         }
         else
             temp = temp->next;
     }
+    printf("==%d==%d\n",*ptrmacroflag,FALSE);
+    if (*ptrmacroflag==FALSE)
+    return NULL;  
     /*second stage: look after macro and replace them */
         temp = head;
     while (temp->next){
@@ -40,7 +44,7 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     }
     temp = head;
     RecountLine(head, 1);
-
+printf("init macro end\n");
     return head;
 } 
 
@@ -97,6 +101,7 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *p
         free(macroarraynew);
         return NULL;
     }
+    printf("add macro to list end\n");
     return macroarraynew;
 }
 LinePtr InitSingelMacro(LinePtr copy)
@@ -123,8 +128,8 @@ LinePtr InitSingelMacro(LinePtr copy)
 int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
 {
     int i;
-    printf("%s size is%d\n",linearray[1],size);
-    if (size!=0)
+    printf(" open world id %s and end world is %s  size is:%d\n",linearray[0],linearray[1],size);
+    if (size!=2)
     {
         *ptrmacroflag=FALSE;
         printf("%s\n",linearray[1]);/*check*/
@@ -144,6 +149,7 @@ int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
      }
     else
     {
+        printf("error: Macro's definition is invalid\n");
     *ptrmacroflag=FALSE;
       return -1;
     }

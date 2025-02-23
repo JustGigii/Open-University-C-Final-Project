@@ -98,8 +98,8 @@ int IfFileEndCottract(char* filename) {
 
 void CreateFileFromList(char* filename,LinePtr  head)
 {
-
   FILE* file = OpenFile(filename,"w");
+  printf("File %s created.\n",filename);
     if (file!= NULL ) {
         while (head!=NULL){
             fprintf(file,"%s\n",head->line);
