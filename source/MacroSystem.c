@@ -13,11 +13,10 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     int macroindex = 0;
     int succsec;
     int indextofree;
+    LinePtr globalline = InitLine("mman14100", 34);
+    globalline->next = head;
+    temp = globalline;
     /*first stage:collect definition of macro */
-    {
-        /* code */
-    }
-    
     while (temp->next)
     {
       if (strstr(temp->next->line, "mcro"))
@@ -34,7 +33,7 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     if (*ptrmacroflag==FALSE)
     return NULL;  
     /*second stage: look after macro and replace them */
-        temp = head;
+        temp = globalline;
     while (temp->next){
        add = ExistMacro(macroarray, macroindex, temp->next->line);
        if (add)
@@ -42,10 +41,12 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
         else
           temp = temp->next;
     }
-    temp = head;
-    RecountLine(head, 1);
+    temp = globalline;
+    globalline = globalline->next;
+    freeLine(temp);
+    RecountLine(globalline, 1);
 printf("init macro end\n");
-    return head;
+    return globalline;
 } 
 
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)

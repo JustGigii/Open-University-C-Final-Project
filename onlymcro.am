@@ -1,4 +1,2 @@
-sub r1, r2
 sub r1, r4
-sub r1, r4
-add r1, r2
+add r4, #4
