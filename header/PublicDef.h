@@ -32,7 +32,8 @@ typedef enum
  WAIT_TO_ALL_LIBEL=16,
  CODE_HANDLER=17,
  DATA_HANDLER=18,
- 
+ LABEL_ALREADY_EXIST=19,
+ LABEL_NOT_FOUND=20
 } SATATUS;
 
 typedef enum {
@@ -85,7 +86,8 @@ typedef struct
     char *name;
     int lineNum;
     DATA_TYPE type;
-    BOOLEAN isentry;
+    BOOLEAN is_entry;
+    BOOLEAN is_extern
 } labelstruct, *labelPtr;
 
 

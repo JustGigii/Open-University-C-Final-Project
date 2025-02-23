@@ -5,18 +5,24 @@ const char *my_reserved_one_oprand_words[] = { "clr", "not", "inc", "dec", "jmp"
                                             "bne", "jsr", "red", "prn"};
 const char *my_reserved_no_oprand_words[] = { "rts","stop"};
 
+int assembly_run =0;
 BOOLEAN print_operand(LinePtr heads)
 {
+
     int i;
     labelPtr *tables = NULL;
     int tablesize = 0, instructionCount = START_LINE;
     LinePtr temp = heads;
+    assembly_run=1;
+    for ( i = 0; i < 2; i++)
+    {    
     while (temp)
     {
-        if (check_operand(temp, &tables, &tablesize, &instructionCount) != SUCCESS)
-            return FALSE;
+        print_error(check_operand(temp, &tables, &tablesize, &instructionCount) != SUCCESS, temp->lineNum, temp->line);
         temp = temp->next;
     }
+    assembly_run = 2;
+}
     for (i = 0; i < tablesize; i++)
     {
         printf("%s: %d\n", tables[i]->name, tables[i]->lineNum);
@@ -54,15 +60,21 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
     else
     {
         x=cheackSentece(strarray,size,tables ,tablesize, &status,line->lineNum, &deltacount);
-        if (status != SUCCESS && status != DATA_HANDLER)
+        if (status != SUCCESS && status != DATA_HANDLER && status != WAIT_TO_ALL_LIBEL)
         {
-            print_error(status,line->lineNum,line->line);
-            status = SUCCESS;
+            return status;
         }
         if(status== DATA_HANDLER)
         {
         deltacount=processDirectives(size,strarray,line,&status);
-        print_error(status,line->lineNum,line->line);
+        }
+        if (status == WAIT_TO_ALL_LIBEL)
+        {
+            if (assembly_run == 2)
+            {
+                return LABEL_NOT_FOUND;
+            }
+            free(line->assemblyCode);
         }
         else
         {
@@ -108,7 +120,7 @@ labelPtr cheack_Label_Exist(const labelPtr *labels[],int size_of_labels,const ch
         return FALSE;
     for (i=0; i<size_of_labels; i++)
     {
-        if (strcmp((*labels)[i]->name, labelname) == 0)
+        if (strncmp((*labels)[i]->name, labelname, strlen((*labels)[i]->name)) == 0)
             return (*labels)[i];
     }
     return NULL;

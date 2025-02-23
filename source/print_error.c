@@ -43,5 +43,11 @@ void print_error(SATATUS status,int linenum,char *line)
         case ILLEGAL_ADDRESSING:
                 printf("in line %d: \"%s\": Illegal addressing methods to the command\n", linenum, line);
                 break;
+        case LABEL_ALREADY_EXIST:
+                printf("in line %d: \"%s\": Label already exist\n", linenum, line);
+                break;
+        case LABEL_NOT_FOUND:
+                printf("in line %d: \"%s\": Label not found\n", linenum, line);
+                break;
     } 
 }

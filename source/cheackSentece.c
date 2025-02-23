@@ -30,6 +30,7 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
     int *binarycode;
     int sizeofoprands = 0, i;
     char **oprands, *combineorands;
+    labelPtr label;
     globtables = tables;
     size_of_gloabal_table = *tablesize;
     if(strcmp(*words,".string")==0|| strcmp(*words,".data")==0)
@@ -39,7 +40,38 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
     }
     if(strcmp(*words,".extern")==0)
     {
-        AddtoLabelTable(tables, NULL, *tablesize);
+        if(cheack_Label_Exist(tables, *tablesize, words[1]) != NULL)
+        {
+            *status = LABEL_ALREADY_EXIST;
+            return NULL;
+        }
+        labelPtr label = create_label(words[1], 0);
+        if (label == NULL) {
+            *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
+            return NULL;
+        }
+        label->is_extern = TRUE;
+        *tables = AddtoLabelTable(*tables, label, tablesize);
+    }
+    if (strcmp(*words,".entry")==0)
+    {
+        label = cheack_Label_Exist(tables, *tablesize, words[1]);
+        if (label == NULL)
+        {
+            label = create_label(words[1], 0);
+            if (label == NULL) {
+                *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
+                return NULL;
+            }
+        }
+        else if(label->is_entry==TRUE || label->is_extern==TRUE)
+        {
+            *status = LABEL_ALREADY_EXIST;
+            return NULL;
+        }
+        label->is_entry = TRUE;
+        *tables =AddtoLabelTable(*tables, label, tablesize);
+        return NULL;
     }
     *status = check_name_erorr(words, sizewords);
     if (*status != SUCCESS)
@@ -373,12 +405,17 @@ int process_type(labelPtr label, const char *labelname, int type, int number, in
     int num;
     if(type == 3)
         return 0; /*not need to add is a register*/
+    if (assembly_run == 1)
+    {
+        *status = WAIT_TO_ALL_LIBEL;
+        return 0;
+    }
     if (type)
     {
         label = cheack_Label_Exist(globtables, size_of_gloabal_table, labelname);
         if (label != NULL)
         {
-            num = (label->isentry) ? 2 : 1; /* 2 means R 1 and E,A 0. 1 means E 1 and R,A 0 */
+            num = (label->is_entry) ? 2 : 1; /* 2 means R 1 and E,A 0. 1 means E 1 and R,A 0 */
             num |= (type == 1) ? (label->lineNum << 3) : ((label->lineNum - line_number) << 3);
         }
         else
