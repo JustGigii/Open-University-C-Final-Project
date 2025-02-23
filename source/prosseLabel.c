@@ -41,22 +41,23 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
         return LABEL_TO_MUCH;
     if (check_no_save_word(operand[0]) == FALSE)
         return SAVE_WORLD;
-    label = cheack_Label_Exist(tables, *tablesize, operand[0]);
-    if (label != NULL)
-    {
-        if (label->lineNum != 0)
-            return LABEL_ALREADY_EXIST;
-        label->lineNum = *instructionCount;
-        is_in_table=TRUE;
-    }
 
-    if (label == NULL)
-    {
-        label = create_label(operand[0], *instructionCount);
+    label = cheack_Label_Exist(tables, *tablesize, operand[0]);
+        if (label != NULL)
+        {
+            if (label->lineNum != 0)
+                return LABEL_ALREADY_EXIST;
+            label->lineNum = *instructionCount;
+            is_in_table = TRUE;
+        }
+
         if (label == NULL)
-            return FAILURE_CANNOT_ALLOCATE_MEMORY;
-    }
-    
+        {
+            label = create_label(operand[0], *instructionCount);
+            if (label == NULL)
+                return FAILURE_CANNOT_ALLOCATE_MEMORY;
+        }
+
     label->type = (strcmp(operand[1], ".string") == 0) ? STRING : (strcmp(operand[1], ".data") == 0) ? DATA
                                                                                                      : CODE;
     *deltacount = enterdatatoline(size, line->lineNum, operand, line, &status, tables, tablesize);
@@ -240,7 +241,7 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
 }
 labelPtr create_label(const char *name, int lineNum)
 {
-    int i=0;
+    int i = 0;
     labelPtr label = malloc(sizeof(labelstruct));
     if (label == NULL)
     {
@@ -251,5 +252,8 @@ labelPtr create_label(const char *name, int lineNum)
     label->lineNum = lineNum;
     label->is_entry = FALSE;
     label->is_extern = FALSE;
+    label->where_mentioned = NULL;
+    label->size_of_where_mentioned = 0;
+    label->type = UNDEFINED;
     return label;
 }

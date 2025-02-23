@@ -38,8 +38,9 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
         *status =DATA_HANDLER;
         return ;
     }
-    if(strcmp(*words,".extern")==0)
+    if(strcmp(*words,".extern")==0 )
     {
+
         if(cheack_Label_Exist(tables, *tablesize, words[1]) != NULL)
         {
             *status = LABEL_ALREADY_EXIST;
@@ -55,22 +56,20 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
     }
     if (strcmp(*words,".entry")==0)
     {
-        label = cheack_Label_Exist(tables, *tablesize, words[1]);
-        if (label == NULL)
+        if(assembly_run < 2)
         {
-            label = create_label(words[1], 0);
-            if (label == NULL) {
-                *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
-                return NULL;
-            }
-        }
-        else if(label->is_entry==TRUE || label->is_extern==TRUE)
-        {
-            *status = LABEL_ALREADY_EXIST;
+            *status = WAIT_TO_ALL_LIBEL;
             return NULL;
         }
+        label = cheack_Label_Exist(tables, *tablesize, words[1]);
+        if (label == NULL)
+           *status = LABEL_NOT_FOUND;
+        else if(label->is_entry==TRUE || label->is_extern==TRUE)
+            *status = LABEL_ALREADY_EXIST;
+        else
+        {
         label->is_entry = TRUE;
-        *tables =AddtoLabelTable(*tables, label, tablesize);
+        }
         return NULL;
     }
     *status = check_name_erorr(words, sizewords);
@@ -258,7 +257,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
                 }
                 x[0]|=opcode;
                 x[0] |= extract_bits(numberdest, RD,LEN_RD, status);
-                print_binary(x[0],24);
+               
                 return x;
             }
         }
@@ -343,7 +342,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         }
         if(*sizeofSentece ==1)
         {
-            print_binary(x[0],24);
+           
             return x;
         }
         if(*sizeofSentece==2)
@@ -360,7 +359,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         }
       
     }
-    print_binary(x[0],24);
+   
     return x;
 }
 
@@ -415,8 +414,16 @@ int process_type(labelPtr label, const char *labelname, int type, int number, in
         label = cheack_Label_Exist(globtables, size_of_gloabal_table, labelname);
         if (label != NULL)
         {
-            num = (label->is_entry) ? 2 : 1; /* 2 means R 1 and E,A 0. 1 means E 1 and R,A 0 */
+            num = (label->is_extern) ? 1 : 2; /* 2 means R 1 and E,A 0. 1 means E 1 and R,A 0 */
             num |= (type == 1) ? (label->lineNum << 3) : ((label->lineNum - line_number) << 3);
+            label->where_mentioned = (label->size_of_where_mentioned==0)?malloc(sizeof(int)):realloc(label->where_mentioned,sizeof(int)*(label->size_of_where_mentioned+1));
+            if(label->where_mentioned==NULL)
+            {
+                status = FAILURE_CANNOT_ALLOCATE_MEMORY;
+                return 0;
+            }
+            label->where_mentioned[label->size_of_where_mentioned]=line_number;
+            label->size_of_where_mentioned++;
         }
         else
         {

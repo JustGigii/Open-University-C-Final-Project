@@ -6,6 +6,36 @@ const char *my_reserved_one_oprand_words[] = { "clr", "not", "inc", "dec", "jmp"
 const char *my_reserved_no_oprand_words[] = { "rts","stop"};
 
 int assembly_run =0;
+void print_Table(labelPtr *tables, int tablesize)
+ {
+    int i;
+    for (i = 0; i < tablesize; i++)
+    {
+        printf("%s: %d ", tables[i]->name, tables[i]->lineNum);
+        switch (tables[i]->type)
+        {
+        case CODE:
+            printf("code");
+            break;
+        case DATA:
+            printf("data");
+            break;
+        case STRING:
+            printf("string");
+            break;
+        }
+        if(tables[i]->is_entry ==TRUE)
+        {
+            printf(" ,entry");
+        }
+        if(tables[i]->is_extern ==TRUE)
+        {
+            printf(" extern");
+        }
+        printf("\n");
+
+    }
+}
 BOOLEAN print_operand(LinePtr heads)
 {
 
@@ -21,12 +51,10 @@ BOOLEAN print_operand(LinePtr heads)
         print_error(check_operand(temp, &tables, &tablesize, &instructionCount) != SUCCESS, temp->lineNum, temp->line);
         temp = temp->next;
     }
+    temp = heads;
     assembly_run = 2;
-}
-    for (i = 0; i < tablesize; i++)
-    {
-        printf("%s: %d\n", tables[i]->name, tables[i]->lineNum);
     }
+    print_Table(tables, tablesize);
     
 }
 SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount)

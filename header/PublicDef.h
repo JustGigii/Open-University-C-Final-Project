@@ -76,9 +76,10 @@ typedef enum {
 } OPCODE_AND_FUNC;
 typedef enum
 {
+    UNDEFINED = 0,
     DATA = 1,
     STRING = 2,
-    CODE = 4
+    CODE = 3,
 } DATA_TYPE;
 
 typedef struct
@@ -87,7 +88,9 @@ typedef struct
     int lineNum;
     DATA_TYPE type;
     BOOLEAN is_entry;
-    BOOLEAN is_extern
+    BOOLEAN is_extern;
+    int * where_mentioned;
+    int size_of_where_mentioned;
 } labelstruct, *labelPtr;
 
 
