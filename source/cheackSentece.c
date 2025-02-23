@@ -288,7 +288,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
             return NULL;
         }
         x[0] |= opcode;
-        x[1] = process_type(label, oprands[0], typedest, numberdest, line_number, status);
+        x[1] = process_type(label, oprands[0], typedest, numberdest,  line_number+1, status);
 
     }
 
@@ -361,13 +361,13 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         {
             x[1] =0; 
             /*the arrat size is 2 mean or first oprand is register or secend oprand is register*/
-            x[1] |= process_type(label, oprands[0], typesource, numbersource, line_number, status);
-            x[1] |= process_type(label, oprands[1], typedest, numberdest, line_number, status);
+            x[1] |= process_type(label, oprands[0], typesource, numbersource, line_number+1, status);
+            x[1] |= process_type(label, oprands[1], typedest, numberdest,  line_number+1, status);
         }
         else
         {
-            x[2] = process_type(label, oprands[0], typesource, numbersource, line_number, status);
-            x[1] = process_type(label, oprands[1], typedest, numberdest, line_number, status);
+            x[2] = process_type(label, oprands[0], typesource, numbersource,  line_number+1, status);
+            x[1] = process_type(label, oprands[1], typedest, numberdest,  line_number+2, status);
         }
       
     }

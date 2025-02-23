@@ -124,7 +124,11 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
         line ->assemblyCodeCount = deltacount;
         }
     }
-    *instructionCount += deltacount;
+    if (assembly_run<2)
+    {
+        line->lineNum = *instructionCount;
+        *instructionCount += deltacount;
+    }
     freeIneersplit(strarray, size); 
     return status;
 }
