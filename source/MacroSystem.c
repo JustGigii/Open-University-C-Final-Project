@@ -4,6 +4,7 @@
 int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag);
 const char *my_reserved[]={"mov","cmp","add","sub","lea","clr","not","inc","dec","jmp","bne","jsr","red","prn","rts","stop",".data",".string",".entry",".extern",};
 const int my_reserved_count=20;
+
 LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 {
     LinePtr temp = head;
@@ -13,7 +14,7 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     int macroindex = 0;
     int succsec;
     int indextofree;
-    LinePtr globalline = InitLine("mman14100", 34);
+    LinePtr globalline = InitLine("mman14100", 34);/*create fake line for head becouse the checking start to check from the next line*/
     globalline->next = head;
     temp = globalline;
     /*first stage:collect definition of macro */
@@ -44,10 +45,11 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     }
     temp = globalline;
     globalline = globalline->next;
-    freeLine(temp);
+    freeLine(temp); /*free fake line*/
     RecountLine(globalline, 1);
     return globalline;
 } 
+
 
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)
 {
@@ -55,7 +57,7 @@ macroPtr ExistMacro(macroPtr macros[], int size, char *name)
     int index;
     for (index = 0; index < size; index++)
     {
-        if (strcmp(name, macros[index]->name) == 0)
+        if (strcmp(name, macros[index]->name) == 0)/*if macro exist*/
         {   
             macrosstart = macros[index]->start;
             index = size;
@@ -63,31 +65,32 @@ macroPtr ExistMacro(macroPtr macros[], int size, char *name)
     }
     return macrosstart;
 }
+
 macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *ptrmacroflag)
 {
     macroPtr *macroarraynew = NULL;
     int indexname;
     char **split;
     int sizeofsplit = 0;
-    if (size == 0)
+    if (size == 0)/*first macro*/
         macroarraynew = malloc(sizeof(macroPtr));  
-    else  
+    else /*not first macro*/ 
         macroarraynew = realloc(macroarray, (size + 1) * sizeof(macroPtr));
 
 
-    if (!macroarraynew)
+    if (!macroarraynew)/*error in allocation*/
         return NULL;
    
     macroarraynew[size] = malloc(sizeof(macrostruct));
-    split = Split(temp->next->line, " ", &sizeofsplit);
-    if (split == NULL)
+    split = Split(temp->next->line, " ", &sizeofsplit);/*split the macro to peaces of one word*/
+    if (split == NULL)/*no words*/
     {
         free(macroarraynew);
         return NULL;
     }
     
-    indexname = getmacroname(split, sizeofsplit,ptrmacroflag);
-    if(indexname == -1)
+    indexname = getmacroname(split, sizeofsplit,ptrmacroflag);/*get the name of the macro after cheking if it is valid*/
+    if(indexname == -1)/*name is not valid*/
     {
         free(macroarraynew);
         freeIneersplit(split, sizeofsplit);
@@ -104,17 +107,19 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *p
     }
     return macroarraynew;
 }
+
 LinePtr InitSingelMacro(LinePtr copy)
 {
 
     LinePtr head = copy;
     LinePtr tofree=copy->next;
     LinePtr macro;
+    /*copy the macro definition*/
     copy->next = tofree->next;
     freeLine(tofree);
     macro= copy->next;
    
-    while (strcmp(copy->next->line, "mcroend") != 0)
+    while (strcmp(copy->next->line, "mcroend") != 0)/*not end of macro*/
     {
         copy = copy->next;
     }
@@ -128,12 +133,10 @@ LinePtr InitSingelMacro(LinePtr copy)
 int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
 {
     int i;
-    printf(" open world id %s and end world is %s  size is:%d\n",linearray[0],linearray[1],size);
-    if (size!=2)
+    if (size!=2) /*macro definition must have 2 words*/
     {
         *ptrmacroflag=FALSE;
-        printf("%s\n",linearray[1]);/*check*/
-        printf("error: Macro's definition has too many words\n");
+        printf("error: Macro's definition is invalid, must have 2 words\n");
         return -1;
     }
 
@@ -144,9 +147,8 @@ int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
            *ptrmacroflag=FALSE;
             return -1;
         }
-     if ( strcmp(linearray[0], "mcro")==0){
+     if ( strcmp(linearray[0], "mcro")==0)/*if the first word is mcro*/
         return 1;
-     }
     else
     {
         printf("error: Macro's definition is invalid\n");
@@ -154,6 +156,7 @@ int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
       return -1;
     }
 }
+
 LinePtr AddMacroToProgram(LinePtr temp, LinePtr list)
 {
     LinePtr newLine;
@@ -162,7 +165,7 @@ LinePtr AddMacroToProgram(LinePtr temp, LinePtr list)
     temp->next = newLine->next;
     freeLine(newLine);
     LinePtr next = temp->next;
-    while (list)
+    while (list)/*copy the macro to the program*/
     {
         newLine = InitLine(list->line,-1);
         prev->next = newLine;
