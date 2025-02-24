@@ -115,3 +115,36 @@ char * RenameExtensionfile(char* filename,char* newextension) {
   filename=strcat(filename,newextension);/*add the new extension*/
   return filename;
 }
+
+
+void createcodefiles(char* filename,LinePtr head){
+    char *ob=".ob",*ent=".ent",*ext=".ext";
+    int sizeoftable;
+    labelPtr * tables =  CreateAssemblyLine(head,&sizeoftable);
+   FILE* outfile = freopen(RenameExtensionfile(filename,ob), "w", stdout);
+   printf("createcodefiles\n");
+   if (outfile!= NULL&&tables!=NULL ) /*if file is open*/
+    {
+        print_hexadecimal_line(head);
+        printf("\n");
+        fclose(outfile);
+    }
+    outfile = freopen(RenameExtensionfile(filename,ext), "w", stdout);
+    if (outfile!= NULL&&is_extern) 
+    {
+        print_extern(tables, sizeoftable);
+        printf("\n");
+        fclose(outfile);
+    }
+    outfile = freopen(RenameExtensionfile(filename,ent), "w", stdout);
+    if (outfile!= NULL&&is_intern) 
+    {
+        print_intern(tables, sizeoftable);
+        printf("\n");
+        fclose(outfile);
+    }
+    freopen("CON", "w", stdout);
+    printf("check uotput files\n");
+    fprintf(stderr,"End of program execution.\n");
+    /*free_tables(tables, sizeoftable);*/
+}

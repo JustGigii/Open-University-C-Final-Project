@@ -34,26 +34,9 @@ int main(int argc, char* argv[]) {
              printf(" No macros in the program.\n");
              else
                printf("Error: Macro's definition is invalid\n");
-          }
-           /*PrintLines(head);*/
-           tables =  CreateAssemblyLine(head,&sizeoftable);
-           if(tables!=NULL)
-           {
-             print_hexadecimal_line(head);
-             printf("\n");
            }
-             if (is_extern)
-             {
-             print_extern(tables, sizeoftable);
-             printf("\n");
-             }
-             if (is_intern)
-             {
-              print_intern(tables, sizeoftable);
-              printf("\n");
-             }        
+        createcodefiles(filename,head);        
         }
-          free_tables(tables, sizeoftable);
-        printf("End of program.\n");
+        printf("End of program (main)\n");
         return 0; 
    }

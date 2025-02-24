@@ -46,7 +46,7 @@ char** Split(const char* str,const char* substr, int* count)
     char** strarray = (char**)malloc(((*count)+1) * sizeof(char*));
     int i = 0;
     char * word = strtok(tmp, substr);
-    while( word) {
+    while( word) {/*add words to strarray*/
         strarray[i] = (char*)malloc((strlen(word) + 1) * sizeof(char));
         strcpy(strarray[i], word);
         i++;
