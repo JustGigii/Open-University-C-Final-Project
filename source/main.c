@@ -23,10 +23,7 @@ int main(int argc, char* argv[]) {
         if (GetFileData(filename,&head)) 
           printf ("File %s exists and has the correct extension.\n",filename); 
         else
-        {
-         printf("Error: File does not exist or has incorrect extension.\n");
          continue;
-        }
         head =InitMacro(head,&macroflag);
          if(head!=NULL&&macroflag==TRUE){ /*if head==null there are no macros in the program*/
           CreateFileFromList(RenameExtensionfile(filename,am),head); /*create copy of the original file after opening macro macro*/ 
