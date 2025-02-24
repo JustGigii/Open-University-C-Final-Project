@@ -21,5 +21,5 @@ BOOLEAN is_no_oprand(char *input);
 BOOLEAN isreservedWords(char *input);
 unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATUS *status, int *sizeofSentece, int line_number);
 int cheackoprandtype(char const *oprand, int *type);
-int process_type(labelPtr label, const char *labelname, int type, int number, int line_number, SATATUS *status);
+int process_type(labelPtr label, const char *labelname, int type, int number, int line_number,int ogrinal_line_number, SATATUS *status);
 #endif

@@ -35,11 +35,16 @@ int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables,
         return 0;
     }
     
-    if (*status == DATA_HANDLER)
+    if (*status == DATA_HANDLER && assembly_run<2)
     {
-        deltacount = processDirectives(size, strarray, line, status);
+        deltacount = processDirectives(size, strarray, line, status,FALSE);
         if(*status == SUCCESS)
-            *status = DATA_HANDLER;
+        {
+            data_line_couter += deltacount;
+            return deltacount;
+        }
+        else 
+        return 0;
     }
     
     if (*status == WAIT_TO_ALL_LIBEL)
@@ -53,14 +58,13 @@ int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables,
         if(x != NULL)
         free(line->assemblyCode);
     }
+    
+
         line->assemblyCode = x;
         line->assemblyCodeCount = deltacount;
     
     if (assembly_run < 2)
     {
-        if(*status==DATA_HANDLER)
-        data_line_couter += deltacount;
-        else
         code_line_couter += deltacount;
         *status ==SUCCESS;
     }
@@ -79,7 +83,7 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
     if(strcmp(*words,".string")==0|| strcmp(*words,".data")==0)
     {
         *status =DATA_HANDLER;
-        return ;
+        return NULL;
     }
     if(strcmp(*words,".extern")==0 )
     {
@@ -323,7 +327,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
             free(x);
             return NULL;
         }
-        else
+        else if (opcode == -1)
             opcode = PRN;
         if (opcode == -1)
         {
@@ -332,7 +336,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
             return NULL;
         }
         x[0] |= opcode;
-        x[1] = process_type(label, oprands[0], typedest, numberdest,  line_number+1, status);
+        x[1] = process_type(label, oprands[0], typedest, numberdest,  line_number+1,line_number,status);
 
     }
 
@@ -405,13 +409,13 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         {
             x[1] =0; 
             /*the arrat size is 2 mean or first oprand is register or secend oprand is register*/
-            x[1] |= process_type(label, oprands[0], typesource, numbersource, line_number+1, status);
-            x[1] |= process_type(label, oprands[1], typedest, numberdest,  line_number+1, status);
+            x[1] |= process_type(label, oprands[0], typesource, numbersource, line_number+1,line_number, status);
+            x[1] |= process_type(label, oprands[1], typedest, numberdest,  line_number+1,line_number, status);
         }
         else
         {
-            x[2] = process_type(label, oprands[0], typesource, numbersource,  line_number+1, status);
-            x[1] = process_type(label, oprands[1], typedest, numberdest,  line_number+2, status);
+            x[1] = process_type(label, oprands[0], typesource, numbersource,  line_number+1,line_number, status);
+            x[2] = process_type(label, oprands[1], typedest, numberdest,  line_number+2,line_number, status);
         }
       
     }
@@ -455,7 +459,7 @@ int cheackoprandtype(char const *oprand, int *type)
     }
     return number;
 }
-int process_type(labelPtr label, const char *labelname, int type, int number, int line_number, SATATUS *status)
+int process_type(labelPtr label, const char *labelname, int type, int number, int line_number,int ogrinal_line_number, SATATUS *status)
 {
     int num;
     int i = 0;
@@ -472,8 +476,8 @@ int process_type(labelPtr label, const char *labelname, int type, int number, in
         label = cheack_Label_Exist(globtables, size_of_gloabal_table, labelname+i);
         if (label != NULL)
         {
-            num = (label->is_extern) ? 1 : 2; /* 2 means R 1 and E,A 0. 1 means E 1 and R,A 0 */
-            num |= (type == 1) ? (label->lineNum << 3) : ((label->lineNum - line_number) << 3);
+            num = (label->is_extern) ? 1 :(type == 2)? 4:2; /* 2 means R 1 and E,A 0. 1 means E 1 and R,A 0 */
+            num |= (type == 1) ? (label->lineNum << 3) : ((label->lineNum - ogrinal_line_number) << 3);
             label->where_mentioned = (label->size_of_where_mentioned==0)?malloc(sizeof(int)):realloc(label->where_mentioned,sizeof(int)*(label->size_of_where_mentioned+1));
             if(label->where_mentioned==NULL)
             {

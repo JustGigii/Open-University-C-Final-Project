@@ -11,10 +11,11 @@
 
 
 
+int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *status, BOOLEAN has_lable);
 int processEscapeSequence(char nextChar);
 SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelPtr **tables, int *tablesize, int size,int *deltacount);
 BOOLEAN processString(char *tav, LinePtr line);
-SATATUS processData(char **word, int wordcount, LinePtr line, int size);
+SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN has_lable);
 int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePtr line,SATATUS *status,labelPtr ** table,int *tablesize);
 labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int * size);
 labelPtr create_label(const char *name, int lineNum);

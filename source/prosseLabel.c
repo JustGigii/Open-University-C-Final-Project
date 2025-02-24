@@ -63,24 +63,24 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
                                                                                                          : CODE;
     }
     /* label->lineNum = *instructionCount;*/
-    if (!is_in_table && assembly_run < 2)
-    {
+    if(assembly_run < 2 && is_in_table) return LABEL_ALREADY_EXIST;
+
         *deltacount = enterdatatoline(size, line->lineNum, operand, line, &status, tables, tablesize);
         if (*deltacount == -1)
         {
             free(label);
             return status;
         }
-
+        if(assembly_run < 2)
         *tables = AddtoLabelTable(*tables, label, tablesize);
-    }
+    
     return SUCCESS;
 }
 
 BOOLEAN processString(char *tav, LinePtr line)
 {
     int asciiValue, size = strlen(tav);
-
+    char tava;
     while (*tav != '"')
     {
         if (*tav == '\\')
@@ -99,10 +99,12 @@ BOOLEAN processString(char *tav, LinePtr line)
     }
     return TRUE;
 }
-SATATUS processData(char **word, int wordcount, LinePtr line, int size)
+SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN has_lable)
 {
     int i, converted;
-    line->assemblyCode = malloc(wordcount - 2);
+    i = has_lable ? 2 : 1;
+    unsigned int unsingedconverted; /*convert the number to unsigned to show binary*/
+    line->assemblyCode = malloc(wordcount - i);
     if (line->assemblyCode == NULL)
         return FAILURE_CANNOT_ALLOCATE_MEMORY;
     for (i = 1; i < wordcount; i++)
@@ -147,8 +149,8 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size)
                 return FAILURE_OUT_OF_RANGE;
             }
         }
-        line->assemblyCode[line->assemblyCodeCount] = converted;
-        ++line->assemblyCodeCount;
+        unsingedconverted = converted;
+        line->assemblyCode[line->assemblyCodeCount++] = unsingedconverted;
     }
     return SUCCESS;
 }
@@ -162,7 +164,7 @@ int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePt
     {
         if (assembly_run == 2)
             return 0;
-        result = processDirectives(sizewords - 1, operand + 1, line, status);
+        result = processDirectives(sizewords - 1, operand + 1, line, status,FALSE);
         if (result == -1)
         {
             return -1;
@@ -187,7 +189,7 @@ labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int *size)
     return newtable;
 }
 
-int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *status)
+int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *status, BOOLEAN has_lable)
 {
     int sizeofdata;
     char *tav;
@@ -218,12 +220,13 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
             return -1;
         }
         /* Null-terminate the processed string */
-        line->assemblyCode[line->assemblyCodeCount] = '\0';
-        return ++line->assemblyCodeCount;
+        line->assemblyCode[line->assemblyCodeCount] = 0;
+        line->assemblyCodeCount++;
+        return line->assemblyCodeCount;
     }
     else if (strcmp(operand[0], ".data") == 0)
     {
-        *status = processData(operand, sizewords, line, sizeofdata);
+        *status = processData(operand, sizewords, line, sizeofdata,has_lable);
         if (*status != SUCCESS)
         {
 
