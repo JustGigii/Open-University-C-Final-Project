@@ -12,6 +12,7 @@ int CountChar(const char* str, const char* substr )
 
     return count;
 }
+
 char* cleanWitheTabs(char * str)
 {
     int i=0,j= 0;
@@ -56,6 +57,7 @@ char** Split(const char* str,const char* substr, int* count)
     return strarray;
 }
 
+
 void freeIneersplit(char** strarray, int count)
 { 
     int i;
@@ -69,6 +71,7 @@ void freeIneersplit(char** strarray, int count)
         free(strarray);
 
 }
+
 char *strndup(char *str, int chars)
 {
    char *newStr;
@@ -86,6 +89,7 @@ char *strndup(char *str, int chars)
 
     return newStr; 
 }
+
 char *strnduplower(char *str, int chars)
 {
     char *newStr;

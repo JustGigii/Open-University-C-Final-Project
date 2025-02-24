@@ -1,6 +1,7 @@
 #include "../header/NodeData.h"
 
 
+
 LinePtr InitLine( char* line,short lineNum){
     LinePtr newLine;
     newLine= (LinePtr)malloc(sizeof(Line));
@@ -16,13 +17,7 @@ LinePtr InitLine( char* line,short lineNum){
     newLine->next = NULL;
     return newLine;
 }
-/**
- * Adds a line to the linked list.
- *
- * @param head the head of the list
- * @param line the line to add
- * @return the line number of the added line, or -1 if memory could not be allocated
- */
+
 int AddLine(LinePtr head, char* line)
 { 
     LinePtr newLine = InitLine(line,-1);
@@ -48,13 +43,7 @@ int AddLine(LinePtr head, char* line)
         newLine->lineNum = temp->lineNum + 1;
     return newLine->lineNum;
 }
-/**
- * Adds a line between the node and the next node line in the linked list
- *
- * @param head the head of the list
- * @param line the line to add
- * @return the line number of the added line, or -1 if memory could not be allocated
- */
+
 int addBetweenline(LinePtr head, char* line)
 {
     LinePtr temp;
@@ -66,6 +55,7 @@ int addBetweenline(LinePtr head, char* line)
     return newLine->lineNum;
    
 }
+
 LinePtr RemoveLine(LinePtr head, int number){
 
     LinePtr temp = head;
@@ -97,6 +87,8 @@ LinePtr RemoveLine(LinePtr head, int number){
     return head;
 
 }
+
+
 
 void RecountLine(const LinePtr head, short number)
 {

@@ -4,6 +4,7 @@
 int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag);
 const char *my_reserved[]={"mov","cmp","add","sub","lea","clr","not","inc","dec","jmp","bne","jsr","red","prn","rts","stop",".data",".string",".entry",".extern",};
 const int my_reserved_count=20;
+
 LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 {
     LinePtr temp = head;
@@ -49,6 +50,7 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     return globalline;
 } 
 
+
 macroPtr ExistMacro(macroPtr macros[], int size, char *name)
 {
         LinePtr macrosstart = NULL;
@@ -63,6 +65,7 @@ macroPtr ExistMacro(macroPtr macros[], int size, char *name)
     }
     return macrosstart;
 }
+
 macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *ptrmacroflag)
 {
     macroPtr *macroarraynew = NULL;
@@ -104,12 +107,14 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *p
     }
     return macroarraynew;
 }
+
 LinePtr InitSingelMacro(LinePtr copy)
 {
 
     LinePtr head = copy;
     LinePtr tofree=copy->next;
     LinePtr macro;
+    /*copy the macro definition*/
     copy->next = tofree->next;
     freeLine(tofree);
     macro= copy->next;
@@ -154,6 +159,7 @@ int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
       return -1;
     }
 }
+
 LinePtr AddMacroToProgram(LinePtr temp, LinePtr list)
 {
     LinePtr newLine;

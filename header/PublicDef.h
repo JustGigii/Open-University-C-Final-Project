@@ -7,10 +7,13 @@
 #define MAX_NUMBER 8388607
 #define MIN_NUMBER -8388608
 
+/*enum for flags */
 typedef enum{
     TRUE = 1, 
     FALSE = 0
 } BOOLEAN;
+
+/*enum for status */
 typedef enum 
 {
  SUCCESS = 0,
@@ -37,6 +40,7 @@ typedef enum
  ILIGAL_VALUE=21,
 } SATATUS;
 
+
 typedef enum {
    ARE =0,
    funct =3,
@@ -56,6 +60,7 @@ typedef enum {
    LEN_OPCODE = 6,
 }BIT_LENGHT;
 
+/*enum for code of operation */
 typedef enum {
     MOV = 0,          /* opcode: 0, func: 0 */
     CMP = 262144,     /* opcode: 1, func: 0 */
@@ -75,6 +80,8 @@ typedef enum {
     STOP = 3932160    /* opcode: 15, func: 0 */
   
 } OPCODE_AND_FUNC;
+
+/*enum for data type */
 typedef enum
 {
     UNDEFINED = 0,
@@ -83,6 +90,7 @@ typedef enum
     CODE = 3,
 } DATA_TYPE;
 
+/*struct for label*/
 typedef struct
 {
     char *name;
