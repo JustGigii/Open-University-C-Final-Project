@@ -24,6 +24,49 @@ void print_binary(unsigned int value, int num_bits)
     }
     printf("\n");
 }
+int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables, int *tablesize, SATATUS *status)
+{
+
+    int deltacount = 0;
+    unsigned int *x = cheackSentece(strarray, size, tables, tablesize, status, line->lineNum, &deltacount);
+    
+    if (*status != SUCCESS && *status != DATA_HANDLER && *status != WAIT_TO_ALL_LIBEL)
+    {
+        return 0;
+    }
+    
+    if (*status == DATA_HANDLER)
+    {
+        deltacount = processDirectives(size, strarray, line, status);
+        if(*status == SUCCESS)
+            *status = DATA_HANDLER;
+    }
+    
+    if (*status == WAIT_TO_ALL_LIBEL)
+    {
+        if (assembly_run == 2)
+        {
+            *status = LABEL_NOT_FOUND;
+            return 0;
+        }
+        *status ==SUCCESS;
+        if(x != NULL)
+        free(line->assemblyCode);
+    }
+        line->assemblyCode = x;
+        line->assemblyCodeCount = deltacount;
+    
+    if (assembly_run < 2)
+    {
+        if(*status==DATA_HANDLER)
+        data_line_couter += deltacount;
+        else
+        code_line_couter += deltacount;
+        *status ==SUCCESS;
+    }
+    
+    return deltacount;
+}
 
 unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int *tablesize, SATATUS *status, int linenumber, int *sizeofSentece)
 {
@@ -53,6 +96,7 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
         }
         label->is_extern = TRUE;
         *tables = AddtoLabelTable(*tables, label, tablesize);
+        return NULL;
     }
     if (strcmp(*words,".entry")==0)
     {

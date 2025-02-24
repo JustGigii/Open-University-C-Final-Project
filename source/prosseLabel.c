@@ -41,9 +41,9 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
         return LABEL_TO_MUCH;
     if (check_no_save_word(operand[0]) == FALSE)
         return SAVE_WORLD;
-    if(assembly_run<2)
+    if (assembly_run < 2)
     {
-    label = cheack_Label_Exist(tables, *tablesize, operand[0]);
+        label = cheack_Label_Exist(tables, *tablesize, operand[0]);
         if (label != NULL)
         {
             if (label->lineNum != 0)
@@ -59,19 +59,19 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
                 return FAILURE_CANNOT_ALLOCATE_MEMORY;
         }
 
-    label->type = (strcmp(operand[1], ".string") == 0) ? STRING : (strcmp(operand[1], ".data") == 0) ? DATA
-                                                                                                     : CODE;
+        label->type = (strcmp(operand[1], ".string") == 0) ? STRING : (strcmp(operand[1], ".data") == 0) ? DATA
+                                                                                                         : CODE;
     }
-    *deltacount = enterdatatoline(size, line->lineNum, operand, line, &status, tables, tablesize);
-    if (*deltacount == -1)
-    {
-        free(label);
-        return status;
-    }
-
     /* label->lineNum = *instructionCount;*/
-    if (!is_in_table && assembly_run<2)
+    if (!is_in_table && assembly_run < 2)
     {
+        *deltacount = enterdatatoline(size, line->lineNum, operand, line, &status, tables, tablesize);
+        if (*deltacount == -1)
+        {
+            free(label);
+            return status;
+        }
+
         *tables = AddtoLabelTable(*tables, label, tablesize);
     }
     return SUCCESS;
@@ -158,30 +158,23 @@ int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePt
     int result;
 
     /* Use the new processDirectives function for .string and .data */
-    if (strcmp(operand[1], ".string") == 0 || strcmp(operand[1], ".data") == 0  )
+    if (strcmp(operand[1], ".string") == 0 || strcmp(operand[1], ".data") == 0)
     {
-        if(assembly_run==2)
-        return 0;
-
+        if (assembly_run == 2)
+            return 0;
         result = processDirectives(sizewords - 1, operand + 1, line, status);
         if (result == -1)
         {
             return -1;
         }
+        data_line_couter += result;
         return result;
     }
     else
     {
-        /* Process non-directive instructions */
-        line->assemblyCode = cheackSentece(operand + 1, sizewords - 1, table, tablesize, status, line->lineNum, &sizeofdata);
-        if (*status != SUCCESS && *status != WAIT_TO_ALL_LIBEL)
-        {
-            print_error(*status, line->lineNum, line->line);
-            return -1;
-        }
-        line->assemblyCodeCount += sizeofdata;
+        result = process_sentence(line, operand + 1, sizewords - 1, table, tablesize, status);
     }
-    return line->assemblyCodeCount;
+    return result;
 }
 labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int *size)
 {

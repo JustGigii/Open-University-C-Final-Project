@@ -12,6 +12,8 @@
 #define MY_RESERVED_NO_OPRAND_WORDS_COUNT 2 /* size of my_reserved_no_oprand_words add my beacuse defined in stdio*/
 
 extern int assembly_run;
+extern int data_line_couter;   
+extern int code_line_couter;
 
 extern const char *my_reserved_Two_oprand_words[]; /* array of the reserved two oprand words*/
 

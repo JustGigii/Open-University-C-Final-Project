@@ -6,10 +6,13 @@ const char *my_reserved_one_oprand_words[] = { "clr", "not", "inc", "dec", "jmp"
 const char *my_reserved_no_oprand_words[] = { "rts","stop"};
 
 int assembly_run =0;
+int data_line_couter =0;    
+int code_line_couter =0;
 void print_Table(labelPtr *tables, int tablesize)
  {
     int i,j;
     labelPtr addr;
+    /*
     for (i = 0; i < tablesize; i++)
     {
         printf("%s: %d ", tables[i]->name, tables[i]->lineNum);
@@ -36,7 +39,7 @@ void print_Table(labelPtr *tables, int tablesize)
         }
         printf("\n");
     }
-    printf("\n");
+    printf("\n");*/
     for ( i = 0; i < tablesize; i++)
     {
         addr = tables[i];
@@ -48,11 +51,26 @@ void print_Table(labelPtr *tables, int tablesize)
             }
         }
     }
+
     
+}
+void print_hexadecimal_line(const LinePtr head)
+{
+    int i;
+    LinePtr temp = head;
+    while (temp)
+    {
+        for(i=0; i < temp->assemblyCodeCount; i++)
+        {
+            printf("%d %02x\n",temp->lineNum+i, temp->assemblyCode[i]);
+        }
+        temp = temp->next;
+    }
 }
 BOOLEAN print_operand(LinePtr heads)
 {
-
+    BOOLEAN is_succsess = TRUE;
+    SATATUS is_line_succsess = SUCCESS;
     int i;
     labelPtr *tables = NULL;
     int tablesize = 0, instructionCount = START_LINE;
@@ -62,14 +80,23 @@ BOOLEAN print_operand(LinePtr heads)
     {    
     while (temp)
     {
-        print_error(check_operand(temp, &tables, &tablesize, &instructionCount) != SUCCESS, temp->lineNum, temp->line);
+        is_line_succsess == check_operand(temp, &tables, &tablesize, &instructionCount);
+        if (is_line_succsess != SUCCESS)
+        {
+            is_succsess = FALSE;
+            print_error(is_line_succsess, temp->lineNum, temp->line);
+        }
         temp = temp->next;
     }
     temp = heads;
     assembly_run = 2;
     }
     print_Table(tables, tablesize);
-    
+    printf("\n");
+    printf("%d %d", code_line_couter, data_line_couter);
+    printf("\n");
+    print_hexadecimal_line(heads);
+    return is_succsess;
 }
 SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount)
 {
@@ -97,36 +124,15 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
     if (strarray[0][strlen(strarray[0]) - 1] == ':')
     {
         status =  ProcessLabel(strarray, line, instructionCount, tables, tablesize,size,&deltacount);
-        print_error(status,line->lineNum,line->line);
+
     }
     else
     {
-        x=cheackSentece(strarray,size,tables ,tablesize, &status,line->lineNum, &deltacount);
-        if (status != SUCCESS && status != DATA_HANDLER && status != WAIT_TO_ALL_LIBEL)
-        {
-            return status;
-        }
-        if(status== DATA_HANDLER)
-        {
-        deltacount=processDirectives(size,strarray,line,&status);
-        }
-        if (status == WAIT_TO_ALL_LIBEL)
-        {
-            if (assembly_run == 2)
-            {
-                return LABEL_NOT_FOUND;
-            }
-            free(line->assemblyCode);
-        }
-        else
-        {
-        line->assemblyCode = x;
-        line ->assemblyCodeCount = deltacount;
-        }
+        deltacount = process_sentence(line, strarray, size, tables, tablesize, &status);
     }
     if (assembly_run<2)
     {
-        line->lineNum = *instructionCount;
+        line->lineNum =*instructionCount;
         *instructionCount += deltacount;
     }
     freeIneersplit(strarray, size); 
