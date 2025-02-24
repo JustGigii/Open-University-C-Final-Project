@@ -14,6 +14,8 @@
 extern int assembly_run;
 extern int data_line_couter;   
 extern int code_line_couter;
+extern BOOLEAN is_extern;
+extern BOOLEAN is_intern;
 
 extern const char *my_reserved_Two_oprand_words[]; /* array of the reserved two oprand words*/
 
@@ -21,7 +23,7 @@ extern const char *my_reserved_one_oprand_words[]; /* array of the reserved one 
 
 extern const char *my_reserved_no_oprand_words[]; /* array of the reserved no oprand words*/
 
-BOOLEAN print_operand(LinePtr heads);
+labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables);
 SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount);
 
 BOOLEAN check_no_save_word(const char *label);

@@ -2,7 +2,7 @@
 CC=gcc
 CFLAGS= -ansi -Wall -pedantic -g3 -w
 
-OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o MacroSystem.o LineDetction.o prosseLabel.o print_error.o cheackSentece.o
+OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o MacroSystem.o LineDetction.o prosseLabel.o print_error.o cheackSentece.o ValditionLine.o PrintForFile.o
 
 program: $(OBJECTS)
 	$(CC) $(CFLAGS) -o program $(OBJECTS)
@@ -35,5 +35,12 @@ print_error.o: source/print_error.c
 
 cheackSentece.o: source/cheackSentece.c
 	$(CC) $(CFLAGS) -c source/cheackSentece.c
+
+ValditionLine.o: source/ValditionLine.c
+	$(CC) $(CFLAGS) -c source/ValditionLine.c
+
+PrintForFile.o: source/PrintForFile.c
+	$(CC) $(CFLAGS) -c source/PrintForFile.c
+
 clean:
 	rm -rf *.o program

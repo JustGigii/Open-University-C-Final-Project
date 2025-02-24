@@ -58,7 +58,10 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "cheacksentece.h": "c",
-    "linedetction.h": "c"
+    "linedetction.h": "c",
+    "publicdef.h": "c",
+    "valditionline.h": "c",
+    "nodedata.h": "c"
   },
   "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

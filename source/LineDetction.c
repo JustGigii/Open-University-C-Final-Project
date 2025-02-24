@@ -8,66 +8,9 @@ const char *my_reserved_no_oprand_words[] = { "rts","stop"};
 int assembly_run =0;
 int data_line_couter =0;    
 int code_line_couter =0;
-void print_Table(labelPtr *tables, int tablesize)
- {
-    int i,j;
-    labelPtr addr;
-    /*
-    for (i = 0; i < tablesize; i++)
-    {
-        printf("%s: %d ", tables[i]->name, tables[i]->lineNum);
-        switch (tables[i]->type)
-        {
-        case CODE:
-            printf("code");
-            break;
-        case DATA:
-            printf("data");
-            break;
-        case STRING:
-            printf("string");
-            break;
-        }
-        if(tables[i]->is_entry ==TRUE)
-        {
-            printf(" ,entry");
-        }
-        if(tables[i]->is_extern ==TRUE)
-        {
-            printf(" extern");
-
-        }
-        printf("\n");
-    }
-    printf("\n");*/
-    for ( i = 0; i < tablesize; i++)
-    {
-        addr = tables[i];
-        if(tables[i]->is_extern ==TRUE)
-        {
-            for ( j = 0; j < tables[i]->size_of_where_mentioned; j++)
-            {
-                printf("%s: %d\n", tables[i]->name, addr->where_mentioned[j]);
-            }
-        }
-    }
-
-    
-}
-void print_hexadecimal_line(const LinePtr head)
-{
-    int i;
-    LinePtr temp = head;
-    while (temp)
-    {
-        for(i=0; i < temp->assemblyCodeCount; i++)
-        {
-            printf("%d %02x\n",temp->lineNum+i, temp->assemblyCode[i]);
-        }
-        temp = temp->next;
-    }
-}
-BOOLEAN print_operand(LinePtr heads)
+BOOLEAN is_extern = FALSE;
+BOOLEAN is_intern = FALSE;
+labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables)
 {
     BOOLEAN is_succsess = TRUE;
     SATATUS is_line_succsess = SUCCESS;
@@ -91,12 +34,14 @@ BOOLEAN print_operand(LinePtr heads)
     temp = heads;
     assembly_run = 2;
     }
-    print_Table(tables, tablesize);
+    /*
+    print_extern(tables, tablesize);
     printf("\n");
-    printf("%d %d", code_line_couter, data_line_couter);
+    print_intern(tables, tablesize);
     printf("\n");
-    print_hexadecimal_line(heads);
-    return is_succsess;
+    print_hexadecimal_line(heads);*/
+    *sizeofTables = tablesize;
+    return is_succsess? tables: NULL;
 }
 SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount)
 {

@@ -102,6 +102,7 @@ BOOLEAN processString(char *tav, LinePtr line)
 SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN has_lable)
 {
     int i, converted;
+    char *data;
     i = has_lable ? 2 : 1;
     unsigned int unsingedconverted; /*convert the number to unsigned to show binary*/
     line->assemblyCode = malloc(wordcount - i);
@@ -109,7 +110,7 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
         return FAILURE_CANNOT_ALLOCATE_MEMORY;
     for (i = 1; i < wordcount; i++)
     {
-        char *data = word[i];
+        data = word[i];
         if (data[strlen(data) - 1] != ',' && i < wordcount - 1 && word[i + 1][0] != ',')
         {
             free(line->assemblyCode);

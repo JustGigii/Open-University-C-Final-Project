@@ -10,9 +10,10 @@
 int main(int argc, char* argv[]) {
     char* filename;
     BOOLEAN macroflag=TRUE;
-    int i;
+    int i,sizeoftable;
     char* am=".am";
     LinePtr head = NULL;
+    labelPtr * tables;
      if (argc < 2) {
          printf("Usage: %s <filename>\n", argv[0]);
         return 1;
@@ -35,7 +36,22 @@ int main(int argc, char* argv[]) {
                printf("Error: Macro's definition is invalid\n");
           }
            /*PrintLines(head);*/
-           print_operand(head);
+           tables =  CreateAssemblyLine(head,&sizeoftable);
+           if(tables!=NULL)
+           {
+             print_hexadecimal_line(head);
+             printf("\n");
+           }
+             if (is_extern)
+             {
+             print_extern(tables, sizeoftable);
+             printf("\n");
+             }
+             if (is_intern)
+             {
+              print_intern(tables, sizeoftable);
+              printf("\n");
+             }        
         }
         printf("End of program.\n");
         return 0; 
