@@ -113,6 +113,8 @@ int PrintLines(const LinePtr head)
 int freeLine(LinePtr Line)
 {
     free(Line->line);
+    if(Line->assemblyCode);
+    free(Line->assemblyCode);
     free(Line);
     return 0;
 }

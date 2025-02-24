@@ -53,6 +53,7 @@ int main(int argc, char* argv[]) {
               printf("\n");
              }        
         }
+          free_tables(tables, sizeoftable);
         printf("End of program.\n");
         return 0; 
    }

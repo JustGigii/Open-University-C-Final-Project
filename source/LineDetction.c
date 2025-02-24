@@ -122,4 +122,16 @@ labelPtr cheack_Label_Exist(const labelPtr *labels[],int size_of_labels,const ch
     }
     return NULL;
 }
+
+BOOLEAN free_tables(labelPtr *tables, int size){
+    int i;
+    for (i = 0; i < size; i++)
+    {
+        tables[i]->where_mentioned;
+        free(tables[i]->name);
+        free(tables[i]);
+    }
+    free(tables);
+    return TRUE;
+}
   
