@@ -2,14 +2,14 @@
 
 int GetFileData(char* filename,LinePtr* head) {
     char * data;
-    FILE* file = OpenFile(filename, "r");
+    FILE* file = OpenFile(filename, "r");/*open file*/
     int status = 1;
-    if (!IfFileEndCottract(filename) || !file)
+    if (!IfFileEndCottract(filename) || !file)/*check if the file open and has the correct extension*/
     {
-        printf("File exists and has the correct extension.\n");
+        printf("File %s does not exists or has the correct extension.\n",filename);
        status = 0;
     }
-    else
+    else 
     {
         *head= InitData(file);
         if (!*head)
@@ -63,8 +63,8 @@ LinePtr InitData(FILE* datafile) {
     size_t len = 0;
     short read;
     LinePtr head = NULL;
-    while ((read = getline(&line, &len, datafile)) != -1) {
-        if(strlen(line)> MAX_SIZE_OF_LINE)
+    while ((read = getline(&line, &len, datafile)) != -1) {/*read the file until end of file*/
+        if(strlen(line)> MAX_SIZE_OF_LINE)/*check if the line is too long*/
         {
             printf("line %d is too long\n",head->lineNum);
             return NULL;
@@ -90,30 +90,28 @@ FILE* OpenFile(char* filename,char* mode) {
 
 int IfFileEndCottract(char* filename) {
     int len = strlen(filename);
-    if (len < 3 || strstr(filename, ".sh") == NULL) {
+    if (len <= 3 || strcmp(&filename[len - 3], ".sh")) /*check if the file has the correct extension or only extension*/
         return 0;
-    }
     return 1;
 }
 
 void CreateFileFromList(char* filename,LinePtr  head)
 {
-  FILE* file = OpenFile(filename,"w");
-  printf("File %s created.\n",filename);
-    if (file!= NULL ) {
-        while (head!=NULL){
+  FILE* file = OpenFile(filename,"w");/*open file to write*/
+    if (file!= NULL ) {/*if file is open*/
+        while (head!=NULL){/*write the data from the list to the file*/ 
             fprintf(file,"%s\n",head->line);
             head = head->next;
         }
         fclose(file);
     }
 }
-/*cut extension of file name to enable creating new extension*/
+/*cut extension of file name to enable creating new extension (asume that the file has extension)*/
 char * RenameExtensionfile(char* filename,char* newextension) {
   int i=0;
-  while (filename[i] != '.')
+  while (filename[i] != '.')/*find the dot before the extension*/
       ++i;
-  filename[i] = '\0';
-  filename=strcat(filename,newextension);
+  filename[i] = '\0';/*cut the extension*/
+  filename=strcat(filename,newextension);/*add the new extension*/
   return filename;
 }
