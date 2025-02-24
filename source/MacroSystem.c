@@ -32,7 +32,6 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
         if (*ptrmacroflag==FALSE)
              return NULL;
     }
-    printf("==%d==%d\n",*ptrmacroflag,FALSE);
       
     /*second stage: look after macro and replace them */
         temp = globalline;

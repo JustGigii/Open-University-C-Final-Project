@@ -1,5 +1,6 @@
 #include "../header/FileHandler.h"
 
+
 int GetFileData(char* filename,LinePtr* head) {
     char * data;
     FILE* file = OpenFile(filename, "r");/*open file*/
@@ -58,6 +59,7 @@ int ProcessLine(LinePtr* head, const char* line) {
     return 1;
 }
 
+
 LinePtr InitData(FILE* datafile) {
     char* line = NULL;
     size_t len = 0;
@@ -79,6 +81,7 @@ LinePtr InitData(FILE* datafile) {
     return head;
 }
 
+
 FILE* OpenFile(char* filename,char* mode) {
         FILE* file = fopen(filename, mode);
     if (file == NULL) {
@@ -88,12 +91,14 @@ FILE* OpenFile(char* filename,char* mode) {
     return file;
 }
 
+
 int IfFileEndCottract(char* filename) {
     int len = strlen(filename);
     if (len <= 3 || strcmp(&filename[len - 3], ".sh")) /*check if the file has the correct extension or only extension*/
         return 0;
     return 1;
 }
+
 
 void CreateFileFromList(char* filename,LinePtr  head)
 {
@@ -115,6 +120,8 @@ char * RenameExtensionfile(char* filename,char* newextension) {
   filename=strcat(filename,newextension);/*add the new extension*/
   return filename;
 }
+
+
 
 
 void createcodefiles(char* filename,LinePtr head){
@@ -144,7 +151,6 @@ void createcodefiles(char* filename,LinePtr head){
         fclose(outfile);
     }
     freopen("CON", "w", stdout);
-    printf("check uotput files\n");
-    fprintf(stderr,"End of program execution.\n");
-    /*free_tables(tables, sizeoftable);*/
+    printf("End of program execution.\n");
+    free_tables(tables, sizeoftable);
 }
