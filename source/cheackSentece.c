@@ -94,13 +94,13 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
         /* ingnore the extern in the second run*/
         if(assembly_run == 2)
         return NULL;
-        is_extern = TRUE; /*mark on gloabal variable the sentense as extern*/
         /*check if the label is already in the table*/
         if(cheack_Label_Exist(tables, *tablesize, words[1]) != NULL)
         {
             *status = LABEL_ALREADY_EXIST; /*the label is already in the table is a erro*/
             return NULL;
         }
+        is_extern = TRUE; /*mark on gloabal variable the sentense as extern*/
         /*add the label to the table*/
         labelPtr label = create_label(words[1], 0);
         if (label == NULL) {
@@ -116,8 +116,7 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
     /*check for entry*/
     if (strcmp(*words,".entry")==0)
     {
-        /* mark on gloabal variable the sentense as entry*/
-        is_intern = TRUE;
+
         /* ingnore the entry add when only the label defined*/
         if(assembly_run < 2)
         {
@@ -131,6 +130,8 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
             *status = LABEL_ALREADY_EXIST; /*the label is already have a symbol is a erro*/
         else
         {
+                            /* mark on gloabal variable the sentense as entry*/
+        is_intern = TRUE;
         /*mark label as entry*/
         label->is_entry = TRUE;
         }

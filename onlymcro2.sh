@@ -9,4 +9,4 @@ work
 mcro work
 sub r1, r4
 mcroend
-END: .string "abcd"
+END: .extern T7
