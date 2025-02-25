@@ -136,6 +136,8 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
                 free(line->assemblyCode);
                 return FAILURE_OUT_OF_RANGE;
             }
+            if(data[0] == '+' && converted < 0) 
+                return FAILURE_OUT_OF_RANGE;
             converted = (data[0] == '+') ? converted : -converted; /* Convert the data to an integer */
             unsingedconverted = converted; /*convert the number to unsigned to show binary*/
         }
@@ -238,7 +240,7 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
         {
 
             free(line->assemblyCode);
-            return -1;
+                return -1;
         }
         return line->assemblyCodeCount; /* Return the size of the data */
     }

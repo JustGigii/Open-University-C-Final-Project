@@ -76,7 +76,7 @@ SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *ins
         /* check if the command is valid */
         deltacount = process_sentence(line, strarray, size, tables, tablesize, &status);
     }
-    if (assembly_run<2) /* update the line number 'ic' if we are in the first run*/
+    if (assembly_run<2 && deltacount != -1) /* update the line number 'ic' if we are in the first run*/
     {
         line->lineNum =*instructionCount; /* update the line number*/
         *instructionCount += deltacount; /* update the instruction count*/

@@ -5,6 +5,6 @@ work
 move
  .data 150000000000
 mcro work
-add #2, r1
+add #2000000000000, r1
 mcroend
 work

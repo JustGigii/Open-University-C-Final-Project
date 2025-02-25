@@ -24,7 +24,7 @@ int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables,
     /*check for errors in the binary code*/
     if (*status != SUCCESS && *status != DATA_HANDLER && *status != WAIT_TO_ALL_LIBEL)
     {
-        return 0;
+        return -1;
     }
     /*handel if found data without label*/
     if (*status == DATA_HANDLER )
@@ -44,7 +44,7 @@ int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables,
             return deltacount;
         }
         else 
-        return 0;
+        return -1;
     }
     /*handel if found label in code and is not in table*/
     if (*status == WAIT_TO_ALL_LIBEL)
@@ -146,7 +146,7 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
         *status = SUCCESS;
         return oprandshandler(words[0], NULL, 0, status,sizeofSentece ,linenumber);
     }
-    if (sizewords > 2) /* if more than one oprand*/
+    if (sizewords > 2)
     {
         /* combine the oprands */
         combineorands = combineStrings(words + 1, sizewords - 1, "");

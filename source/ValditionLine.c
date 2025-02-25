@@ -41,7 +41,8 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
             free(x);
             return NULL;
         }
-        numberdest = cheackoprandtype(oprands[0], &typedest); /* get the type of the operand */
+        numberdest = cheackoprandtype(oprands[0], &typedest, status); /* get the type of the operand */
+        CheackifSuccses(*status);
         if (typedest == -1)                                   /* Check if the operand is valid */
         {
             *status = MISSING_PARAMETER;
@@ -110,8 +111,10 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
             free(x);
             return NULL;
         }
-        numbersource = cheackoprandtype(oprands[0], &typesource); /* get the type of the source operand */
-        numberdest = cheackoprandtype(oprands[1], &typedest);     /* get the type of the destination operand */
+        numbersource = cheackoprandtype(oprands[0], &typesource, status); /* get the type of the source operand */
+        CheackifSuccses(*status);/* Check if the operand is valid */
+        numberdest = cheackoprandtype(oprands[1], &typedest, status);     /* get the type of the destination operand */
+        CheackifSuccses(*status); /* Check if the operand is valid */
         if (typesource == -1 || typedest == -1)                   /* Check if the operand is valid */
         {
             *status = ILIGAL_VALUE;
@@ -191,7 +194,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
     return x;
 }
 
-int cheackoprandtype(char const *oprand, int *type)
+int cheackoprandtype(char const *oprand, int *type, SATATUS *status)
 {
     labelPtr label = NULL;
     int number = -1;
@@ -202,13 +205,40 @@ int cheackoprandtype(char const *oprand, int *type)
         *type = 0;
         if (oprand[1] == "+" || oprand[1] == "-") /* register can have + or - */
         {
+            if(strlen(oprand+2) > 7)/* maxsimus digit can handel*/
+            {
+                *status = FAILURE_OUT_OF_RANGE;
+                return -1;
+            }
             minus = oprand[1] == '-' ? -1 : 1; /* set the sign of the number */
             number = atoi(oprand + 2);         /* get the number */
         }
         else
+        {
+            if(strlen(oprand+1) > 8) /* maxsimus digit can handel*/
+            {
+                *status = FAILURE_OUT_OF_RANGE;
+                return -1;
+            }
             number = atoi(oprand + 1);                  /* get the number */
+        }
         if (number == -1 && strcmp(oprand, "#-1") != 0) /* check if the convert is succses */
             *type = -1;                                 /* the convert is failed */
+        if (minus == -1 && number != -1)
+        {
+            *status = FAILURE_OUT_OF_RANGE;
+            return -1;
+        }
+        if(oprand[1] == '+' && number < 0)
+        {
+            *status = FAILURE_OUT_OF_RANGE;
+            return -1;
+        }
+        if(oprand[1] != '-' && oprand[1] != '+' && number < 0)
+        {
+            *status = FAILURE_OUT_OF_RANGE;
+            return -1;
+        }
         break;
 
     case 'r':

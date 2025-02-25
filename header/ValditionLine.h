@@ -30,11 +30,11 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
  *
  * @param oprand a string that should be checked if it is a valid operand
  * @param type a pointer to an int that will store the type of the operand
+ * @param status a pointer to a SATATUS that will store the status of the operand
  * @return the number value of the operand, or -1 if the string is not a valid
  * operand
  */
-int cheackoprandtype(char const *oprand, int *type);
-
+int cheackoprandtype(char const *oprand, int *type, SATATUS *status);
 /**
  * Process a label or number operand of an assembly instruction.
  *
