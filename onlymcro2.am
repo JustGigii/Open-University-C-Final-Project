@@ -1,4 +1,6 @@
 sub r1, r4
 add #2, r1
-T7: add r3 ,#3
+T7: add #3, r1
 .entry T7
+.extern T8
+add T8 , T8

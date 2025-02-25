@@ -183,7 +183,7 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
         return NULL;
     }
     /* check for error missing comma in the oprands */
-    if (sizeofoprands != 0 && sizeofoprands >= sizewords - 1)
+    if (sizeofoprands != 0 && sizeofoprands >= sizewords - 2)
     {
         /* check for error or excute the command */
         *status = SUCCESS;

@@ -1,1 +1,2 @@
-T7: add r3 ,#3
+.extern T8
+add T8 , T8
