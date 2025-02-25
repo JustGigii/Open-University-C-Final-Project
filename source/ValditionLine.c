@@ -285,6 +285,7 @@ int process_type(labelPtr label, const char *labelname, int type, int number, in
                     status = FAILURE_CANNOT_ALLOCATE_MEMORY;
                     return 0;
                 }
+                extern_mention_counter++;
                 label->where_mentioned[label->size_of_where_mentioned] = line_number; /* add the line number*/
                 label->size_of_where_mentioned++; /* increase the size of where_mentioned*/
             }

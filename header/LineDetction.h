@@ -11,11 +11,13 @@
 #define MY_RESERVED_ONE_OPRAND_WORDS_COUNT 9 /* size of my_reserved_one_oprand_words add my beacuse defined in stdio*/
 #define MY_RESERVED_NO_OPRAND_WORDS_COUNT 2 /* size of my_reserved_no_oprand_words add my beacuse defined in stdio*/
 
-extern int assembly_run;
-extern int data_line_couter;   
-extern int code_line_couter;
-extern BOOLEAN is_extern;
-extern BOOLEAN is_intern;
+extern int assembly_run; /* 1 for the first run and 2 for the second run*/
+extern int data_line_couter;   /* counter of the data line*/
+extern int code_line_couter; /* counter of the code line*/
+extern BOOLEAN is_extern; /* if the lines have extern*/
+extern BOOLEAN is_intern; /* if the lines have intern*/
+extern int extern_mention_counter; /* how many extern mention*/
+
 
 extern const char *my_reserved_Two_oprand_words[]; /* array of the reserved two oprand words*/
 

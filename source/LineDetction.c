@@ -8,6 +8,7 @@ const char *my_reserved_no_oprand_words[] = { "rts","stop"};/* array of the rese
 int assembly_run =0;/* 1 for the first run and 2 for the second run*/
 int data_line_couter =0;    /* counter of the data line*/
 int code_line_couter =0; /* counter of the code line*/
+int extern_mention_counter =0; /* how many extern mention*/
 BOOLEAN is_extern = FALSE; /* if the lines have extern*/
 BOOLEAN is_intern = FALSE; /* if the lines have intern*/
 labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables,SATATUS *status)
@@ -38,6 +39,8 @@ labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables,SATATUS *status)
     temp = heads; /* go back to the first line*/
     assembly_run = 2; /* start the second run*/
     }
+    if(extern_mention_counter == 0)
+        is_extern = FALSE;
     *status = (is_succsess ==TRUE)?SUCCESS:FAILURE; /* set the status*/
     *sizeofTables = tablesize; /* set the size of the label table*/
     return is_succsess? tables: NULL; /* return the label table if have label*/
