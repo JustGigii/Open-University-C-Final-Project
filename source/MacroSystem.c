@@ -19,7 +19,7 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     globalline->next = head;
     temp = globalline;
     /*first stage:collect definition of macro */
-    while (temp->next)
+    while (temp && temp->next)
     {
       if (strstr(temp->next->line, "mcro"))
         {

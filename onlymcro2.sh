@@ -6,6 +6,6 @@ mcro work
 add #2, r1
 mcroend
 work
-mcro r3
+mcro work
 sub r1, r4
 mcroend
