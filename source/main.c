@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     char* am=".am";
     LinePtr head = NULL;
     LinePtr aftermacro= NULL;
-     if (argc < 2) {
+     if (argc < 2) { /*if the user did not enter a file name*/
          printf("Usage: %s <filename>\n", argv[0]);
         return 1;
      }

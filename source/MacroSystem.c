@@ -15,7 +15,7 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     int macroindex = 0;
     int succsec;
     int indextofree;
-    LinePtr globalline = InitLine("mman14100", 34);/*create fake line for head becouse the checking start to check from the next line*/
+    LinePtr globalline = InitLine("mman14100", 100);/*create fake line for head becouse the checking start to check from the next line*/
     globalline->next = head;
     temp = globalline;
     /*first stage:collect definition of macro */
@@ -149,6 +149,12 @@ int getmacroname(char **linearray, int size,BOOLEAN *ptrmacroflag)
            *ptrmacroflag=FALSE;
             return -1;
         }
+    if (strlen(linearray[1]) == 2 && linearray[1][0] == 'r' &&  linearray[1][1] >= '1' && linearray[1][1] <= '9')
+        {
+            printf("error: Macro's name %s is register name word\n",linearray[1]);
+           *ptrmacroflag=FALSE;
+            return -1;
+        }
      if ( strcmp(linearray[0], "mcro")==0)/*if the first word is mcro*/
         return 1;
     else
@@ -163,12 +169,16 @@ LinePtr AddMacroToProgram(LinePtr temp, LinePtr list)
 {
     LinePtr newLine;
     LinePtr prev = temp;
+    /*copy the macro definition*/
     newLine = temp->next;
+    /*make the next line of the macro the next line of the macro definition*/
     temp->next = newLine->next;
+    /*delete the macro definition*/
     freeLine(newLine);
     LinePtr next = temp->next;
     while (list)/*copy the macro to the program*/
     {
+        /*copy the line*/
         newLine = InitLine(list->line,-1);
         prev->next = newLine;
         prev= prev->next;

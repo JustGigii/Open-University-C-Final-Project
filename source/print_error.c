@@ -2,7 +2,7 @@
 
 void print_error(SATATUS status,int linenum,char *line)
 {
-    switch (status)
+    switch (status) /* print the error */
     {
         case FAILURE_CANNOT_ALLOCATE_MEMORY:
             printf("in line %d: \"%s\": cannot allocate memory\n", linenum, line);

@@ -1,8 +1,5 @@
 #include "../header/FileHandler.h"
-#define checkopenfile   if( outfile == NULL) \
-{ \
-    printf("we have a problem with opning the file: %s\n",filename);\
-}\
+
 
 int GetFileData(char* filename,LinePtr* head) {
     char * data;
@@ -44,10 +41,13 @@ int ProcessLine(LinePtr* head, const char* line) {
     if (len > 0 && processedLine[len - 1] == '\n') {
         processedLine[len - 1] = '\0';
     }
+    /*Remove the space character, if present in last character*/
+    if(len > 0 && processedLine[len - 1] == ' ')
+        processedLine[len - 1] = '\0';
 
     /* Initialize the head or add to the list */
     if (!*head) {
-        *head = InitLine(processedLine, 1);
+        *head = InitLine(processedLine, 1); /* Initialize the head with line number 1*/
         if (!*head) {
             free(processedLine);
             return 0;
@@ -86,8 +86,9 @@ LinePtr InitData(FILE* datafile) {
 
 
 FILE* OpenFile(char* filename,char* mode) {
+        /* Open the file */
         FILE* file = fopen(filename, mode);
-    if (file == NULL) {
+    if (file == NULL) { /* Check if the file was opened successfully */
         printf("File %s does not exist.\n",filename);
         return NULL;
     }
@@ -131,10 +132,12 @@ void createcodefiles(char* filename,LinePtr head){
     char *ob=".ob",*ent=".ent",*ext=".ext";
     int sizeoftable;
     SATATUS status;
+    /* Create the code files from the assembly lines and initialize the tables */
     labelPtr * tables =  CreateAssemblyLine(head,&sizeoftable,&status);
    FILE* outfile;
    if (status==SUCCESS ) /*if file is open*/
    {
+        /* Create the code files from the assembly lines redirecting the standard output to write to the file */
         outfile =freopen(RenameExtensionfile(filename,ob), "w", stdout);
         checkopenfile
         print_hexadecimal_line(head);
@@ -158,10 +161,11 @@ void createcodefiles(char* filename,LinePtr head){
         fclose(outfile);
     }
     #ifdef _WIN32 /*for our testing run for windows*/
-    freopen("CON", "w", stdout) ;
+    freopen("CON", "w", stdout) ; /*redirect the standard output to the console for windows*/
     #else
-    freopen("/dev/tty", "w", stdout);
+    freopen("/dev/tty", "w", stdout); /*redirect the standard output to the console for linux*/
     #endif
     printf("End of program execution file.\n");
-    free_tables(tables, sizeoftable);
+    free_tables(tables, sizeoftable); /*free the tables*/
+    freelinllist(head);/*free the linked list*/
 }

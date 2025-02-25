@@ -83,4 +83,4 @@ char *strnduplower(char *str, int chars);
  * @return The combined string, or NULL if memory allocation fails or if the input array is empty.
  */
 char* combineStrings(char** strings, int count, const char* separator);
-#endif  /*STRING_UTILSH*/ 
+#endif 

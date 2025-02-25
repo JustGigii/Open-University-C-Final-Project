@@ -90,5 +90,12 @@ int PrintLines(LinePtr head);
  * and the line structure itself.
  */
 int freeLine(LinePtr Line);
-
+/**
+ * Frees the memory allocated for all lines in the linked list.
+ *
+ * @param head the head of the linked list
+ *
+ * @return TRUE if the memory was freed successfully, FALSE otherwise
+ */
+BOOLEAN freelinllist(LinePtr head);
 #endif

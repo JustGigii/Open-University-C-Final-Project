@@ -7,6 +7,11 @@
 #include "../header/NodeData.h"
 #include "../header/PublicDef.h"
 #include "../header/LineDetction.h"
+/*define a maccro that check if the file is open successfully if the file is not open it will print an error message*/
+#define checkopenfile   if( outfile == NULL) \
+{ \
+    printf("we have a problem with opning the file: %s\n",filename);\
+}\
 
 /**
  * This function get a file name and a pointer to a pointer to a line structure and open the file.
@@ -73,4 +78,6 @@ void CreateFileFromList(char* filename,LinePtr head);
  * @param head The head of the linked list containing the assembly lines.
  */
 void createcodefiles(char* filename,LinePtr head);
+
+
 #endif  
