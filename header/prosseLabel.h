@@ -132,4 +132,15 @@ labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int * size);
  * @return A pointer to the newly created label or NULL if memory allocation fails.
  */
 labelPtr create_label(const char *name, int lineNum);
+/**
+ * Checks if a given label name is valid.
+ *
+ * The function takes a label name as input and checks if it is valid.
+ * A label name is considered valid if it does not contain any invalid characters
+ * and does not have a colon (:) in the middle of the label name.
+ *
+ * @param label The label name to check.
+ * @return TRUE if the label name is valid, FALSE otherwise.
+ */
+BOOLEAN CheckLableName(const char * label);
 #endif // PROSSSELABEL_H

@@ -55,5 +55,9 @@ void print_error(SATATUS status,int linenum,char *line)
         case LABEL_TO_MUCH:
                 printf("in line %d: \"%s\": Label too long\n", linenum, line);
                 break;
+        case ILIGAL_LABEL_NAME:
+                printf("in line %d: \"%s\": Illegal label name\n", linenum, line);
+                break;
+
     } 
 }

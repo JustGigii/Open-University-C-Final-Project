@@ -41,6 +41,8 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
         return LABEL_TO_MUCH; 
     if (check_no_save_word(operand[0]) == FALSE) /* Check if the label is a reserved word */
         return SAVE_WORLD;
+    if (CheckLableName(operand[0]) == FALSE) /* Check if the label is valid */
+        return ILIGAL_LABEL_NAME; 
     if (assembly_run < 2)   /* if the first run*/
     {
         label = cheack_Label_Exist(tables, *tablesize, operand[0]); /* Check if the label already exist */
@@ -243,6 +245,23 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
     /* If the directive is neither .string nor .data, return an error */
     *status = FAILURE;
     return -1;
+}
+
+BOOLEAN CheckLableName(const char * label)
+{
+    char* tav = label;
+    int counter=0;
+    while (*tav != ':')
+    {
+        if(*tav< 'a'|| *tav>'z' || *tav< 'A' || *tav>'Z' && *tav< '0' || *tav>'9') /* Check if the character is valid */
+            return FALSE;
+        tav++;
+        counter++; /* Increment the counter */
+    }
+    if (counter == strlen(label) - 1) /* Check if not have ':' in the middle of the lablel*/
+        return TRUE;
+    return FALSE;
+
 }
 labelPtr create_label(const char *name, int lineNum)
 {
