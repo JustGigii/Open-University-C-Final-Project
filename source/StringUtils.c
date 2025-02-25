@@ -108,6 +108,7 @@ char *strnduplower(char *str, int chars)
     return newStr;
 }
 char* combineStrings(char** strings, int count, const char* separator) {
+    char* combined=NULL;
     int i;
     if (count <= 0) {
         return NULL; /* Return NULL for an empty input array */
@@ -125,7 +126,7 @@ char* combineStrings(char** strings, int count, const char* separator) {
     }
 
     /* Allocate memory for the combined string */
-    char* combined = (char*)malloc(totalLength + 1); /* +1 for null terminator */
+    combined = (char*)malloc(totalLength + 1); /* +1 for null terminator */
     if (!combined) {
         printf("Failed to allocate memory");
         return NULL;

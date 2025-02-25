@@ -35,10 +35,10 @@ extern const char *my_reserved_no_oprand_words[]; /* array of the reserved no op
  *
  * @param heads The head of the linked list of lines.
  * @param sizeofTables A pointer to store the size of the table of labels.
+ * @param status A pointer to store the status of the assembly line.
  * @return A pointer to the table of labels or NULL if an error occurs.
  */
-labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables);
-
+labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables,SATATUS *status);
 /**
  * Checks a single line of assembly code for errors and processes it.
  *

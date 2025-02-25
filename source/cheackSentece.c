@@ -47,7 +47,7 @@ int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables,
             *status = LABEL_NOT_FOUND;
             return 0;
         }
-        *status ==SUCCESS;
+        *status =SUCCESS;
         if(x != NULL)
         free(line->assemblyCode);
     }
@@ -59,7 +59,7 @@ int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables,
     if (assembly_run < 2)
     {
         code_line_couter += deltacount;
-        *status ==SUCCESS;
+        *status =SUCCESS;
     }
     
     return deltacount;

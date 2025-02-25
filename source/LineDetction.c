@@ -10,7 +10,7 @@ int data_line_couter =0;
 int code_line_couter =0;
 BOOLEAN is_extern = FALSE;
 BOOLEAN is_intern = FALSE;
-labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables)
+labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables,SATATUS *status)
 {
     BOOLEAN is_succsess = TRUE;
     SATATUS is_line_succsess = SUCCESS;
@@ -23,7 +23,7 @@ labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables)
     {    
     while (temp)
     {
-        is_line_succsess == check_operand(temp, &tables, &tablesize, &instructionCount);
+        is_line_succsess = check_operand(temp, &tables, &tablesize, &instructionCount);
         if (is_line_succsess != SUCCESS)
         {
             is_succsess = FALSE;
@@ -31,6 +31,8 @@ labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables)
         }
         temp = temp->next;
     }
+    if(is_succsess==FALSE|| tables ==NULL)
+        i=2;
     temp = heads;
     assembly_run = 2;
     }
@@ -40,6 +42,7 @@ labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables)
     print_intern(tables, tablesize);
     printf("\n");
     print_hexadecimal_line(heads);*/
+    *status = (is_succsess ==TRUE)?SUCCESS:FAILURE;
     *sizeofTables = tablesize;
     return is_succsess? tables: NULL;
 }

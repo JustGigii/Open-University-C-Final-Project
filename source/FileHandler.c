@@ -1,5 +1,8 @@
 #include "../header/FileHandler.h"
-
+#define checkopenfile   if( outfile == NULL) \
+{ \
+    printf("we have a problem with opning the file: %s\n",filename);\
+}\
 
 int GetFileData(char* filename,LinePtr* head) {
     char * data;
@@ -127,30 +130,38 @@ char * RenameExtensionfile(char* filename,char* newextension) {
 void createcodefiles(char* filename,LinePtr head){
     char *ob=".ob",*ent=".ent",*ext=".ext";
     int sizeoftable;
-    labelPtr * tables =  CreateAssemblyLine(head,&sizeoftable);
-   FILE* outfile = freopen(RenameExtensionfile(filename,ob), "w", stdout);
-   printf("createcodefiles\n");
-   if (outfile!= NULL&&tables!=NULL ) /*if file is open*/
-    {
+    SATATUS status;
+    labelPtr * tables =  CreateAssemblyLine(head,&sizeoftable,&status);
+   FILE* outfile;
+   if (status==SUCCESS ) /*if file is open*/
+   {
+        outfile =freopen(RenameExtensionfile(filename,ob), "w", stdout);
+        checkopenfile
         print_hexadecimal_line(head);
         printf("\n");
         fclose(outfile);
     }
-    outfile = freopen(RenameExtensionfile(filename,ext), "w", stdout);
-    if (outfile!= NULL&&is_extern) 
+    if (is_extern) 
     {
+        outfile = freopen(RenameExtensionfile(filename,ext), "w", stdout);
+        checkopenfile
         print_extern(tables, sizeoftable);
         printf("\n");
         fclose(outfile);
     }
-    outfile = freopen(RenameExtensionfile(filename,ent), "w", stdout);
-    if (outfile!= NULL&&is_intern) 
+    if (is_intern) 
     {
+        outfile = freopen(RenameExtensionfile(filename,ent), "w", stdout);
+        checkopenfile
         print_intern(tables, sizeoftable);
         printf("\n");
         fclose(outfile);
     }
-    freopen("CON", "w", stdout);
-    printf("End of program execution.\n");
+    #ifdef _WIN32 /*for our testing run for windows*/
+    freopen("CON", "w", stdout) ;
+    #else
+    freopen("/dev/tty", "w", stdout);
+    #endif
+    printf("End of program execution file.\n");
     free_tables(tables, sizeoftable);
 }

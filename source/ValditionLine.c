@@ -1,4 +1,9 @@
 #include "../header/ValditionLine.h"
+#define CheackifSuccses(stat) if(stat != SUCCESS && stat != WAIT_TO_ALL_LIBEL)\
+{\
+ free(x);\
+return NULL; \
+}
 unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATUS *status, int *sizeofSentece, int line_number)
 {
     *status = SUCCESS;
@@ -149,6 +154,8 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         if(opcode == -1)
         {
             *status = TO_MANY_PARAMETERS;
+            free(x);
+            return NULL;
         }
         x[0]|= opcode;
         if (typedest == 3 || typesource == 3)
@@ -160,7 +167,6 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         }
         if(*sizeofSentece ==1)
         {
-           
             return x;
         }
         if(*sizeofSentece==2)
@@ -168,12 +174,16 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
             x[1] =0; 
             /*the arrat size is 2 mean or first oprand is register or secend oprand is register*/
             x[1] |= process_type(label, oprands[0], typesource, numbersource, line_number+1,line_number, status);
+            CheackifSuccses(*status);
             x[1] |= process_type(label, oprands[1], typedest, numberdest,  line_number+1,line_number, status);
+            CheackifSuccses(*status);
         }
         else
         {
             x[1] = process_type(label, oprands[0], typesource, numbersource,  line_number+1,line_number, status);
+             CheackifSuccses(*status);
             x[2] = process_type(label, oprands[1], typedest, numberdest,  line_number+2,line_number, status);
+            CheackifSuccses(*status);
         }
       
     }
@@ -223,7 +233,7 @@ int process_type(labelPtr label, const char *labelname, int type, int number, in
     int i = 0;
     if(type == 3)
         return 0; /*not need to add is a register*/
-    if (assembly_run == 1)
+    if (assembly_run == 1 && type != 0)
     {
         *status = WAIT_TO_ALL_LIBEL;
         return 0;
