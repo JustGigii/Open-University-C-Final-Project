@@ -202,7 +202,7 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
 {
     int sizeofdata;
     char *tav;
-
+    *status = SUCCESS;
     if (strcmp(operand[0], ".string") == 0) /* Process the .string directive */
     {
         /* Check if there are exactly three words and the operand string is properly quoted */

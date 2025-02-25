@@ -5,7 +5,7 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": ["hii.sh"],
+      "args": ["onlymcro2.sh"],
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "c:/Open-University-C-Final-Project",
