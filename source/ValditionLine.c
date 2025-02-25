@@ -107,6 +107,9 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
     {
         if (is_two_oprand(commandname) == FALSE) /* Check if the command is in the list of commands with two operands */
         {
+            if(is_one_oprand(commandname) == TRUE || is_no_oprand(commandname) == TRUE) /* Check if the command is in the list of commands with one or no operands */
+                *status = TO_MANY_PARAMETERS;
+            else
             *status = TO_MANY_PARAMETERS;
             free(x);
             return NULL;
@@ -156,7 +159,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         }
         if (opcode == -1) /* if the opcode is not set */
         {
-            *status = TO_MANY_PARAMETERS;
+            *status = ILLEGAL_ADDRESSING;
             free(x);
             return NULL;
         }

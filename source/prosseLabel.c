@@ -107,15 +107,16 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
     char *data;
     i = has_lable ? 2 : 1;
     unsigned int unsingedconverted; /*convert the number to unsigned to show binary*/
-    line->assemblyCode = malloc(wordcount - i); /* Allocate memory for the array and handel lines with or without lables*/
-    if (line->assemblyCode == NULL) 
+    unsigned int  *arrayofdata /*convert the number to unsigned to show binary*/;
+    arrayofdata = malloc(wordcount - i); /* Allocate memory for the array and handel lines with or without lables*/
+    if (arrayofdata == NULL) 
         return FAILURE_CANNOT_ALLOCATE_MEMORY;
     for (i = 1; i < wordcount; i++)
     {
         data = word[i]; /* Get the data to convert ez to debug */
         if (data[strlen(data) - 1] != ',' && i < wordcount - 1 && word[i + 1][0] != ',') /* Check if there is a comma btween values */
         {
-            free(line->assemblyCode);
+            free(arrayofdata);
             return MISSING_COMMA;
         }
         if (data[strlen(data) - 1] == ',') /* Remove the comma to make the data valid to convert*/
@@ -128,12 +129,12 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
             converted = atoi(data + 1); /* Convert the data to an integer */
             if (converted == 0) /* Check the convert is valid  */
             {
-                free(line->assemblyCode);
+                free(arrayofdata);
                 return NOT_NUMBER;
             }
             if (converted > MAX_NUMBER || -converted < MIN_NUMBER) /* Check the number is valid  */
             {
-                free(line->assemblyCode);
+                free(arrayofdata);
                 return FAILURE_OUT_OF_RANGE;
             }
             if(data[0] == '+' && converted < 0) 
@@ -146,18 +147,20 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
             unsingedconverted = atoi(data); /* Convert the data to an integer */
             if (unsingedconverted == 0) /* Check the convert is valid  */
             {
-                free(line->assemblyCode);
+                free(arrayofdata);
                 return NOT_NUMBER;
             }
             if (unsingedconverted > MAX_UNUMBER) /* Check the number is valid unsinged  */
             {
-                free(line->assemblyCode);
+                free(arrayofdata);
                 return FAILURE_OUT_OF_RANGE;
             }
         }
        
-        line->assemblyCode[line->assemblyCodeCount++] = unsingedconverted; /* Add the converted data to the array */
+        arrayofdata[line->assemblyCodeCount++] = unsingedconverted; /* Add the converted data to the array */
+        
     }
+    line->assemblyCode = arrayofdata;
     return SUCCESS;
 }
 int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePtr line, SATATUS *status, labelPtr **table, int *tablesize)

@@ -110,7 +110,8 @@ int PrintLines(const LinePtr head)
 }
 int freeLine(LinePtr Line)
 {
-
+    if(Line->line == NULL) 
+    return 0;
     free(Line->line); /* Free the line dara */
     if(Line->assemblyCode != NULL) /* if the assembly code is not null */
     free(Line->assemblyCode); /* Free the assembly code data */
