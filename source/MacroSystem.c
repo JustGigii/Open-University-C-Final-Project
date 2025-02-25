@@ -7,6 +7,7 @@ const int my_reserved_count=20;
 
 LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 {
+    BOOLEAN ExistMacroflag = FALSE;
     LinePtr temp = head;
     LinePtr tofree;
     LinePtr add = NULL;
@@ -22,7 +23,7 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
     {
       if (strstr(temp->next->line, "mcro"))
         {
-
+            ExistMacroflag = TRUE;
             macroarray = addMacroToList(macroarray, macroindex, temp,ptrmacroflag);
             macroindex++;
             temp = temp->next;
@@ -32,7 +33,9 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
         if (*ptrmacroflag==FALSE)
              return NULL;
     }
-      
+    if (!ExistMacroflag)/*no macro in the program*/
+        return NULL; 
+
     /*second stage: look after macro and replace them */
         temp = globalline;
     while (temp->next){
