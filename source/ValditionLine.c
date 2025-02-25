@@ -85,6 +85,17 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
             opcode = (strcmp(commandname, "bne") == 0 && opcode == -1) ? BNE : opcode;
             opcode = (strcmp(commandname, "jsr") == 0 && opcode == -1) ? JSR : opcode;
         }
+        
+        if ((typedest == 0 || typedest == 2) && opcode == -1) 
+           if (strcmp(commandname, "clr") == 0||strcmp(commandname, "not") == 0||strcmp(commandname, "inc") == 0
+           ||strcmp(commandname, "dec") == 0||strcmp(commandname, "red") == 0) /* if the operand is label address or number */
+           {
+           *status = ILLEGAL_ADDRESSING;
+           free(x);
+           return NULL;
+           }
+        
+        
         if (strcmp(commandname, "prn") == 0 && typedest == 2 && opcode == -1) /* if the operand is label address */
         {
             *status = ILLEGAL_ADDRESSING;
