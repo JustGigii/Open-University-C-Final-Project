@@ -26,7 +26,6 @@ int ProcessLine(LinePtr *head, const char *line)
     /* Ignore empty lines */
     if (line == NULL || line[0] == '\0' || line[0] == '\n' || line[0] == ';' || strcmp(line, "    \n") == 0)
     {
-        printf("%s\n", line);
         return 1;
     }
 

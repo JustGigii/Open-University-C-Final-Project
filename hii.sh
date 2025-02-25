@@ -1,11 +1,11 @@
+; file ps.as
+
 .entry LIST
 .extern W
 MAIN: add r3, LIST
 LOOP: prn #48
  lea W, r6
  inc r6
- dec r1,r2
- mov s
  mov r3, K
  sub r1, r4
  bne END
