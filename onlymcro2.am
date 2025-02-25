@@ -1,2 +1,4 @@
+add #2, r1
 sub r1, r4
-add #2, r1
+.data 150000000000
+add #2, r1

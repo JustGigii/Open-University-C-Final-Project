@@ -137,22 +137,23 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
                 return FAILURE_OUT_OF_RANGE;
             }
             converted = (data[0] == '+') ? converted : -converted; /* Convert the data to an integer */
+            unsingedconverted = converted; /*convert the number to unsigned to show binary*/
         }
         else
         {
-            converted = atoi(data); /* Convert the data to an integer */
-            if (converted == 0) /* Check the convert is valid  */
+            unsingedconverted = atoi(data); /* Convert the data to an integer */
+            if (unsingedconverted == 0) /* Check the convert is valid  */
             {
                 free(line->assemblyCode);
                 return NOT_NUMBER;
             }
-            if (converted > MAX_UNUMBER) /* Check the number is valid unsinged  */
+            if (unsingedconverted > MAX_UNUMBER) /* Check the number is valid unsinged  */
             {
                 free(line->assemblyCode);
                 return FAILURE_OUT_OF_RANGE;
             }
         }
-        unsingedconverted = converted; /*convert the number to unsigned to show binary*/
+       
         line->assemblyCode[line->assemblyCodeCount++] = unsingedconverted; /* Add the converted data to the array */
     }
     return SUCCESS;
@@ -253,12 +254,12 @@ BOOLEAN CheckLableName(const char * label)
     int counter=0;
     while (*tav != ':')
     {
-        if(*tav< 'a'|| *tav>'z' || *tav< 'A' || *tav>'Z' && *tav< '0' || *tav>'9') /* Check if the character is valid */
+        if(!((*tav>= 'a'&& *tav<='z')  || (*tav>= 'A'&& *tav<='Z') || (*tav>= '0'&& *tav<='9'))) /* Check if the character is valid */
             return FALSE;
         tav++;
         counter++; /* Increment the counter */
     }
-    if (counter == strlen(label) - 1) /* Check if not have ':' in the middle of the lablel*/
+    if (counter == strlen(label)-1) /* Check if not have ':' in the middle of the lablel*/
         return TRUE;
     return FALSE;
 
