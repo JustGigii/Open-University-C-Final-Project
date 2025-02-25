@@ -1,15 +1,3 @@
-move
-mcro move
-need to append
-mcroend
-move
-mcro work
-need to work
-mcroend
-work
-mcro sub
-error
-mcroend
-sub
-
-
+LABEL_TOO_LONGGGGGGGGGGGGGGGGGGGGGGGGGGGGG: mov r1, r2
+ILLEGAL_OPCODE: illegal_op r3, r4
+                stop
