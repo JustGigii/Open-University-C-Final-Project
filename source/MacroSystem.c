@@ -23,7 +23,6 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
             ExistMacroflag = TRUE;
             macroarray = addMacroToList(macroarray, macroindex, temp,ptrmacroflag);
             macroindex++;
-            temp = temp->next;
         }
         else
             temp = temp->next;
@@ -91,11 +90,11 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *p
     indexname = getmacroname(split, sizeofsplit,ptrmacroflag);/*get the name of the macro after cheking if it is valid*/
     if(indexname == -1)/*name is not valid*/
     {
+        
         free(macroarraynew);
         freeIneersplit(split, sizeofsplit);
         return NULL;
     }
-
     macroarraynew[size]->name = mystrdup(split[indexname]);
     macroarraynew[size]->start = InitSingelMacro(temp);
     freeIneersplit(split, sizeofsplit);
@@ -122,9 +121,11 @@ LinePtr InitSingelMacro(LinePtr copy)
     {
         copy = copy->next;
     }
+   
     tofree = copy->next;
     copy->next = NULL;
     head->next = tofree->next;
+    
     freeLine(tofree);
     return macro;
 }
