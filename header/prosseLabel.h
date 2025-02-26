@@ -58,18 +58,14 @@ int processEscapeSequence(char nextChar);
 SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelPtr **tables, int *tablesize, int size,int *deltacount);
 
 /**
- * Processes a string with potential escape sequences and stores the result in the assembly code.
+ * Process a string and convert it to an array of unsigned integers.
+ * The string can contain escape sequences such as '\n' and '\t'.
  *
- * This function iterates over the given string `tav`, identifying and processing any escape sequences
- * (e.g., backslash, newline). The ASCII value of each character or escape sequence is stored in the 
- * `assemblyCode` field of the `line` structure. The function returns `TRUE` if the string is processed 
- * successfully and `FALSE` if an unrecognized escape sequence is encountered.
- *
- * @param tav The string to be processed, which may contain escape sequences.
- * @param line The line structure where the processed ASCII values will be stored.
- * @return `TRUE` if the string is processed successfully, `FALSE` if an error occurs.
+ * @param tav The string to process.
+ * @param sizeofdata The size of the string.
+ * @return An array of unsigned integers representing the string.
  */
-BOOLEAN processString(char *tav, LinePtr line);
+unsigned int * processString(char *tav,int *sizeofdata);
 
 /**
  * Processes data operands for an assembly instruction.

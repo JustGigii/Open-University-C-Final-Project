@@ -83,26 +83,33 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
     return SUCCESS;
 }
 
-BOOLEAN processString(char *tav, LinePtr line)
+
+unsigned int * processString(char *tav,int *sizeofdata)
 {
+    int i;
+    unsigned int * data = malloc(strlen(tav));
     int asciiValue; /* Get the size of the string */
-    while (*tav != '"') /* Loop until the end of the string */
+    if(data == NULL)
+        return NULL;
+    while (*tav != '\"') /* Loop until the end of the string */
     {
         if (*tav == '\\') /* Check for special characters */
         {          /* Check for escape sequence */
             tav++; /* Move to the next character */
             asciiValue = processEscapeSequence(*tav); /* Get the ASCII value */
             if (asciiValue == -1)/* Unrecognized escape sequence */
-                return FALSE;
+                return NULL;
         }
         else
             asciiValue = *tav;
 
-        line->assemblyCode[line->assemblyCodeCount] = asciiValue; /* Add the ASCII value to the array */
-        line->assemblyCodeCount++; /* Increment the size of the array */
+        data[*sizeofdata] = asciiValue; /* Add the ASCII value to the array */
+            *sizeofdata+=1; /* Increment the size of the array */
         tav++; /* Move to the next character */
     }
-    return TRUE;
+    data[*sizeofdata] =0; /*add null terminator*/
+    *sizeofdata+=1; /* Increment the size of the array */
+    return data;
 }
 SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN has_lable)
 {
@@ -224,6 +231,7 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
 {
     int sizeofdata=0;
     char *tav;
+    unsigned int * data = NULL;
     *status = SUCCESS;
     if (strcmp(operand[0], ".string") == 0) /* Process the .string directive */
     {
@@ -235,15 +243,9 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
         }
         /* Skip the first quote */
         tav = operand[1] + 1;
-
-        /* Allocate memory for the string without the quotes */
-        line->assemblyCode = malloc(strlen(operand[1]) - 1);
-        if (line->assemblyCode == NULL)
-        {
-            *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
-            return -1;
-        }
-        if (!processString(tav, line)) /* Process the string is faild */
+        sizeofdata=0;
+        data=processString(tav, &sizeofdata);
+        if (data==NULL) /* Process the string is faild */
         {
             *status = FAILURE;
             printf("in line %d: \"%s\": Undefined string\n", line->lineNum, line->line);
@@ -251,8 +253,9 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
             return -1;
         }
         /* Null-terminate the processed string */
-        line->assemblyCode[line->assemblyCodeCount] = 0;
-        line->assemblyCodeCount++;
+        line->assemblyCode =data;
+        line->assemblyCodeCount = sizeofdata;
+        line->assemblyCode[sizeofdata] = 0;
         return line->assemblyCodeCount; /* Return the size of the string */
     }
     else if (strcmp(operand[0], ".data") == 0) /* Process the .data directive */
