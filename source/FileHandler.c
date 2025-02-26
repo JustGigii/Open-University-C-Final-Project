@@ -29,7 +29,7 @@ BOOLEAN mygetline(char** s,FILE *file){
     if(i==MAX_SIZE_OF_LINE) /*check if the line is too long*/
     {
         (*s)[i-1]= 0;
-        printf("%s is too long\n",s); 
+        printf("%s is too long\n",*s); 
         free(*s);
         return FALSE;
     }
