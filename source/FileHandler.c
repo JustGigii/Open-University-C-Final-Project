@@ -61,14 +61,24 @@ int ProcessLine(LinePtr *head, const char *line)
 
     /* Remove the newline character, if present */
     len = strlen(processedLine);
-    if (len > 0 && processedLine[len - 1] == '\n')
-    {
-        processedLine[len - 1] = '\0';
-    }
-    /*Remove the space character, if present in last character*/
-    if (len > 0 && processedLine[len - 1] == ' ')
-        processedLine[len - 1] = '\0';
-
+   /* Remove the newline character, if present */
+   if (processedLine[len - 1] == '\n')
+   {
+       processedLine[len - 1] = '\0';
+       len--;
+   }
+   /* Remove the carriage return character, if present */
+   if (processedLine[len - 1] == '\r')
+   {
+       processedLine[len - 1] = '\0';
+       len--;
+   }
+       /*Remove the space character, if present in last character*/
+   if (processedLine[len - 1] == ' ')
+       {
+           processedLine[len - 1] = '\0';
+           len--;
+       }
     /* Initialize the head or add to the list */
     if (!*head)
     {
@@ -102,6 +112,7 @@ LinePtr InitData(FILE *datafile)
             printf("line %d is too long\n", head->lineNum);
             return NULL;
         }
+    
         if (!ProcessLine(&head, line))
         {
             free(line);
