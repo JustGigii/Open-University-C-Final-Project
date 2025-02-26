@@ -13,7 +13,19 @@
 { \
     printf("we have a problem with opning the file: %s\n",filename);\
 }\
-
+/**
+ * Reads a line from a file, but with a twist.
+ *
+ * Allocates memory to store the line, and returns FALSE if the line is too long.
+ * If the line is too long, it prints an error message and frees the allocated memory.
+ * If the end of the file is reached, it returns FALSE.
+ * Otherwise, it returns the line as a string, including the newline character at the end.
+ *
+ * @param s a pointer to a pointer to a char array, which will be set to the read line.
+ * @param file the file to read from.
+ * @return TRUE if the line was read successfully, FALSE otherwise.
+ */
+BOOLEAN mygetline(char** s,FILE *file);
 /**
  * This function get a file name and a pointer to a pointer to a line structure and open the file.
  * If the file exist and has the correct extension, the function will create a linked list of the content of the file.

@@ -19,6 +19,28 @@ int GetFileData(char *filename, LinePtr *head)
     return status;
 }
 
+BOOLEAN mygetline(char** s,FILE *file){ 
+    int c,i;
+    *s =(char *) malloc(MAX_SIZE_OF_LINE);  /*allocate memory*/
+    for (i=0;i<MAX_SIZE_OF_LINE&&(c=getc(file))!=EOF&&c!='\n';i++) /*read the line and check if the line is too long or end of file*/
+    {
+        (*s)[i]= (char)c; /*add the character to the string*/
+    }
+    if(i==MAX_SIZE_OF_LINE) /*check if the line is too long*/
+    {
+        (*s)[i-1]= 0;
+        printf("%s is too long\n",s); 
+        free(*s);
+        return FALSE;
+    }
+    if (c=='\n') /*check if the line is end of file*/
+        (*s)[i++]=(char)c; /*add the character to the string*/
+    if(i==0) /*check if the end of file*/
+    return FALSE; /*return false ifthe end of file*/
+    (*s)[i]='\0';/*add the null character to the string*/
+    return TRUE;
+}
+
 int ProcessLine(LinePtr *head, const char *line)
 {
     char *processedLine;
@@ -71,10 +93,9 @@ int ProcessLine(LinePtr *head, const char *line)
 LinePtr InitData(FILE *datafile)
 {
     char *line = NULL;
-    size_t len = 0;
     short read;
     LinePtr head = NULL;
-    while ((read = getline(&line, &len, datafile)) != -1)
+    while ((read = mygetline(&line, datafile)) != FALSE)
     {                                        /*read the file until end of file*/
         if (strlen(line) > MAX_SIZE_OF_LINE) /*check if the line is too long*/
         {

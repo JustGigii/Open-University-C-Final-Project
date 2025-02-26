@@ -1,6 +1,6 @@
 
 CC=gcc
-CFLAGS= -ansi -Wall -pedantic 
+CFLAGS= -ansi -Wall -pedantic -g3
 
 OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o MacroSystem.o LineDetction.o prosseLabel.o print_error.o cheackSentece.o ValditionLine.o PrintForFile.o
 
@@ -17,7 +17,7 @@ FileHandler.o: source/FileHandler.c
 	$(CC) $(CFLAGS) -c source/FileHandler.c
 
 NodeData.o: source/NodeData.c
-	$(CC) $(CFLAGS) -c source/NodeData.c
+	$(CC) $(CFLAGS) -c source/NodeData.c	
 
 
 MacroSystem.o: source/MacroSystem.c
