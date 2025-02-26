@@ -76,8 +76,8 @@ int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables,
 
 unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int *tablesize, SATATUS *status, int linenumber, int *sizeofSentece)
 {
-    int *binarycode;
-    int sizeofoprands = 0, i;
+    unsigned int *binarycode;
+    int  sizeofoprands = 0;
     char **oprands, *combineorands;
     labelPtr label;
     globtables = tables;
@@ -102,7 +102,7 @@ unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int 
             return NULL;
         }
         /*add the label to the table*/
-        labelPtr label = create_label(words[1], 0);
+        label = create_label(words[1], 0);
         if (label == NULL) {
             *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
             return NULL;

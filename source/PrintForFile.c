@@ -21,7 +21,6 @@ void print_extern(labelPtr *tables, int tablesize)
 void print_intern(labelPtr *tables, int tablesize)
 {
     int i;
-    labelPtr addr;
     for ( i = 0; i < tablesize; i++) /* run on the label table*/
     {
         if(tables[i]->is_entry ==TRUE) /* if the label is entry*/

@@ -80,7 +80,7 @@ BOOLEAN check_no_save_word(const char *label);
  *
  * @return A pointer to the label if found, or NULL if not.
  */
-labelPtr cheack_Label_Exist(const labelPtr *labels[],int size_of_labels,const char * labelname);
+labelPtr cheack_Label_Exist(labelPtr *labels[],int size_of_labels,const char * labelname);
 
 /**
  * Frees all memory allocated for the given table of labels.

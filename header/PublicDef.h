@@ -38,7 +38,7 @@ typedef enum
  LABEL_ALREADY_EXIST=19,
  LABEL_NOT_FOUND=20,
  ILIGAL_VALUE=21,
- ILIGAL_LABEL_NAME=22,
+ ILIGAL_LABEL_NAME=22
 
 } SATATUS;
 
@@ -50,7 +50,7 @@ typedef enum {
    DS = 11, /*Destination sorting*/
    RS = 13, /*Source register*/
    SS = 16, /*Source sorting*/
-   OPCODE = 18,
+   OPCODE = 18
 }BIT_START;
  typedef enum {
    LEN_ARE =3,
@@ -59,7 +59,7 @@ typedef enum {
    LEN_DS = 2, /*Destination sorting*/
    LEN_RS = 3, /*Source register*/
    LEN_SS = 2, /*Source sorting*/
-   LEN_OPCODE = 6,
+   LEN_OPCODE = 6
 }BIT_LENGHT;
 
 /*enum for code of operation */
@@ -89,7 +89,7 @@ typedef enum
     UNDEFINED = 0,
     DATA = 1,
     STRING = 2,
-    CODE = 3,
+    CODE = 3
 } DATA_TYPE;
 
 /*struct for label*/

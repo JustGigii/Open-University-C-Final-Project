@@ -58,7 +58,8 @@ void print_error(SATATUS status,int linenum,char *line)
         case ILIGAL_LABEL_NAME:
                 printf("in line %d: \"%s\": Illegal label name\n", linenum, line);
                 break;
-
+        default:
+        break;
 
     } 
 }

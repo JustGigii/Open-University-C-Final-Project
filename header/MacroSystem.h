@@ -25,7 +25,7 @@ typedef struct
  *
  * \return The start of the macro if it exists, NULL otherwise.
  */
-macroPtr ExistMacro(macroPtr macros[],int size, char *name);
+LinePtr ExistMacro(macroPtr macros[],int size, char *name);
 
 /**
  * This function add a new macro to the array of macros. the function get a pointer

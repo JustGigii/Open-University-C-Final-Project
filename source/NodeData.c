@@ -22,6 +22,7 @@ LinePtr InitLine( char* line,short lineNum){
 int AddLine(LinePtr head, char* line)
 { 
     /* create a new line */
+    LinePtr temp;
     LinePtr newLine = InitLine(line,-1);
     
     if(!newLine)return -1; /* if the new line is not created return -1 */
@@ -31,7 +32,7 @@ int AddLine(LinePtr head, char* line)
         newLine->lineNum=1; /* set the line number to 1 */
         return newLine->lineNum;    /* return the line number */
     }
-        LinePtr temp = head; /* if the list is not empty set the temp to the head */
+        temp = head; /* if the list is not empty set the temp to the head */
         
         while (temp->next) /* while the next line is not null */
         {

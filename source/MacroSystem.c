@@ -9,12 +9,9 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 {
     BOOLEAN ExistMacroflag = FALSE;
     LinePtr temp = head;
-    LinePtr tofree;
     LinePtr add = NULL;
     macroPtr *macroarray = NULL; /* (macroPtr*)malloc((sizeofmacroarray+1) * sizeof(macroPtr));*/
     int macroindex = 0;
-    int succsec;
-    int indextofree;
     LinePtr globalline = InitLine("mman14100", 100);/*create fake line for head becouse the checking start to check from the next line*/
     globalline->next = head;
     temp = globalline;
@@ -53,9 +50,9 @@ LinePtr InitMacro(LinePtr head,BOOLEAN *ptrmacroflag)
 } 
 
 
-macroPtr ExistMacro(macroPtr macros[], int size, char *name)
+LinePtr ExistMacro(macroPtr macros[], int size, char *name)
 {
-        LinePtr macrosstart = NULL;
+    LinePtr macrosstart = NULL;
     int index;
     for (index = 0; index < size; index++)
     {
@@ -169,13 +166,14 @@ LinePtr AddMacroToProgram(LinePtr temp, LinePtr list)
 {
     LinePtr newLine;
     LinePtr prev = temp;
+    LinePtr next;
     /*copy the macro definition*/
     newLine = temp->next;
     /*make the next line of the macro the next line of the macro definition*/
     temp->next = newLine->next;
     /*delete the macro definition*/
     freeLine(newLine);
-    LinePtr next = temp->next;
+    next = temp->next;
     while (list)/*copy the macro to the program*/
     {
         /*copy the line*/

@@ -48,11 +48,8 @@ labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables,SATATUS *status)
 SATATUS check_operand(LinePtr line, labelPtr ** tables, int* tablesize, int *instructionCount)
 {
     SATATUS status = SUCCESS;
-    int i;
     int size=0, deltacount = 0;
     char ** strarray=NULL;
-    labelPtr label;
-    unsigned int *x;
      /* check for have comma in the end */
     if(line->line[strlen(line->line)-1]==',')  
     {
@@ -119,7 +116,7 @@ BOOLEAN check_no_save_word(const char *label)
     return ok;
 }
 
-labelPtr cheack_Label_Exist(const labelPtr *labels[],int size_of_labels,const char * labelname){
+labelPtr cheack_Label_Exist(labelPtr *labels[],int size_of_labels,const char * labelname){
     int i;
     /* check if the label is in the label table */
     if(*labels == NULL)
@@ -138,7 +135,7 @@ BOOLEAN free_tables(labelPtr *tables, int size){
     for (i = 0; i < size; i++)
     {
         /* free the where_mentioned array*/
-        tables[i]->where_mentioned;
+        free(tables[i]->where_mentioned);
         /* free the name*/
         free(tables[i]->name);
         free(tables[i]);

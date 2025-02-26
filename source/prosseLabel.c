@@ -37,6 +37,7 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
     SATATUS status = SUCCESS;
     labelPtr label;
     BOOLEAN is_in_table = FALSE;
+    *deltacount = -1;
     if (strlen(operand[0]) > MAX_SIZE_OF_LABLE) /* Check if the label is too long */
         return LABEL_TO_MUCH; 
     if (check_no_save_word(operand[0]) == FALSE) /* Check if the label is a reserved word */
@@ -67,7 +68,7 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
     /* label->lineNum = *instructionCount;*/
     if(assembly_run < 2 && is_in_table) return LABEL_ALREADY_EXIST; /* if the label already exist in the table in the first run*/
 
-        *deltacount = enterdatatoline(size, line->lineNum, operand, line, &status, tables, tablesize); /* Add the data to the line */
+        *deltacount = enterdatatoline(size, operand, line, &status, tables, tablesize); /* Add the data to the line */
         if (*deltacount == -1) /* if there is an error*/
         {
             free(label);
@@ -81,8 +82,7 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
 
 BOOLEAN processString(char *tav, LinePtr line)
 {
-    int asciiValue, size = strlen(tav); /* Get the size of the string */
-    char tava;
+    int asciiValue; /* Get the size of the string */
     while (*tav != '"') /* Loop until the end of the string */
     {
         if (*tav == '\\') /* Check for special characters */
@@ -105,9 +105,9 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
 {
     int i, converted;
     char *data;
-    i = has_lable ? 2 : 1;
     unsigned int unsingedconverted; /*convert the number to unsigned to show binary*/
     unsigned int  *arrayofdata /*convert the number to unsigned to show binary*/;
+    i = has_lable ? 2 : 1;
     arrayofdata = malloc(wordcount - i); /* Allocate memory for the array and handel lines with or without lables*/
     if (arrayofdata == NULL) 
         return FAILURE_CANNOT_ALLOCATE_MEMORY;
@@ -163,9 +163,8 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
     line->assemblyCode = arrayofdata;
     return SUCCESS;
 }
-int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePtr line, SATATUS *status, labelPtr **table, int *tablesize)
+int enterdatatoline(int sizewords,char **operand, LinePtr line, SATATUS *status, labelPtr **table, int *tablesize)
 {
-    int sizeofdata;
     int result;
 
     /* Use the new processDirectives function for .string and .data */
@@ -190,20 +189,37 @@ int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePt
     }
     return result;
 }
-labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int *size)
+labelPtr* AddtoLabelTable(labelPtr* table, labelPtr label, int *size)
 {
-
-    LinePtr *newtable = (size == 0) ? malloc(sizeof(labelPtr)) : realloc(table, (*size + 1) * sizeof(labelPtr));
-    if (!newtable)
+    /* Allocate or re-allocate depending on whether the table is empty */
+    labelPtr* newtable;
+    
+    if (*size == 0) {
+        /* If size == 0, we are creating a new array for 1 element */
+        newtable = malloc(sizeof(labelPtr));
+    } else {
+        /* If size != 0, we expand the existing array by 1 element */
+        newtable = realloc(table, (*size + 1) * sizeof(labelPtr));
+    }
+    
+    /* Check if malloc/realloc failed */
+    if (!newtable) {
         return NULL;
+    }
+    
+    /* Store the new label at the end of the array */
     newtable[*size] = label;
-    *size += 1;
+    
+    /* Increase the size by 1 */
+    (*size)++;
+    
+    /* Return the new pointer to the array (may be the same as the old one) */
     return newtable;
 }
 
 int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *status, BOOLEAN has_lable)
 {
-    int sizeofdata;
+    int sizeofdata=0;
     char *tav;
     *status = SUCCESS;
     if (strcmp(operand[0], ".string") == 0) /* Process the .string directive */
@@ -255,7 +271,7 @@ int processDirectives(int sizewords, char **operand, LinePtr line, SATATUS *stat
 
 BOOLEAN CheckLableName(const char * label)
 {
-    char* tav = label;
+    const char* tav = label;
     int counter=0;
     while (*tav != ':')
     {

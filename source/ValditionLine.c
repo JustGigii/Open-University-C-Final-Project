@@ -7,7 +7,6 @@
     }
 unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATUS *status, int *sizeofSentece, int line_number)
 {
-    *status = SUCCESS;
     unsigned int *x;
     int numberdest = 0;
     int numbersource = 0;
@@ -15,6 +14,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
     int typesource = -1;
     unsigned int opcode = -1;
     labelPtr label = NULL;
+    *status = SUCCESS;
     if (sizeofoprands == 0)
     {
         x = (unsigned int *)malloc(sizeof(unsigned int)); /* Allocate memory for the opcode */
@@ -208,16 +208,15 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
     return x;
 }
 
-int cheackoprandtype(char const *oprand, int *type, SATATUS *status)
+int cheackoprandtype(const char *oprand, int *type, SATATUS *status)
 {
-    labelPtr label = NULL;
     int number = -1;
     int minus = 1;
     switch (oprand[0]) /* Check the first character of the operand */
     {
     case '#': /* Check if the operand is a register */
         *type = 0;
-        if (oprand[1] == "+" || oprand[1] == "-") /* register can have + or - */
+        if (oprand[1] == '+' || oprand[1] == '-') /* register can have + or - */
         {
             if(strlen(oprand+2) > 7)/* maxsimus digit can handel*/
             {
@@ -226,6 +225,7 @@ int cheackoprandtype(char const *oprand, int *type, SATATUS *status)
             }
             minus = oprand[1] == '-' ? -1 : 1; /* set the sign of the number */
             number = atoi(oprand + 2);         /* get the number */
+            number *= minus;
         }
         else
         {
@@ -237,12 +237,16 @@ int cheackoprandtype(char const *oprand, int *type, SATATUS *status)
             number = atoi(oprand + 1);                  /* get the number */
         }
         if (number == -1 && strcmp(oprand, "#-1") != 0) /* check if the convert is succses */
-            *type = -1;                                 /* the convert is failed */
-        if (minus == -1 && number != -1)
+        {
+            *type = -1;
+            *status = FAILURE_OUT_OF_RANGE;
+            return -1;                                 /* the convert is failed */
+        }  
+        if(oprand[1] == '-' && number > 0)
         {
             *status = FAILURE_OUT_OF_RANGE;
             return -1;
-        }
+        }  
         if(oprand[1] == '+' && number < 0)
         {
             *status = FAILURE_OUT_OF_RANGE;
@@ -296,7 +300,7 @@ int process_type(labelPtr label, const char *labelname, int type, int number, in
                 label->where_mentioned = (label->size_of_where_mentioned == 0) ? malloc(sizeof(int)) : realloc(label->where_mentioned, sizeof(int) * (label->size_of_where_mentioned + 1)); /* add where is colde if is extern*/
                 if (label->where_mentioned == NULL)                                                                                                                                         /* if the realloc is failed*/
                 {
-                    status = FAILURE_CANNOT_ALLOCATE_MEMORY;
+                    *status = FAILURE_CANNOT_ALLOCATE_MEMORY;
                     return 0;
                 }
                 extern_mention_counter++;

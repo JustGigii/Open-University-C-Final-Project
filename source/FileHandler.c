@@ -2,10 +2,9 @@
 
 int GetFileData(char *filename, LinePtr *head)
 {
-    char *data;
     FILE *file = OpenFile(filename, "r"); /*open file*/
     int status = 1;
-    if (!IfFileEndCottract(filename) || !file) /*check if the file open and has the correct extension*/
+    if (IfFileEndCottract(filename)== FALSE|| !file) /*check if the file open and has the correct extension*/
     {
         printf("File %s does not exists or has the correct extension.\n", filename);
         status = 0;
@@ -22,7 +21,8 @@ int GetFileData(char *filename, LinePtr *head)
 
 int ProcessLine(LinePtr *head, const char *line)
 {
-
+    char *processedLine;
+    int len ;
     /* Ignore empty lines */
     if (line == NULL || line[0] == '\0' || line[0] == '\n' || line[0] == ';' || strcmp(line, "    \n") == 0)
     {
@@ -30,7 +30,7 @@ int ProcessLine(LinePtr *head, const char *line)
     }
 
     /* clean the line to remove tabs */
-    char *processedLine = cleanWitheTabs(line);
+    processedLine = cleanWitheTabs(line);
     if (!processedLine)
     {
         /* Memory allocation failed */
@@ -38,7 +38,7 @@ int ProcessLine(LinePtr *head, const char *line)
     }
 
     /* Remove the newline character, if present */
-    int len = strlen(processedLine);
+    len = strlen(processedLine);
     if (len > 0 && processedLine[len - 1] == '\n')
     {
         processedLine[len - 1] = '\0';
@@ -104,12 +104,12 @@ FILE *OpenFile(char *filename, char *mode)
     return file;
 }
 
-int IfFileEndCottract(char *filename)
+BOOLEAN IfFileEndCottract(char *filename)
 {
     int len = strlen(filename);
     if (len <= 3 || strcmp(&filename[len - 3], ".sh")) /*check if the file has the correct extension or only extension*/
-        return 0;
-    return 1;
+        return FALSE;
+    return TRUE;
 }
 
 void CreateFileFromList(char *filename, LinePtr head)
@@ -125,7 +125,8 @@ void CreateFileFromList(char *filename, LinePtr head)
         fclose(file);
     }
 }
-/*cut extension of file name to enable creating new extension (asume that the file has extension)*/
+
+
 char *RenameExtensionfile(char *filename, char *newextension)
 {
     int i = 0;
@@ -150,7 +151,7 @@ void createcodefiles(char *filename, LinePtr head)
     /* Create the code files from the assembly lines redirecting the standard output to write to the file */
     outfile = freopen(RenameExtensionfile(filename, ob), "w", stdout);
     checkopenfile
-        print_hexadecimal_line(head);
+    print_hexadecimal_line(head);
     printf("\n");
     fclose(outfile);
     if (is_extern)

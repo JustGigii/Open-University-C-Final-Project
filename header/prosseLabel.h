@@ -94,7 +94,6 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
  * Process directives .string and .data, and enter the data into the code.
  *
  * @param sizewords The number of words in the operand.
- * @param instractioncount A pointer to the instruction counter.
  * @param operand The operand array.
  * @param line A pointer to the current line in the linked list.
  * @param status A pointer to the status of the parsing.
@@ -102,7 +101,7 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
  * @param tablesize A pointer to the size of the label table.
  * @return The number of lines the data took up, or -1 if an error occurred.
  */
-int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePtr line,SATATUS *status,labelPtr ** table,int *tablesize);
+int enterdatatoline(int sizewords, char **operand, LinePtr line,SATATUS *status,labelPtr ** table,int *tablesize);
 
 /**
  * Adds a label to the given table of labels.
@@ -117,7 +116,7 @@ int enterdatatoline(int sizewords, int *instractioncount, char **operand, LinePt
  * @param size A pointer to the size of the table.
  * @return A pointer to the new table of labels or NULL if the allocation fails.
  */
-labelPtr AddtoLabelTable(labelPtr *table, labelPtr label, int * size);
+labelPtr * AddtoLabelTable(labelPtr *table, labelPtr label, int * size);
 
 /**
  * Creates a new label structure with the given name and line number.
@@ -143,4 +142,4 @@ labelPtr create_label(const char *name, int lineNum);
  * @return TRUE if the label name is valid, FALSE otherwise.
  */
 BOOLEAN CheckLableName(const char * label);
-#endif // PROSSSELABEL_H
+#endif

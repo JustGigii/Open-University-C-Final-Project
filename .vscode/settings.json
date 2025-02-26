@@ -62,7 +62,9 @@
     "publicdef.h": "c",
     "valditionline.h": "c",
     "nodedata.h": "c",
-    "filehandler.h": "c"
+    "filehandler.h": "c",
+    "stdio.h": "c",
+    "print_error.h": "c"
   },
   "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

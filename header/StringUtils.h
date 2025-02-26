@@ -32,7 +32,7 @@ char** Split(const char* str,const char* substr, int* count);
  * @param str The string to be cleaned.
  * @return The cleaned string in a new allocated memory, or NULL if the allocation failed.
  */
-char* cleanWitheTabs(char * str);
+char* cleanWitheTabs(const char * str);
 
 /**
  * Frees the memory allocated for the 2D array strarray.
@@ -59,7 +59,7 @@ void freeIneersplit(char** strarray, int count);
  *
  * Note: It is the caller's responsibility to free the allocated memory.
  */
-char *strndup(char *str, int chars);
+char *strndup(const char *str, int chars);
 
 /**
  * Duplicates a portion of a string and converts it to lowercase.
@@ -73,7 +73,7 @@ char *strndup(char *str, int chars);
  * @return A pointer to the newly allocated lowercase string, or NULL if
  *         memory allocation fails.
  */
-char *strnduplower(char *str, int chars);
+char *strnduplower(const char *str, int chars);
 
 /**
  * Combine an array of strings into one string, with an optional separator in between the strings.
@@ -83,4 +83,17 @@ char *strnduplower(char *str, int chars);
  * @return The combined string, or NULL if memory allocation fails or if the input array is empty.
  */
 char* combineStrings(char** strings, int count, const char* separator);
+/**
+ * Duplicates a string.
+ *
+ * Allocates memory and copies the string 'str' into a newly allocated string.
+ * The duplicated string is null-terminated.
+ *
+ * @param str The input string to duplicate.
+ * @return A pointer to the newly allocated duplicate string, or NULL if memory allocation fails.
+ *
+ * Note: It is the caller's responsibility to free the allocated memory.
+ */
+
+ char *strdup(const char *str); 
 #endif 

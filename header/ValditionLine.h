@@ -34,7 +34,7 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
  * @return the number value of the operand, or -1 if the string is not a valid
  * operand
  */
-int cheackoprandtype(char const *oprand, int *type, SATATUS *status);
+int cheackoprandtype(const char *oprand, int *type, SATATUS *status);
 /**
  * Process a label or number operand of an assembly instruction.
  *

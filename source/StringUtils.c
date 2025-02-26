@@ -13,7 +13,7 @@ int CountChar(const char *str, const char *substr)
     return count;
 }
 
-char *cleanWitheTabs(char *str)
+char *cleanWitheTabs(const char *str)
 {
     int i = 0, j = 0;
     int len = strlen(str); /*get the length of the string*/
@@ -27,7 +27,7 @@ char *cleanWitheTabs(char *str)
         i++;
     }
 
-    for (i; i < len; i++) /*remove the trailing tabs*/
+    for (; i < len; i++) /*remove the trailing tabs*/
     {
         clean_str[j] = str[i];
         if (str[i] != ' ' || str[i + 1] != ' ') /*check if the next char is not a tab*/
@@ -41,11 +41,13 @@ char *cleanWitheTabs(char *str)
 
 char **Split(const char *str, const char *substr, int *count)
 {
+    char *word;
+    char **strarray;
+    int i = 0;
     char *tmp = strdup(str);                                            /*copy the string*/
     *count = CountChar(tmp, substr);                                    /*count how many substr in str*/
-    char **strarray = (char **)malloc(((*count) + 1) * sizeof(char *)); /*allocate memory for the strarray*/
-    int i = 0;
-    char *word = strtok(tmp, substr); /*split the string*/
+    strarray = (char **)malloc(((*count) + 1) * sizeof(char *)); /*allocate memory for the strarray*/
+    word = strtok(tmp, substr); /*split the string*/
     while (word)
     {                                                                    /*add words to strarray*/
         strarray[i] = (char *)malloc((strlen(word) + 1) * sizeof(char)); /*allocate memory for each word*/
@@ -72,7 +74,7 @@ void freeIneersplit(char **strarray, int count)
     free(strarray);
 }
 
-char *strndup(char *str, int chars) 
+char *strndup(const char *str, int chars) 
 {
     char *newStr;
     int n = 0;
@@ -90,7 +92,24 @@ char *strndup(char *str, int chars)
     return newStr;
 }
 
-char *strnduplower(char *str, int chars)
+char *strdup(const char *str) 
+{
+    char *newStr;
+    int n = 0;
+
+    newStr = (char *)malloc(strlen(str) + 1); 
+    if (!newStr)
+        return NULL;
+    while (str[n] != 0) /*copy the string until the end*/
+    {
+        newStr[n] = str[n]; /*copy the element of the string*/
+        n++;
+    }
+    newStr[n] = 0;
+
+    return newStr;
+}
+char *strnduplower(const char *str, int chars)
 {
     char *newStr;
     int n = 0;
@@ -111,14 +130,15 @@ char *combineStrings(char **strings, int count, const char *separator)
 {
     char *combined = NULL; 
     int i;
+    int separatorLength ;
+    /* Calculate total length for the combined string */
+    int totalLength = 0;
     if (count <= 0)
     {
         return NULL; /* Return NULL for an empty input array */
     }
 
-    /* Calculate total length for the combined string */
-    int totalLength = 0;
-    int separatorLength = separator ? strlen(separator) : 0;
+    separatorLength = separator ? strlen(separator) : 0;
 
     for (i = 0; i < count; i++)
     {

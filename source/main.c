@@ -24,13 +24,16 @@ int main(int argc, char* argv[]) {
         if (GetFileData(filename,&head)) /*create list of line from file*/
           printf ("File %s exists and has the correct extension.\n",filename); 
         else
+        {
          continue;/*if the file does not exist or has the wrong extension, continue to the next file*/
+        }
          aftermacro =InitMacro(head,&macroflag);
          if(aftermacro != NULL)
           head = aftermacro;
          if(aftermacro!=NULL&&macroflag==TRUE){ /*if head==null there are no macros in the program*/
           CreateFileFromList(RenameExtensionfile(filename,am),head); /*create copy of the original file after opening macro macro*/ 
          }
+
          else
              if (macroflag==TRUE)/*if macroflag==TRUE there are no macros in the program*/ 
              printf(" No macros in the program.\n");
