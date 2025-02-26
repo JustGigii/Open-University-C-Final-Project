@@ -95,5 +95,5 @@ char* combineStrings(char** strings, int count, const char* separator);
  * Note: It is the caller's responsibility to free the allocated memory.
  */
 
- char *strdup(const char *str); 
+ char *mystrdup(const char *str); 
 #endif 

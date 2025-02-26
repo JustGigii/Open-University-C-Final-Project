@@ -35,7 +35,7 @@ int processEscapeSequence(char nextChar)
 SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelPtr **tables, int *tablesize, int size, int *deltacount)
 {
     SATATUS status = SUCCESS;
-    labelPtr label;
+    labelPtr label=NULL;
     BOOLEAN is_in_table = FALSE;
     *deltacount = -1;
     if (strlen(operand[0]) > MAX_SIZE_OF_LABLE) /* Check if the label is too long */
@@ -71,7 +71,10 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
         *deltacount = enterdatatoline(size, operand, line, &status, tables, tablesize); /* Add the data to the line */
         if (*deltacount == -1) /* if there is an error*/
         {
-            free(label);
+            if (label!=NULL)
+            {
+                free(label);
+            }
             return status;
         }
         if(assembly_run < 2) /* if the first run add to the table*/

@@ -96,7 +96,7 @@ macroPtr *addMacroToList(macroPtr *macroarray, int size, LinePtr temp,BOOLEAN *p
         return NULL;
     }
 
-    macroarraynew[size]->name = strdup(split[indexname]);
+    macroarraynew[size]->name = mystrdup(split[indexname]);
     macroarraynew[size]->start = InitSingelMacro(temp);
     freeIneersplit(split, sizeofsplit);
     if (macroarraynew[size]->start == NULL)

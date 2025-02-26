@@ -2,12 +2,13 @@
 #define CheackifSuccses(stat)                         \
     if (stat != SUCCESS && stat != WAIT_TO_ALL_LIBEL) \
     {                                                 \
+        if(x!= NULL)                                  \
         free(x);                                      \
         return NULL;                                  \
     }
 unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprands, SATATUS *status, int *sizeofSentece, int line_number)
 {
-    unsigned int *x;
+    unsigned int *x =NULL;
     int numberdest = 0;
     int numbersource = 0;
     int typedest = -1;
@@ -38,7 +39,6 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         if (is_one_oprand(commandname) == FALSE) /* Check if the command is in the list of commands with one operand */
         {
             *status = MISSING_PARAMETER;
-            free(x);
             return NULL;
         }
         numberdest = cheackoprandtype(oprands[0], &typedest, status); /* get the type of the operand */
@@ -46,7 +46,6 @@ unsigned int *oprandshandler(char *commandname, char **oprands, int sizeofoprand
         if (typedest == -1)                                   /* Check if the operand is valid */
         {
             *status = MISSING_PARAMETER;
-            free(x);
             return NULL;
         }
         *sizeofSentece = (typedest != 3) ? 2 : 1;                            /* Set the size of the sentence based on the type of the operand regsiter save on the first byte */

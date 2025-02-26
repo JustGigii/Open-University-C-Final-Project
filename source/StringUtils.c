@@ -44,7 +44,7 @@ char **Split(const char *str, const char *substr, int *count)
     char *word;
     char **strarray;
     int i = 0;
-    char *tmp = strdup(str);                                            /*copy the string*/
+    char *tmp = mystrdup(str);                                            /*copy the string*/
     *count = CountChar(tmp, substr);                                    /*count how many substr in str*/
     strarray = (char **)malloc(((*count) + 1) * sizeof(char *)); /*allocate memory for the strarray*/
     word = strtok(tmp, substr); /*split the string*/
@@ -92,7 +92,7 @@ char *strndup(const char *str, int chars)
     return newStr;
 }
 
-char *strdup(const char *str) 
+char *mystrdup(const char *str) 
 {
     char *newStr;
     int n = 0;

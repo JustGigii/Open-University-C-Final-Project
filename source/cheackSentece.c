@@ -76,7 +76,7 @@ int process_sentence(LinePtr line, char **strarray, int size, labelPtr **tables,
 
 unsigned int *cheackSentece(char **words, int sizewords, labelPtr **tables, int *tablesize, SATATUS *status, int linenumber, int *sizeofSentece)
 {
-    unsigned int *binarycode;
+    unsigned int *binarycode=NULL;
     int  sizeofoprands = 0;
     char **oprands, *combineorands;
     labelPtr label;

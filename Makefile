@@ -1,6 +1,6 @@
 
 CC=gcc
-CFLAGS= -ansi -Wall -pedantic -g3
+CFLAGS= -ansi -Wall -pedantic 
 
 OBJECTS=main.o FileHandler.o NodeData.o StringUtils.o MacroSystem.o LineDetction.o prosseLabel.o print_error.o cheackSentece.o ValditionLine.o PrintForFile.o
 
