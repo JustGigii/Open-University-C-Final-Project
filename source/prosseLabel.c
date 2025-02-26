@@ -86,8 +86,8 @@ SATATUS ProcessLabel(char **operand, LinePtr line, int *instructionCount, labelP
 
 unsigned int * processString(char *tav,int *sizeofdata)
 {
-    int i;
-    unsigned int * data = malloc(strlen(tav));
+    unsigned int *data = malloc((strlen(tav)) * sizeof(unsigned int));
+
     int asciiValue; /* Get the size of the string */
     if(data == NULL)
         return NULL;
