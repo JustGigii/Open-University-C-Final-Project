@@ -118,7 +118,7 @@ SATATUS processData(char **word, int wordcount, LinePtr line, int size,BOOLEAN h
     unsigned int unsingedconverted; /*convert the number to unsigned to show binary*/
     unsigned int  *arrayofdata /*convert the number to unsigned to show binary*/;
     i = has_lable ? 2 : 1;
-    arrayofdata = malloc(wordcount - i); /* Allocate memory for the array and handel lines with or without lables*/
+    arrayofdata = malloc((wordcount - i) * sizeof(unsigned int)); /* Allocate memory for the array and handel lines with or without lables*/
     if (arrayofdata == NULL) 
         return FAILURE_CANNOT_ALLOCATE_MEMORY;
     for (i = 1; i < wordcount; i++)
