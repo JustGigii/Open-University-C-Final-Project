@@ -1,2 +1,0 @@
-File hii.sh exists and has the correct extension.
-start to assembly the file No macros in the program.
