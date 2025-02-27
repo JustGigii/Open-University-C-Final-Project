@@ -81,6 +81,8 @@ int ProcessLine(LinePtr *head, const char *line)
            len--;
        }
     /* Initialize the head or add to the list */
+    if(len ==0)
+        return 1;
     if (!*head)
     {
         *head = InitLine(processedLine, 1); /* Initialize the head with line number 1*/

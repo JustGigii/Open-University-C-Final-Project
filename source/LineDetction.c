@@ -20,6 +20,11 @@ labelPtr * CreateAssemblyLine(LinePtr heads,int * sizeofTables,SATATUS *status)
     int tablesize = 0, instructionCount = START_LINE;
     LinePtr temp = heads;
     assembly_run=1; /* strart the first run*/
+    data_line_couter =0;    /* counter of the data line*/
+    code_line_couter =0; /* counter of the code line*/
+    extern_mention_counter =0; /* how many extern mention*/
+    is_extern = FALSE; /* if the lines have extern*/
+    is_intern = FALSE; /* if the lines have intern*/
     for ( i = 0; i < 2; i++) /* run only two times*/
     {    
     while (temp) /* check each line*/
