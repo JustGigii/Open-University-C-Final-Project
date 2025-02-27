@@ -11,14 +11,13 @@ int main(int argc, char* argv[]) {
     char* filename;
     BOOLEAN macroflag=TRUE;
     int i;
-    char* am=".am";
+    char* newfilename;
     LinePtr head = NULL;
     LinePtr aftermacro= NULL;
      if (argc < 2) { /*if the user did not enter a file name*/
          printf("Usage: %s <filename>\n", argv[0]);
         return 1;
      }
-     
      for (i = 1; i < argc; i++) {
         filename = argv[i];
         if (GetFileData(filename,&head)) /*create list of line from file*/
@@ -31,7 +30,9 @@ int main(int argc, char* argv[]) {
          if(aftermacro != NULL)
           head = aftermacro;
          if(aftermacro!=NULL&&macroflag==TRUE){ /*if head==null there are no macros in the program*/
-          CreateFileFromList(RenameExtensionfile(filename,am),head); /*create copy of the original file after opening macro macro*/ 
+          newfilename= RenameExtensionfile(filename,".am"); /*create copy of the original file after opening macro macro*/
+          CreateFileFromList(newfilename,head); /*create copy of the original file after opening macro macro*/ 
+          free(newfilename);
          }
 
          else

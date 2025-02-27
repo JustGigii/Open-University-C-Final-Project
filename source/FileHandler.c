@@ -162,16 +162,34 @@ void CreateFileFromList(char *filename, LinePtr head)
 
 char *RenameExtensionfile(char *filename, char *newextension)
 {
-    int i = 0;
-    while (filename[i] != '.') /*find the dot before the extension*/
-        ++i;
-    filename[i] = '\0';                        /*cut the extension*/
-    filename = strcat(filename, newextension); /*add the new extension*/
-    return filename;
+    char *new_filename;
+    char *dot_position;
+    size_t base_len;
+
+    dot_position = strrchr(filename, '.');
+
+    if (dot_position == NULL) {
+        base_len = strlen(filename);
+    } else {
+        base_len = dot_position - filename;
+    }
+
+    new_filename = (char*)malloc(base_len + strlen(newextension) + 2);
+    if (new_filename == NULL) {
+        return NULL;
+    }
+
+    strncpy(new_filename, filename, base_len);
+    new_filename[base_len] = '\0';
+
+    strcat(new_filename, newextension);
+
+    return new_filename;
 }
 
 void createcodefiles(char *filename, LinePtr head)
 {
+    char *newfilename;
     char *ob = ".ob", *ent = ".ent", *ext = ".ext";
     int sizeoftable;
     SATATUS status;
@@ -182,26 +200,32 @@ void createcodefiles(char *filename, LinePtr head)
         return;
 
     /* Create the code files from the assembly lines redirecting the standard output to write to the file */
-    outfile = freopen(RenameExtensionfile(filename, ob), "w", stdout);
+    newfilename = RenameExtensionfile(filename, ob);
+    outfile = freopen(newfilename, "w", stdout);
     checkopenfile
     print_hexadecimal_line(head);
     printf("\n");
     fclose(outfile);
+    free(newfilename);
     if (is_extern)
     {
-        outfile = freopen(RenameExtensionfile(filename, ext), "w", stdout);
+        newfilename = RenameExtensionfile(filename, ext);
+        outfile = freopen(newfilename, "w", stdout);
         checkopenfile
             print_extern(tables, sizeoftable);
         printf("\n");
         fclose(outfile);
+        free(newfilename);
     }
     if (is_intern)
     {
-        outfile = freopen(RenameExtensionfile(filename, ent), "w", stdout);
+        newfilename = RenameExtensionfile(filename, ent);
+        outfile = freopen(newfilename, "w", stdout);
         checkopenfile
             print_intern(tables, sizeoftable);
         printf("\n");
         fclose(outfile);
+        free(newfilename);
     }
 #ifdef _WIN32                    /*for our testing run for windows*/
     freopen("CON", "w", stdout); /*redirect the standard output to the console for windows*/
