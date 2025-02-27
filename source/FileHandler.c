@@ -15,7 +15,8 @@ int GetFileData(char *filename, LinePtr *head)
         if (!*head)
             status = 0;
     }
-    fclose(file);
+    if (file)
+     fclose(file);
     return status;
 }
 
