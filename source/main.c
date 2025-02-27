@@ -1,3 +1,11 @@
+/** @file main.c
+ * @brief main function of the program
+ * @author Dvir Yarden and Omri Gigi
+ * @date 27/02/2025
+ * description: This file contains the main function of the program that is the entry point of the program 
+ * and the main loop of the program that contains the main loop of the program.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../header/FileHandler.h"
@@ -7,6 +15,17 @@
 #include "../header/LineDetction.h"
 
 
+/**
+ * @brief The main function of the program.
+ * This function is the entry point of the program.
+ * It receives a list of file names as arguments and assembles each file separately.
+ * For each file, it creates a linked list of lines, opens macros, and creates .ob, .am .ent, and .ext files.
+ * If there are any errors while assembling the file, it prints an error message and continues to the next file.
+ * If the file does not exist or has the wrong extension, it prints an error message and continues to the next file.
+ * If there are no macros in the program, it prints a message and continues to the next file.
+ * If there are any errors while opening macros, it prints an error message and continues to the next file.
+ * If the assembly is successful, it prints a success message and returns 0.
+ */
 int main(int argc, char* argv[]) {
     char* filename;
     BOOLEAN macroflag=TRUE;
