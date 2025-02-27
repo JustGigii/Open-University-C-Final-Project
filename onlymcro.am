@@ -1,6 +1,0 @@
-sub r1,#2
-clr r1
-stop
-mov #4,r3
-next: stop
-prn #4

@@ -235,7 +235,7 @@ void createcodefiles(char *filename, LinePtr head)
 #else
     freopen("/dev/tty", "w", stdout); /*redirect the standard output to the console for linux*/
 #endif
-    printf("End of program execution file.\n");
+    printf("End of assembly execution file: %s.\n",filename);
     free_tables(tables, sizeoftable); /*free the tables*/
     freelinllist(head);               /*free the linked list*/
 }

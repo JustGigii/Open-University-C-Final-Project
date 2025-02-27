@@ -15,13 +15,13 @@ int main(int argc, char* argv[]) {
     LinePtr head = NULL;
     LinePtr aftermacro= NULL;
      if (argc < 2) { /*if the user did not enter a file name*/
-         printf("Usage: %s <filename>\n", argv[0]);
+         printf("not found file\npls enter file name to assembly for example\n: %s onlymcro.sh\n", argv[0]);
         return 1;
      }
      for (i = 1; i < argc; i++) {
         filename = argv[i];
         if (GetFileData(filename,&head)) /*create list of line from file*/
-          printf ("File %s exists and has the correct extension.\n",filename); 
+          printf ("File %s exists and has the correct extension.\nstart to assembly the file",filename); 
         else
         {
          continue;/*if the file does not exist or has the wrong extension, continue to the next file*/
@@ -44,6 +44,6 @@ int main(int argc, char* argv[]) {
            }
         createcodefiles(filename,head);/*create .ob .ent and .ext files*/        
         }
-        printf("End of program (main)\n");
+        printf("the assembly end successfully\n");
         return 0; 
    }
