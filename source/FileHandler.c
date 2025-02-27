@@ -160,6 +160,8 @@ void CreateFileFromList(char *filename, LinePtr head)
 }
 
 
+/*************  ✨ Codeium Command ⭐  *************/
+/******  3743f181-9d14-45c2-8dd4-9ac1a63eea0b  *******/
 char *RenameExtensionfile(char *filename, char *newextension)
 {
     char *new_filename;
@@ -186,6 +188,7 @@ char *RenameExtensionfile(char *filename, char *newextension)
 
     return new_filename;
 }
+
 
 void createcodefiles(char *filename, LinePtr head)
 {

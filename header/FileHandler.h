@@ -92,16 +92,18 @@ void CreateFileFromList(char* filename,LinePtr head);
  */
 void createcodefiles(char* filename,LinePtr head);
 /**
- * RenameExtensionfile - Replace the extension of a file name with a new one.
- * @filename: The file name to be modified.
- * @newextension: The new extension to be added to the file name.
+ * Replace the extension of a file name with a new one.
  *
  * This function takes a file name and a new extension as parameters and returns a
- * modified file name that has the new extension. For example, if the filename is
- * "example.sh" and the new extension is ".sh", the function will return
- * "example.am".
- * 
- * Returns: The modified file name.
+ * modified file name that has the new extension. If the original file name does not
+ * contain an extension, the new extension is appended to it. Memory is dynamically
+ * allocated for the new file name, and it is the caller's responsibility to free
+ * this memory when it is no longer needed.
+ *
+ * @param filename The original file name.
+ * @param newextension The new extension to be applied.
+ * @return A pointer to the new file name with the updated extension, or NULL if
+ *         memory allocation fails.
  */
 char *RenameExtensionfile(char *filename, char *newextension);
 
