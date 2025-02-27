@@ -1,0 +1,28 @@
+End of assembly execution file: hii.sh.
+File newhii.sh exists and has the correct extension.
+start to assembly the file No macros in the program.
+End of assembly execution file: newhii.sh.
+File onlymcro.sh exists and has the correct extension.
+start to assembly the filein line 1: "sub r1,#2": Illegal addressing methods to the command
+File onlymcro2.sh exists and has the correct extension.
+start to assembly the filein line 42: "prn &next": Illegal addressing methods to the command
+in line 43: "clr &next": Illegal addressing methods to the command
+in line 44: "not &next": Illegal addressing methods to the command
+in line 45: "inc &next": Illegal addressing methods to the command
+in line 46: "clr r1,r2": Extraneous text after end of command
+in line 47: "clr #333": Illegal addressing methods to the command
+in line 48: "not #444": Illegal addressing methods to the command
+in line 49: "red #777": Illegal addressing methods to the command
+in line 50: "not #22": Illegal addressing methods to the command
+in line 51: "inc #44": Illegal addressing methods to the command
+in line 52: "dec #55": Illegal addressing methods to the command
+in line 56: "lea #99": Missing parameter
+in line 57: "jmp r3": Illegal addressing methods to the command
+in line 58: "bne r4": Illegal addressing methods to the command
+in line 59: "jsr r5": Illegal addressing methods to the command
+in line 60: "add r1": Missing parameter
+in line 61: "sub r2": Missing parameter
+in line 62: "mov r3 ,#2000": Illegal addressing methods to the command
+File work.sh exists and has the correct extension.
+start to assembly the fileEnd of assembly execution file: work.sh.
+the assembly end successfully
